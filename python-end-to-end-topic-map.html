@@ -1,0 +1,666 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Python, end to end: complete topic map</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EDF1F6; --surface:#F8FAFD; --ink:#15223B; --muted:#56657D; --rule:#C9D3E0;
+  --blue:#2D5B8C; --blue-soft:#DCE6F2; --mark:rgba(245,205,70,.75); --code-bg:#E0E7F0;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --sans:"IBM Plex Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --mono:"IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0E1726; --surface:#132034; --ink:#E4EAF3; --muted:#9AA8BD; --rule:#27364F;
+    --blue:#8DB4E0; --blue-soft:#1B2B46; --mark:rgba(232,195,90,.38); --code-bg:#1C2A42;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0E1726; --surface:#132034; --ink:#E4EAF3; --muted:#9AA8BD; --rule:#27364F;
+  --blue:#8DB4E0; --blue-soft:#1B2B46; --mark:rgba(232,195,90,.38); --code-bg:#1C2A42;
+  color-scheme: dark;
+}
+:root{ box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px); }
+*,*::before,*::after{ box-sizing:inherit; }
+html{ scroll-padding-top:calc(env(safe-area-inset-top,0px) + 96px); scroll-behavior:smooth; }
+@media (prefers-reduced-motion: reduce){ html{ scroll-behavior:auto; } }
+body{ margin:0; background:var(--bg); color:var(--ink); font:16px/1.55 var(--sans); -webkit-font-smoothing:antialiased; }
+a{ color:var(--blue); text-underline-offset:2px; }
+a:focus-visible, button:focus-visible, input:focus-visible, summary:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; border-radius:3px; }
+code{ font-family:var(--mono); font-size:.86em; background:var(--code-bg); padding:.05em .35em; border-radius:4px; white-space:nowrap; }
+img{ max-width:100%; }
+
+/* hero */
+.hero{ max-width:1180px; margin:0 auto; padding:clamp(40px,7vw,88px) clamp(18px,4vw,40px) 36px; display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:clamp(24px,5vw,64px); align-items:end; }
+.hero h1{ font-family:var(--display); font-weight:800; font-size:clamp(2.6rem,7vw,5.2rem); line-height:.95; letter-spacing:-.03em; margin:0 0 20px; }
+.hero p{ margin:0; max-width:52ch; color:var(--muted); font-size:1.06rem; }
+.repl{ margin:0; font-family:var(--mono); font-size:.95rem; line-height:1.7; background:var(--surface); border:1px solid var(--rule); border-left:6px solid var(--blue); border-radius:4px; padding:18px 20px; overflow-x:auto; }
+.repl .pr{ color:var(--blue); font-weight:500; }
+.repl .out{ font-weight:500; }
+.repl .cm{ color:var(--muted); }
+.bar{ height:8px; background:var(--blue-soft); border-radius:4px; margin-top:12px; overflow:hidden; }
+.bar i{ display:block; height:100%; width:0; background:#E4B92E; transition:width .35s ease; }
+@media (prefers-reduced-motion: reduce){ .bar i{ transition:none; } }
+
+/* toolbar */
+.toolbar{ position:sticky; top:env(safe-area-inset-top,0px); z-index:5; background:color-mix(in srgb, var(--bg) 92%, transparent); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); }
+.toolbar-in{ max-width:1180px; margin:0 auto; padding:10px clamp(18px,4vw,40px); display:flex; flex-wrap:wrap; gap:10px 16px; align-items:center; }
+.search{ flex:1 1 240px; display:flex; align-items:center; gap:8px; background:var(--surface); border:1px solid var(--rule); border-radius:6px; padding:0 10px; }
+.search span{ font-family:var(--mono); color:var(--blue); font-size:.9rem; }
+.search input{ flex:1; min-width:0; border:0; background:transparent; color:var(--ink); font:inherit; padding:9px 0; }
+.search input:focus-visible{ outline:none; }
+.search:focus-within{ border-color:var(--blue); }
+.seg{ display:inline-flex; border:1px solid var(--rule); border-radius:6px; overflow:hidden; background:var(--surface); }
+.seg button{ font:500 .88rem var(--sans); color:var(--muted); background:transparent; border:0; padding:8px 12px; cursor:pointer; }
+.seg button + button{ border-left:1px solid var(--rule); }
+.seg button[aria-pressed="true"]{ background:var(--blue); color:var(--surface); }
+.opt{ display:inline-flex; gap:6px; align-items:center; font-size:.9rem; color:var(--muted); cursor:pointer; }
+.opt input{ accent-color:var(--blue); width:16px; height:16px; }
+.btn{ font:500 .88rem var(--sans); color:var(--blue); background:transparent; border:1px solid var(--rule); border-radius:6px; padding:7px 11px; cursor:pointer; }
+.btn:hover{ background:var(--blue-soft); }
+
+/* layout */
+.wrap{ max-width:1180px; margin:0 auto; padding:28px clamp(18px,4vw,40px) 80px; display:grid; grid-template-columns:250px minmax(0,1fr); gap:48px; }
+nav.toc{ position:sticky; top:calc(env(safe-area-inset-top,0px) + 76px); align-self:start; max-height:calc(100vh - 100px); overflow-y:auto; font-size:.86rem; padding-right:6px; }
+nav.toc h3{ font:600 .82rem var(--sans); color:var(--muted); margin:18px 0 6px; }
+nav.toc h3:first-child{ margin-top:0; }
+nav.toc ol{ list-style:none; margin:0; padding:0; }
+nav.toc a{ display:flex; gap:8px; justify-content:space-between; padding:3px 6px; border-radius:4px; color:var(--ink); text-decoration:none; }
+nav.toc a:hover{ background:var(--blue-soft); }
+nav.toc a small{ color:var(--muted); font-family:var(--mono); font-size:.76rem; white-space:nowrap; }
+nav.toc a.full small{ color:var(--blue); font-weight:500; }
+nav.toc li.hidden{ display:none; }
+main{ min-width:0; max-width:820px; }
+
+.refs{ border:1px solid var(--rule); background:var(--surface); border-radius:6px; padding:18px 22px; margin-bottom:40px; }
+.refs h2{ font:700 1.2rem var(--display); margin:0 0 4px; }
+.refs > p{ margin:0 0 10px; color:var(--muted); font-size:.95rem; }
+.refs ul{ margin:0; padding-left:18px; }
+.refs li{ margin:4px 0; }
+.legend{ margin-top:12px; font-size:.9rem; color:var(--muted); }
+.legend b{ color:var(--ink); font-weight:600; }
+
+.part{ margin-bottom:44px; }
+.part-head h2{ font-family:var(--display); font-weight:800; font-size:clamp(1.7rem,3.6vw,2.3rem); letter-spacing:-.02em; line-height:1.1; margin:0 0 6px; display:flex; gap:14px; align-items:baseline; }
+.part-head h2 .pn{ font-family:var(--mono); font-weight:500; font-size:.95rem; color:var(--blue); min-width:2.6em; }
+.part-head p{ margin:0 0 16px; color:var(--muted); max-width:62ch; }
+.part.hidden, details.sec.hidden, .grp.hidden, li.hidden{ display:none; }
+
+details.sec{ border-top:1px solid var(--rule); }
+details.sec:last-child{ border-bottom:1px solid var(--rule); }
+details.sec > summary{ list-style:none; cursor:pointer; display:grid; grid-template-columns:2.6em minmax(0,1fr) auto; gap:4px 14px; align-items:baseline; padding:14px 4px; }
+details.sec > summary::-webkit-details-marker{ display:none; }
+details.sec > summary:hover .st{ color:var(--blue); }
+.sn{ font-family:var(--mono); color:var(--muted); font-size:.9rem; }
+.st{ font-family:var(--display); font-weight:600; font-size:1.2rem; line-height:1.25; }
+.sc{ font-family:var(--mono); font-size:.82rem; color:var(--muted); white-space:nowrap; }
+.sc.full{ color:var(--blue); font-weight:500; }
+.sl{ grid-column:2 / 4; font-size:.84rem; color:var(--muted); }
+.sec-body{ padding:0 4px 24px calc(2.6em + 18px); }
+.sd{ margin:0 0 14px; color:var(--muted); max-width:66ch; }
+.grp h4, .res h4{ font:600 .95rem var(--sans); margin:18px 0 6px; }
+.grp ul{ list-style:none; margin:0; padding:0; }
+.grp li label{ display:flex; gap:10px; align-items:flex-start; padding:3px 0; cursor:pointer; }
+.grp li input{ accent-color:var(--blue); width:16px; height:16px; margin:4px 0 0; flex:none; cursor:pointer; }
+.grp li.done span{ background:linear-gradient(transparent 58%, var(--mark) 58%); -webkit-box-decoration-break:clone; box-decoration-break:clone; }
+.res{ margin-top:22px; padding-top:4px; border-top:1px dashed var(--rule); }
+.res ul{ margin:0; padding-left:18px; }
+.res li{ margin:5px 0; }
+.res cite{ font-style:normal; font-weight:500; }
+.rn{ color:var(--muted); font-size:.92rem; }
+
+.empty{ display:none; padding:32px 0; color:var(--muted); }
+.empty.show{ display:block; }
+footer{ max-width:1180px; margin:0 auto; padding:0 clamp(18px,4vw,40px) 48px; color:var(--muted); font-size:.88rem; }
+
+@media (max-width: 920px){
+  .hero{ grid-template-columns:1fr; }
+  .wrap{ grid-template-columns:1fr; gap:0; }
+  nav.toc{ display:none; }
+}
+@media (max-width: 560px){
+  .sec-body{ padding-left:4px; }
+  details.sec > summary{ grid-template-columns:2.2em minmax(0,1fr) auto; gap:2px 10px; }
+  code{ white-space:normal; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div>
+    <h1>Python, end to end</h1>
+    <p>Every topic from first syntax to CPython internals, followed by the full data structures and algorithms track and the problem-solving patterns that tie it together. Each section lists the standard resources for it. Tick topics as you learn them; progress stays saved in this browser.</p>
+  </div>
+  <div>
+<pre class="repl" aria-live="polite"><span class="pr">&gt;&gt;&gt;</span> len(topics)
+<span class="out" id="tot">0</span>
+<span class="pr">&gt;&gt;&gt;</span> sum(done)
+<span class="out" id="dn">0</span>  <span class="cm" id="pct"># 0% complete</span></pre>
+    <div class="bar" aria-hidden="true"><i id="barfill"></i></div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="toolbar-in">
+    <label class="search"><span>/</span><input id="q" type="search" placeholder="Search topics, e.g. descriptor, dijkstra, sliding window" aria-label="Search topics"></label>
+    <div class="seg" role="group" aria-label="Filter by level">
+      <button type="button" data-lv="All" aria-pressed="true">All</button>
+      <button type="button" data-lv="Core" aria-pressed="false">Core</button>
+      <button type="button" data-lv="Advanced" aria-pressed="false">Advanced</button>
+      <button type="button" data-lv="Expert" aria-pressed="false">Expert</button>
+    </div>
+    <label class="opt"><input type="checkbox" id="hideDone"> Hide finished</label>
+    <button type="button" class="btn" id="expand">Expand all</button>
+    <button type="button" class="btn" id="collapse">Collapse all</button>
+  </div>
+</div>
+
+<div class="wrap">
+  <nav class="toc" id="toc" aria-label="Sections"></nav>
+  <main>
+    <section class="refs">
+      <h2>Keep these open throughout</h2>
+      <p>The references that come up in almost every section below.</p>
+      <ul>
+        <li><a href="https://docs.python.org/3/" target="_blank" rel="noopener">Official Python documentation</a> <span class="rn">tutorial, language reference, library reference and HOWTOs</span></li>
+        <li><a href="https://peps.python.org/" target="_blank" rel="noopener">PEP index</a> <span class="rn">the design documents behind every language feature</span></li>
+        <li><cite>Fluent Python, 2nd ed.</cite> <span class="rn">Luciano Ramalho: the definitive book on idiomatic, advanced Python</span></li>
+        <li><cite>Effective Python (latest edition)</cite> <span class="rn">Brett Slatkin: focused, item-by-item best practices</span></li>
+        <li><cite>CPython Internals</cite> <span class="rn">Anthony Shaw: a guided tour of the interpreter source</span></li>
+        <li><cite>Introduction to Algorithms (CLRS), 4th ed.</cite> <span class="rn">the standard algorithms textbook</span></li>
+        <li><a href="https://cp-algorithms.com/" target="_blank" rel="noopener">cp-algorithms.com</a> and <a href="https://neetcode.io/roadmap" target="_blank" rel="noopener">NeetCode roadmap</a> <span class="rn">algorithm reference and structured problem practice</span></li>
+      </ul>
+      <p class="legend"><b>Core</b> is what every working Python developer needs. <b>Advanced</b> is senior-level fluency. <b>Expert</b> covers internals and specialist depth.</p>
+    </section>
+    <div id="content"></div>
+    <p class="empty" id="empty"></p>
+  </main>
+</div>
+
+<footer>Resources marked by title only are books; linked ones are free online. Links open in a new tab.</footer>
+
+<script>
+const DATA = [
+{part:"The language", intro:"Syntax, the object model and every feature of the language itself, from basics to metaprogramming.", sections:[
+ {id:"setup", t:"Setup, basics and control flow", lv:["Core"], d:"Get a working environment and a solid grip on how Python code is written and executed.", g:[
+  ["Environment", ["Installing CPython (python.org installers, `pyenv`, `uv python install`)", "The REPL (improved REPL in 3.13), IPython and Jupyter", "Running scripts vs modules with `python -m`", "Virtual environments with `venv` and why they matter", "`pip` basics: install, freeze, requirements files", "Editor and debugger setup (VS Code or PyCharm)"]],
+  ["Language basics", ["Indentation, blocks, comments and docstrings", "Names, binding and assignment (names point to objects)", "Dynamic but strong typing", "`print`, `input` and f-strings", "Truthiness and `None`", "`id()`, `type()`, `isinstance()`", "`is` vs `==`", "Operators and precedence, chained comparisons"]],
+  ["Control flow", ["`if` / `elif` / `else` and conditional expressions", "`while` and `for` loops, `range`, `enumerate`, `zip`", "`break`, `continue`, and `else` clauses on loops", "Assignment expressions with `:=` (PEP 572)", "Structural pattern matching `match` / `case` (PEP 634 to 636): literal, capture, sequence, mapping, class patterns and guards"]]
+ ], r:[["The Python Tutorial","https://docs.python.org/3/tutorial/","official, start here"],["PEP 8, Style Guide","https://peps.python.org/pep-0008/",""],["Python Tutor","https://pythontutor.com/","visualize code execution step by step"],["Python Crash Course, 3rd ed.","","Eric Matthes, beginner-friendly book"],["Automate the Boring Stuff with Python","https://automatetheboringstuff.com/","Al Sweigart, free online"]]},
+
+ {id:"types", t:"Built-in types in depth", lv:["Core"], d:"Know exactly how numbers, text, sequences, mappings and sets behave, including their costs and pitfalls.", g:[
+  ["Numbers", ["`int` with arbitrary precision; `bool` is a subclass of `int`", "`float` and IEEE 754: representation error, `math.isclose`", "`round` uses banker's rounding", "Floor division and modulo with negative numbers, `divmod`", "`pow` with a modulus argument", "`decimal.Decimal` and `fractions.Fraction`", "`complex`, `math` and `cmath`"]],
+  ["Text and bytes", ["`str` immutability, slicing and methods", "Format spec mini-language and `str.format`", "Advanced f-strings: `=` for debugging, nested specs, conversions", "Template strings `t\"...\"` (PEP 750, 3.14)", "Unicode code points, `encode` / `decode`, UTF-8", "`bytes`, `bytearray` and `memoryview`", "Unicode normalization with `unicodedata`", "Raw strings and escape sequences"]],
+  ["Sequences", ["`list`, `tuple` and `range`", "Slicing and `slice` objects, step and negative indices", "Unpacking and extended unpacking `a, *rest = ...`", "List methods and their time complexity", "`sorted` vs `list.sort`, `key` functions, stability", "`reversed` and reverse iteration"]],
+  ["Mappings and sets", ["`dict` methods, views (`keys`, `values`, `items`)", "Insertion order guarantee (3.7+)", "Dict merge operators `|` and `|=` (PEP 584)", "`get`, `setdefault`, `pop`, `popitem`", "`set` and `frozenset` operations", "Hashability rules: what can be a key"]],
+  ["Mutability and identity", ["Mutable vs immutable objects", "Aliasing and shared references", "The mutable default argument pitfall", "Shallow vs deep copy with `copy` / `deepcopy`"]]
+ ], r:[["Built-in Types","https://docs.python.org/3/library/stdtypes.html","library reference"],["Unicode HOWTO","https://docs.python.org/3/howto/unicode.html",""],["Floating-point arithmetic: issues and limitations","https://docs.python.org/3/tutorial/floatingpoint.html",""],["Fluent Python, 2nd ed.","","Parts I and II"],["Time complexity of built-in operations","https://wiki.python.org/moin/TimeComplexity","Python wiki"]]},
+
+ {id:"functions", t:"Functions in depth", lv:["Core","Advanced"], d:"Functions are objects. Understand arguments, scope and closures precisely.", g:[
+  ["Parameters and calls", ["Positional, keyword and default arguments", "`*args` and `**kwargs`", "Positional-only `/` (PEP 570) and keyword-only `*` parameters", "Unpacking at the call site with `*` and `**`", "Returning multiple values"]],
+  ["Scope", ["LEGB rule: local, enclosing, global, built-in", "`global` and `nonlocal`", "Closures, free variables, `__closure__` and cell objects", "Late binding in closures (the loop-lambda pitfall)"]],
+  ["Functions as objects", ["First-class and higher-order functions", "`lambda` and its limits", "`map`, `filter`, `functools.reduce`", "Function attributes: `__name__`, `__doc__`, `__defaults__`, `__kwdefaults__`, `__code__`, `__annotations__`", "`inspect.signature` and introspection"]],
+  ["Recursion", ["Call stack and stack frames", "`sys.setrecursionlimit` and why Python has no tail-call optimization", "Memoization basics"]],
+  ["functools", ["`partial` and `partialmethod`", "`wraps` and `update_wrapper`", "`lru_cache`, `cache`, `cached_property`", "`singledispatch` and `singledispatchmethod`", "`total_ordering` and `cmp_to_key`"]]
+ ], r:[["Execution model (naming and binding)","https://docs.python.org/3/reference/executionmodel.html","language reference"],["functools","https://docs.python.org/3/library/functools.html",""],["Fluent Python, 2nd ed.","","chapters 7 to 9"]]},
+
+ {id:"iteration", t:"Iterators, comprehensions and generators", lv:["Advanced"], d:"The iteration protocol underpins loops, comprehensions, generators and much of the standard library.", g:[
+  ["Iteration protocol", ["Iterable vs iterator", "`__iter__` and `__next__`, `StopIteration`", "How a `for` loop actually works", "`iter()` with a sentinel", "The `__getitem__` fallback"]],
+  ["Comprehensions", ["List, dict and set comprehensions", "Generator expressions and laziness", "Nested comprehensions and readability limits", "Comprehension scoping and inlining (PEP 709, 3.12)"]],
+  ["Generators", ["`yield` and generator state", "Lazy pipelines for large data", "`yield from` and delegation (PEP 380)", "`send`, `throw`, `close`", "Return values from generators", "Generator-based coroutines (historical context for asyncio)"]],
+  ["itertools", ["`count`, `cycle`, `repeat`", "`chain`, `islice`, `tee`, `zip_longest`", "`groupby`, `accumulate`, `pairwise`, `batched` (3.12)", "`product`, `permutations`, `combinations`, `combinations_with_replacement`", "`starmap`, `takewhile`, `dropwhile`, `compress`, `filterfalse`", "itertools recipes and the `more-itertools` package"]]
+ ], r:[["itertools (with recipes)","https://docs.python.org/3/library/itertools.html",""],["Generator Tricks for Systems Programmers","https://www.dabeaz.com/generators/","David Beazley, free slides and code"],["PEP 255, 342 and 380","https://peps.python.org/pep-0380/","generators, coroutines, `yield from`"],["Fluent Python, 2nd ed.","","chapter 17"]]},
+
+ {id:"oop", t:"Object-oriented Python", lv:["Core","Advanced"], d:"Classes, inheritance and interfaces the Python way: duck typing first, hierarchy second.", g:[
+  ["Classes and instances", ["The `class` statement and namespaces", "`__init__` vs `__new__`", "Instance vs class attributes", "Instance methods, `@classmethod`, `@staticmethod`", "Bound methods and `self`", "Instance `__dict__`"]],
+  ["Encapsulation", ["Naming conventions: `_private`", "Name mangling with `__name`", "`@property` getters, setters and deleters"]],
+  ["Inheritance", ["Single and multiple inheritance", "`super()` and cooperative multiple inheritance", "MRO and C3 linearization (`__mro__`)", "Mixins and the diamond problem", "Method overriding and extension"]],
+  ["Abstractions and interfaces", ["Duck typing, EAFP vs LBYL", "`abc.ABC` and `@abstractmethod`", "Virtual subclasses with `register` and `__subclasshook__`", "`typing.Protocol` and structural typing", "`collections.abc` interfaces"]],
+  ["Data classes and records", ["`dataclasses`: `field`, `__post_init__`, `frozen`, `slots`, `kw_only`, `order`", "`namedtuple` and `typing.NamedTuple`", "`enum`: `Enum`, `IntEnum`, `StrEnum`, `Flag`, `auto`", "attrs and Pydantic models and when to choose each"]],
+  ["Design", ["Composition over inheritance", "Delegation with `__getattr__`", "SOLID principles applied to Python"]]
+ ], r:[["Tutorial: Classes","https://docs.python.org/3/tutorial/classes.html",""],["Python's super() considered super!","https://rhettinger.wordpress.com/2011/05/26/super-considered-super/","Raymond Hettinger"],["The Python 2.3 Method Resolution Order","https://docs.python.org/3/howto/mro.html","C3 explained"],["dataclasses","https://docs.python.org/3/library/dataclasses.html",""],["Fluent Python, 2nd ed.","","chapters 11 to 14"]]},
+
+ {id:"datamodel", t:"The Python data model", lv:["Advanced"], d:"Special (dunder) methods are how your objects plug into the language: operators, built-ins, loops, `with`, and more.", g:[
+  ["Object basics", ["Every object has identity, type and value", "`__repr__` vs `__str__`, `__format__`, `__bytes__`", "`__bool__` and `__len__`", "The `__hash__` and `__eq__` contract"]],
+  ["Operator overloading", ["Arithmetic dunders and reflected versions (`__radd__`)", "In-place operators (`__iadd__`)", "Rich comparisons", "Returning `NotImplemented`", "`__matmul__`, unary operators, `__index__`"]],
+  ["Emulating containers", ["`__getitem__`, `__setitem__`, `__delitem__`", "`__contains__`, `__iter__`, `__reversed__`", "`__missing__` for dict subclasses", "Supporting slicing"]],
+  ["Lifecycle and callables", ["`__call__`", "`__new__`, `__init__`, `__del__`", "`__init_subclass__`, `__set_name__`, `__class_getitem__`"]],
+  ["Attribute access", ["`__getattr__` vs `__getattribute__`", "`__setattr__`, `__delattr__`, `__dir__`", "`__slots__` and its trade-offs", "Special method lookup bypasses the instance"]],
+  ["Other protocols", ["Context manager protocol", "Async protocols: `__await__`, `__aiter__`, `__anext__`, `__aenter__`, `__aexit__`", "Copy and pickle protocols: `__copy__`, `__deepcopy__`, `__reduce__`, `__getstate__`", "`__fspath__`, `__match_args__`, buffer protocol"]]
+ ], r:[["Data model","https://docs.python.org/3/reference/datamodel.html","language reference, read it end to end"],["Fluent Python, 2nd ed.","","the whole book is organized around the data model"],["Python Cookbook, 3rd ed.","","David Beazley and Brian K. Jones, chapter 8"]]},
+
+ {id:"decorators", t:"Decorators and closures", lv:["Advanced"], d:"Wrap and register behaviour cleanly.", g:[
+  ["Decorators", ["Function decorators from first principles", "Decorators with arguments (decorator factories)", "Preserving metadata with `functools.wraps`", "Stacking order", "Decorating methods and classes", "Class-based decorators", "Decorators with optional arguments", "Typing decorators with `ParamSpec`", "Registration decorators", "Practical decorators: timing, retry, caching, logging, access control", "`contextlib.ContextDecorator`"]]
+ ], r:[["PEP 318","https://peps.python.org/pep-0318/",""],["Primer on Python Decorators","https://realpython.com/primer-on-python-decorators/","Real Python"],["Fluent Python, 2nd ed.","","chapter 9"]]},
+
+ {id:"context", t:"Context managers and resource management", lv:["Advanced"], d:"Guarantee cleanup and scope behaviour with `with`.", g:[
+  ["Context managers", ["`with` statement semantics", "`__enter__` / `__exit__` and suppressing exceptions", "`contextlib.contextmanager`", "`ExitStack` for dynamic resources", "`suppress`, `closing`, `nullcontext`, `redirect_stdout`, `chdir`", "Parenthesized multi-item `with` (3.10)", "Async context managers and `asynccontextmanager`", "Reentrant and reusable context managers"]]
+ ], r:[["PEP 343","https://peps.python.org/pep-0343/",""],["contextlib","https://docs.python.org/3/library/contextlib.html",""],["Fluent Python, 2nd ed.","","chapter 18"]]},
+
+ {id:"descriptors", t:"Descriptors and attribute lookup", lv:["Expert"], d:"The mechanism behind methods, properties, class and static methods, and ORM fields.", g:[
+  ["Descriptors", ["Descriptor protocol: `__get__`, `__set__`, `__delete__`", "Data vs non-data descriptors", "Full attribute lookup precedence for instances and classes", "How functions become bound methods", "How `property`, `classmethod` and `staticmethod` are built", "`__set_name__` and building validated fields", "How `__slots__` uses descriptors", "`cached_property` internals"]]
+ ], r:[["Descriptor HowTo Guide","https://docs.python.org/3/howto/descriptor.html","Raymond Hettinger"],["Fluent Python, 2nd ed.","","chapter 23"]]},
+
+ {id:"meta", t:"Metaprogramming", lv:["Expert"], d:"Code that creates and modifies code. Powerful; use sparingly.", g:[
+  ["Classes as objects", ["`type` as the class of classes", "Creating classes dynamically with `type(name, bases, ns)` and `types.new_class`", "The class creation process step by step", "Metaclasses: `__prepare__`, `__new__`, `__init__`, `__call__`", "Lighter alternatives: class decorators and `__init_subclass__`"]],
+  ["Introspection and dynamic code", ["`inspect` module", "`getattr`, `setattr`, `hasattr`, `vars`, `dir`", "`globals()` and `locals()`", "`exec`, `eval`, `compile` and their dangers", "Monkey patching", "Frame inspection with `sys._getframe` (know it, avoid it)"]],
+  ["Working with the AST", ["`ast.parse` and node types", "`NodeVisitor` and `NodeTransformer`", "Generating and compiling modified code", "Import hooks for source transformation"]]
+ ], r:[["Customizing class creation","https://docs.python.org/3/reference/datamodel.html#customizing-class-creation","language reference"],["ast","https://docs.python.org/3/library/ast.html",""],["Green Tree Snakes: the missing Python AST docs","https://greentreesnakes.readthedocs.io/",""],["Python 3 Metaprogramming","","David Beazley, PyCon 2013 tutorial (video)"],["Fluent Python, 2nd ed.","","chapter 24"]]},
+
+ {id:"imports", t:"Modules, packages and the import system", lv:["Advanced"], d:"How Python finds, loads and caches code.", g:[
+  ["Modules and packages", ["`__name__ == \"__main__\"`", "Packages and `__init__.py`", "Namespace packages (PEP 420)", "Absolute vs relative imports", "`__all__` and star imports", "Circular imports and how to fix them", "Running code with `-m` and `runpy`", "`src` layout vs flat layout"]],
+  ["Import system internals", ["`sys.path` and `PYTHONPATH`", "`sys.modules` cache", "Finders, loaders and module specs", "`importlib`: `import_module`, `reload`", "`importlib.resources` and `importlib.metadata`", "Bytecode caching in `__pycache__`", "Lazy imports: `importlib.util.LazyLoader` and explicit lazy imports (PEP 810, 3.15)", "Zip applications with `zipapp`"]]
+ ], r:[["The import system","https://docs.python.org/3/reference/import.html","language reference"],["importlib","https://docs.python.org/3/library/importlib.html",""],["Modules and Packages: Live and Let Die!","","David Beazley, PyCon 2015 tutorial (video)"]]},
+
+ {id:"errors", t:"Errors, exceptions and debugging", lv:["Core","Advanced"], d:"Fail loudly and precisely, then find the cause fast.", g:[
+  ["Exceptions", ["`try` / `except` / `else` / `finally`", "Exception hierarchy: `BaseException` vs `Exception`", "Raising and re-raising", "Chaining with `raise ... from`, `__cause__` and `__context__`", "Designing custom exception hierarchies", "`ExceptionGroup` and `except*` (PEP 654)", "`add_note` (PEP 678)", "`warnings` module", "`assert` and the `-O` flag"]],
+  ["Debugging", ["Reading tracebacks; the `traceback` module", "`pdb` and `breakpoint()`", "Post-mortem debugging", "IDE debuggers, conditional breakpoints", "`faulthandler` for crashes and hangs", "`sys.excepthook`"]]
+ ], r:[["Tutorial: Errors and Exceptions","https://docs.python.org/3/tutorial/errors.html",""],["pdb","https://docs.python.org/3/library/pdb.html",""],["PEP 654","https://peps.python.org/pep-0654/","exception groups"]]},
+
+ {id:"typing", t:"Type hints and static typing", lv:["Advanced","Expert"], d:"Gradual typing for safer refactors and better tooling.", g:[
+  ["Basics", ["Annotations and the `typing` module", "Built-in generics like `list[int]` (PEP 585)", "Union syntax `X | Y` (PEP 604), `Optional`", "`Any` vs `object`", "Running a type checker (mypy or pyright)"]],
+  ["Intermediate", ["`TypeVar` and generic functions and classes", "New generic syntax `class Box[T]` and `type` aliases (PEP 695)", "`Callable`, `Literal`, `Final`, `ClassVar`", "`TypedDict` with `Required`, `NotRequired`, `ReadOnly`", "`NewType` and `Annotated`", "`Protocol` for structural subtyping", "`@overload`"]],
+  ["Advanced", ["Variance: covariance and contravariance", "`ParamSpec` and `Concatenate`", "`TypeVarTuple` (PEP 646)", "`Self` (PEP 673)", "`TypeGuard` and `TypeIs`", "`Never` and `NoReturn`", "`@override` (PEP 698)", "`dataclass_transform`", "`TYPE_CHECKING` and import cycles", "Stub files `.pyi` and `py.typed`", "Deferred evaluation of annotations (PEP 649 and 749, 3.14) and `annotationlib`"]],
+  ["Runtime validation", ["Pydantic models", "beartype and typeguard", "When runtime checking is worth the cost"]]
+ ], r:[["typing","https://docs.python.org/3/library/typing.html",""],["Static typing with Python (specs and guides)","https://typing.python.org/",""],["mypy documentation","https://mypy.readthedocs.io/",""],["Robust Python","","Patrick Viafore"],["Fluent Python, 2nd ed.","","chapters 8 and 15"]]},
+
+ {id:"stdlib", t:"Standard library essentials", lv:["Core","Advanced"], d:"Batteries included: know what exists before reaching for a package.", g:[
+  ["Data structures", ["`collections`: `deque`, `Counter`, `defaultdict`, `OrderedDict`, `ChainMap`, `namedtuple`, `UserDict`", "`heapq`, `bisect`, `array`", "`queue`", "`weakref`", "`graphlib.TopologicalSorter`"]],
+  ["Text", ["`re`: groups, named groups, lookarounds, flags, greedy vs lazy, `re.compile`", "`string`, `textwrap`, `difflib`"]],
+  ["Dates and times", ["`datetime`: naive vs aware", "`zoneinfo` for time zones", "`time`, `calendar`"]],
+  ["Files and the OS", ["`pathlib`", "`os`, `shutil`, `glob`, `tempfile`", "`io`: text vs binary streams, buffering", "`sys`, `platform`, `signal`", "`subprocess`", "`argparse`"]],
+  ["Data formats", ["`json`", "`csv`", "`pickle` and why unpickling untrusted data is dangerous", "`shelve`, `sqlite3`", "`tomllib`, `configparser`", "`xml.etree.ElementTree`", "`zipfile`, `tarfile`, `gzip`, `compression.zstd` (3.14)"]],
+  ["Utilities", ["`logging`: loggers, handlers, formatters, `dictConfig`", "`random` vs `secrets`", "`hashlib` and `hmac`", "`uuid`, `statistics`, `operator`, `pprint`", "`contextvars`"]]
+ ], r:[["The Python Standard Library","https://docs.python.org/3/library/",""],["Python 3 Module of the Week","https://pymotw.com/3/","Doug Hellmann"],["Regular Expression HOWTO","https://docs.python.org/3/howto/regex.html",""],["Logging HOWTO","https://docs.python.org/3/howto/logging.html","and the Logging Cookbook"]]},
+
+ {id:"functional", t:"Functional programming in Python", lv:["Advanced"], d:"Pure functions, immutability and composition where they make code clearer.", g:[
+  ["Functional style", ["Pure functions and side effects", "Immutability: tuples, `frozenset`, frozen dataclasses, `types.MappingProxyType`", "Comprehensions vs `map` / `filter`", "`operator.itemgetter`, `attrgetter`, `methodcaller`", "Partial application and currying with `partial`", "Function composition", "Lazy pipelines with generators", "Generic functions with `singledispatch`", "Awareness: `toolz` and `returns`"]]
+ ], r:[["Functional Programming HOWTO","https://docs.python.org/3/howto/functional.html",""],["Fluent Python, 2nd ed.","","chapter 7"]]}
+]},
+
+{part:"CPython internals", intro:"What happens between your source file and the machine: compilation, bytecode, memory and the GIL.", sections:[
+ {id:"runtime", t:"How CPython runs your code", lv:["Expert"], d:"Follow a line of Python from source text to executed bytecode.", g:[
+  ["Architecture", ["CPython vs PyPy, GraalPy, MicroPython, Pyodide", "Tour of the source tree: `Include/`, `Objects/`, `Python/`, `Parser/`, `Lib/`, `Modules/`", "Building CPython from source; debug builds"]],
+  ["Compilation pipeline", ["Tokenizer and the `tokenize` module", "PEG parser (PEP 617)", "Abstract syntax tree and the `ast` module", "Symbol tables and the `symtable` module", "Compiler, control-flow graph and optimizer", "Code objects: `co_code`, `co_consts`, `co_names`, `co_varnames`, location tables", "`.pyc` format and the magic number"]],
+  ["Bytecode and the VM", ["Reading bytecode with `dis`", "The stack-based virtual machine", "Frames and the evaluation loop (`ceval.c`)", "`LOAD_FAST` vs `LOAD_GLOBAL` and why locals are faster", "Function calls and vectorcall (PEP 590)", "Zero-cost exceptions and the exception table (3.11)"]],
+  ["Modern performance work", ["The Faster CPython project", "Specializing adaptive interpreter and inline caches (PEP 659)", "Tier-2 micro-ops", "Experimental copy-and-patch JIT (PEP 744)", "Tail-calling interpreter (3.14)", "`sys.monitoring` (PEP 669)"]]
+ ], r:[["CPython Internals","","Anthony Shaw (Real Python)"],["CPython InternalDocs","https://github.com/python/cpython/tree/main/InternalDocs","maintained by core developers"],["Python Developer's Guide","https://devguide.python.org/",""],["dis","https://docs.python.org/3/library/dis.html","bytecode reference"],["Inside The Python Virtual Machine","","Obi Ike-Nwosu"],["PEP 659 and PEP 744","https://peps.python.org/pep-0659/","specialization and JIT"]]},
+
+ {id:"memory", t:"Objects and memory management", lv:["Expert"], d:"How objects are laid out, counted, collected and allocated.", g:[
+  ["Object layout", ["`PyObject` and `PyVarObject`: `ob_refcnt`, `ob_type`", "Type objects and `tp_*` slots", "Immortal objects (PEP 683)"]],
+  ["Reclaiming memory", ["Reference counting and `sys.getrefcount`", "Cyclic garbage collector: generations, thresholds, the `gc` module", "Finalizers, `__del__` pitfalls and PEP 442", "Weak references"]],
+  ["Allocation", ["pymalloc: arenas, pools and blocks", "`PYTHONMALLOC` and debug allocators", "mimalloc in the free-threaded build", "Free lists for common types", "Small int cache and string interning (`sys.intern`)"]],
+  ["Measuring", ["`sys.getsizeof` vs real footprint", "Memory savings with `__slots__`", "Finding leaks with `tracemalloc` and `objgraph`"]]
+ ], r:[["Garbage collector design (InternalDocs)","https://github.com/python/cpython/blob/main/InternalDocs/garbage_collector.md",""],["gc","https://docs.python.org/3/library/gc.html",""],["Memory Management (C API)","https://docs.python.org/3/c-api/memory.html",""],["PEP 683","https://peps.python.org/pep-0683/","immortal objects"],["CPython Internals","","Anthony Shaw, memory chapters"]]},
+
+ {id:"impl", t:"How built-in types are implemented", lv:["Expert"], d:"Knowing the implementation explains every complexity figure you rely on.", g:[
+  ["Implementations", ["`int`: arbitrary-precision digit arrays, Karatsuba multiplication, `sys.set_int_max_str_digits`", "`list`: dynamic array with over-allocation, amortized O(1) append", "`dict`: compact ordered hash table (index array plus entries), probing with perturbation, resizing", "Key-sharing dictionaries for instances (PEP 412)", "Hash randomization and `PYTHONHASHSEED`", "`set`: hash table with linear probing and its differences from `dict`", "`str`: flexible string representation (PEP 393)", "`tuple`: fixed arrays and free lists", "`deque`: doubly linked list of fixed-size blocks", "`list.sort`: Timsort, galloping mode and the Powersort merge policy (3.11)"]]
+ ], r:[["listsort.txt","https://github.com/python/cpython/blob/main/Objects/listsort.txt","Tim Peters' notes on the sort algorithm"],["dictobject.c","https://github.com/python/cpython/blob/main/Objects/dictobject.c","read the header comments"],["Modern Python Dictionaries","","Raymond Hettinger, PyCon 2017 (video)"],["PEP 393","https://peps.python.org/pep-0393/","flexible string representation"],["Fluent Python, 2nd ed.","","chapter 3, dict and set internals"]]},
+
+ {id:"gil", t:"The GIL, free-threading and subinterpreters", lv:["Expert"], d:"The biggest change to CPython in decades is under way; understand both worlds.", g:[
+  ["The GIL", ["What the GIL protects and why it exists", "Switch interval (`sys.setswitchinterval`)", "Impact on CPU-bound vs I/O-bound threads", "Releasing the GIL in C extensions", "Atomicity and thread-safety myths"]],
+  ["Free-threaded CPython", ["PEP 703 and the `python3.13t` / `python3.14t` builds", "Official support status (PEP 779, 3.14)", "Biased reference counting, per-object locks and critical sections", "`sys._is_gil_enabled()` and checking your build", "C extension compatibility"]],
+  ["Multiple interpreters", ["Per-interpreter GIL (PEP 684)", "`concurrent.interpreters` (PEP 734, 3.14)", "`InterpreterPoolExecutor`"]]
+ ], r:[["Understanding the Python GIL","","David Beazley, PyCon 2010 (video)"],["Python support for free threading","https://docs.python.org/3/howto/free-threading-python.html","official HOWTO"],["Free-threading guide","https://py-free-threading.github.io/","community compatibility guide"],["PEP 703","https://peps.python.org/pep-0703/",""],["PEP 734","https://peps.python.org/pep-0734/",""]]},
+
+ {id:"capi", t:"C API, extensions and other runtimes", lv:["Expert"], d:"Drop to C or Rust when Python alone is not enough.", g:[
+  ["C API", ["Reference ownership: new vs borrowed references", "Parsing arguments and building an extension module", "Multi-phase module initialization (PEP 489)", "Limited API and Stable ABI (PEP 384)", "Buffer protocol (PEP 3118)", "Embedding Python in a C or C++ application"]],
+  ["Binding tools", ["`ctypes`", "`cffi`", "Cython", "pybind11 and nanobind", "PyO3 and maturin (Rust)"]],
+  ["Compilers and alternative runtimes", ["PyPy", "Numba", "mypyc", "GraalPy", "MicroPython and Pyodide (WebAssembly)"]]
+ ], r:[["Extending and Embedding","https://docs.python.org/3/extending/index.html",""],["Python/C API Reference","https://docs.python.org/3/c-api/index.html",""],["Cython documentation","https://cython.readthedocs.io/",""],["pybind11 documentation","https://pybind11.readthedocs.io/",""],["PyO3 user guide","https://pyo3.rs/",""]]}
+]},
+
+{part:"Concurrency and performance", intro:"Doing more at once, and making each thing faster.", sections:[
+ {id:"concurrency", t:"Threads, processes and parallelism", lv:["Advanced"], d:"Choose the right model for I/O-bound and CPU-bound work.", g:[
+  ["Fundamentals", ["Concurrency vs parallelism", "I/O-bound vs CPU-bound work", "Processes vs threads vs coroutines", "Race conditions, deadlocks, livelock, starvation"]],
+  ["threading", ["`Thread`, daemon threads, `join`", "`Lock`, `RLock`, `Semaphore`, `BoundedSemaphore`", "`Event`, `Condition`, `Barrier`, `Timer`", "`threading.local`", "Thread-safe queues with `queue.Queue`"]],
+  ["multiprocessing", ["`Process` and `Pool`", "Start methods: fork, spawn, forkserver (default changes in 3.14)", "`Queue`, `Pipe`, `Manager`", "`multiprocessing.shared_memory`", "Pickling constraints"]],
+  ["concurrent.futures", ["`ThreadPoolExecutor` and `ProcessPoolExecutor`", "Futures, `as_completed`, `wait`, `map`"]],
+  ["Patterns", ["Producer-consumer", "Worker pools", "Fan-out and fan-in", "Pipelines and backpressure", "Rate limiting"]]
+ ], r:[["threading","https://docs.python.org/3/library/threading.html",""],["multiprocessing","https://docs.python.org/3/library/multiprocessing.html",""],["concurrent.futures","https://docs.python.org/3/library/concurrent.futures.html",""],["Speed Up Your Python Program With Concurrency","https://realpython.com/python-concurrency/","Real Python"],["The Little Book of Semaphores","https://greenteapress.com/wp/semaphores/","Allen B. Downey, free"]]},
+
+ {id:"asyncio", t:"Async programming with asyncio", lv:["Advanced","Expert"], d:"Cooperative concurrency for high-throughput I/O.", g:[
+  ["Foundations", ["`async def` and `await`", "Awaitables: coroutines, Tasks, Futures", "The event loop and `asyncio.run`", "How coroutines grew out of generators"]],
+  ["Tasks and coordination", ["`create_task` and keeping references to tasks", "`gather` vs `TaskGroup` and structured concurrency (3.11)", "`asyncio.timeout` and `wait_for`", "Cancellation semantics, `CancelledError`, `shield`", "Async `Lock`, `Semaphore`, `Event`, `Queue`", "`asyncio.to_thread` and running blocking code in executors"]],
+  ["Async protocols", ["Async iterators and async generators", "`async for`, `async with`", "Async comprehensions", "`contextvars` in async code"]],
+  ["I/O and internals", ["Streams API", "Transports and protocols", "Async subprocesses", "Selectors, epoll, kqueue, IOCP", "uvloop"]],
+  ["Ecosystem and pitfalls", ["aiohttp and httpx", "Trio and AnyIO", "Async database drivers (asyncpg)", "Debug mode and `PYTHONASYNCIODEBUG`", "Introspecting running tasks (`python -m asyncio ps`, 3.14)", "Pitfalls: blocking the loop, forgotten awaits, leaked tasks"]]
+ ], r:[["asyncio","https://docs.python.org/3/library/asyncio.html",""],["Using Asyncio in Python","","Caleb Hattingh"],["Python Concurrency with asyncio","","Matthew Fowler"],["Build Your Own Async","","David Beazley, PyCon India 2019 (video)"],["Notes on structured concurrency","https://vorpus.org/blog/notes-on-structured-concurrency-or-go-statement-considered-harmful/","Nathaniel J. Smith"]]},
+
+ {id:"perf", t:"Profiling and optimization", lv:["Advanced"], d:"Measure first, then optimize the part that matters.", g:[
+  ["Measuring", ["`timeit` and `time.perf_counter`", "Benchmarking pitfalls; `pyperf`", "Reading profiler output"]],
+  ["CPU profiling", ["`cProfile` and `pstats`", "SnakeViz and flame graphs", "`line_profiler`", "py-spy (sampling, attaches to running processes)", "Scalene", "Linux `perf` integration (3.12)"]],
+  ["Memory profiling", ["`tracemalloc`", "memray", "Pympler"]],
+  ["Optimization idioms", ["Pick the right data structure first", "Built-ins and C-implemented functions beat Python loops", "Avoid repeated attribute and global lookups in hot loops", "Build strings with `join`", "Generators to cut memory", "`__slots__` for many small objects", "Caching with `lru_cache`", "`array` and `struct` for compact data"]],
+  ["Going faster", ["NumPy vectorization", "Numba", "Cython and mypyc", "Parallelism with processes", "PyPy", "Moving hot paths to Rust or C"]]
+ ], r:[["High Performance Python (latest edition)","","Micha Gorelick and Ian Ozsvald"],["The Python Profilers","https://docs.python.org/3/library/profile.html",""],["py-spy","https://github.com/benfred/py-spy",""],["Scalene","https://github.com/plasma-umass/scalene",""],["memray","https://bloomberg.github.io/memray/",""]]}
+]},
+
+{part:"Engineering practice", intro:"Testing, packaging, design and the habits that make Python code last.", sections:[
+ {id:"testing", t:"Testing", lv:["Core","Advanced"], d:"Tests are how you change code without fear.", g:[
+  ["Concepts", ["Unit, integration and end-to-end tests", "The test pyramid", "Test-driven development", "Arrange-act-assert", "Test doubles: mocks, stubs, fakes, spies"]],
+  ["Frameworks", ["`unittest` and `doctest`", "pytest: discovery and assertion rewriting", "Fixtures, scopes and `conftest.py`", "`parametrize` and markers", "Built-in fixtures: `tmp_path`, `monkeypatch`, `capsys`", "Plugins: pytest-cov, pytest-xdist, pytest-asyncio, pytest-mock"]],
+  ["Mocking", ["`unittest.mock`: `Mock`, `MagicMock`, `patch`", "`autospec` and where to patch", "Avoiding over-mocking"]],
+  ["Advanced testing", ["Property-based testing with Hypothesis", "Mutation testing (mutmut)", "Snapshot testing", "Testing async code", "coverage.py and branch coverage", "tox and nox", "Test data with factory_boy and Faker"]]
+ ], r:[["pytest documentation","https://docs.pytest.org/",""],["Python Testing with pytest, 2nd ed.","","Brian Okken"],["Hypothesis documentation","https://hypothesis.readthedocs.io/",""],["unittest.mock","https://docs.python.org/3/library/unittest.mock.html",""],["Obey the Testing Goat (TDD with Python)","https://www.obeythetestinggoat.com/","Harry Percival, free online"]]},
+
+ {id:"packaging", t:"Packaging, dependencies and tooling", lv:["Advanced"], d:"Ship code that installs cleanly everywhere, with automated quality checks.", g:[
+  ["Environments and dependencies", ["`venv` and `pip`", "Lock files and reproducible installs", "uv", "Poetry and PDM", "pipx for CLI tools", "conda and mamba: when to use them", "pyenv"]],
+  ["Packaging", ["`pyproject.toml` (PEP 518 and 621)", "Build backends: hatchling, setuptools, flit, pdm-backend, maturin", "Source distributions vs wheels", "Platform wheels and manylinux", "Entry points and console scripts", "Versioning: SemVer and PEP 440", "Publishing to PyPI with trusted publishing"]],
+  ["Code quality tools", ["Ruff for linting and formatting", "Black and isort", "mypy or pyright in CI", "pre-commit hooks"]],
+  ["CI and documentation", ["GitHub Actions for Python: matrices and caching", "Docstring conventions: PEP 257, Google and NumPy styles", "Sphinx and MkDocs Material"]]
+ ], r:[["Python Packaging User Guide","https://packaging.python.org/",""],["uv documentation","https://docs.astral.sh/uv/",""],["Ruff documentation","https://docs.astral.sh/ruff/",""],["pyOpenSci Python Package Guide","https://www.pyopensci.org/python-package-guide/",""],["Hypermodern Python","https://cjolowicz.github.io/posts/hypermodern-python-01-setup/","Claudio Jolowicz, blog series"]]},
+
+ {id:"idiomatic", t:"Idiomatic, maintainable and secure code", lv:["Advanced"], d:"Write code other people (and future you) can read and trust.", g:[
+  ["Style and idioms", ["The Zen of Python (PEP 20)", "Pythonic idioms: unpacking, `enumerate`, `zip`, comprehensions, EAFP", "Naming and function design", "Code smells and refactoring", "Code review habits"]],
+  ["Application plumbing", ["Error-handling strategy", "Logging best practices and structured logging (structlog)", "Configuration: environment variables, pydantic-settings", "CLIs with `argparse`, Click, Typer and Rich"]],
+  ["Security", ["Input validation", "`secrets` vs `random`", "Password hashing with bcrypt or Argon2", "SQL injection and parameterized queries", "Shell injection with `subprocess`", "Unsafe `pickle`, `yaml.load` and `eval`", "Dependency auditing with pip-audit; static checks with Bandit", "Secrets management"]]
+ ], r:[["Effective Python (latest edition)","","Brett Slatkin"],["Python Cookbook, 3rd ed.","","David Beazley and Brian K. Jones"],["Beyond the Basic Stuff with Python","https://inventwithpython.com/beyond/","Al Sweigart, free online"],["Transforming Code into Beautiful, Idiomatic Python","","Raymond Hettinger, PyCon 2013 (video)"],["OWASP Cheat Sheet Series","https://cheatsheetseries.owasp.org/",""]]},
+
+ {id:"patterns", t:"Design patterns and architecture", lv:["Advanced","Expert"], d:"Classic patterns, their Pythonic forms, and how to structure whole applications.", g:[
+  ["Creational", ["Singleton, and why a module usually replaces it", "Factory Method", "Abstract Factory", "Builder", "Prototype", "Object Pool"]],
+  ["Structural", ["Adapter", "Bridge", "Composite", "Decorator pattern vs Python decorators", "Facade", "Flyweight", "Proxy"]],
+  ["Behavioral", ["Chain of Responsibility", "Command", "Iterator", "Mediator", "Memento", "Observer", "State", "Strategy with first-class functions", "Template Method", "Visitor with `singledispatch`", "Interpreter"]],
+  ["Pythonic patterns", ["Global Object pattern", "Borg (shared state)", "Sentinel objects", "Registries and plugin systems via entry points", "Dependency injection without a framework"]],
+  ["Principles", ["SOLID", "DRY, KISS, YAGNI", "Composition over inheritance", "Law of Demeter", "Coupling and cohesion"]],
+  ["Architecture", ["Layered architecture", "Hexagonal architecture (ports and adapters)", "Clean architecture", "Repository and Unit of Work", "Service layer", "Domain-driven design basics", "CQRS", "Event-driven architecture and message bus"]],
+  ["Low-level design practice", ["LRU cache", "Parking lot", "Rate limiter", "Logger framework", "Elevator system", "Library management", "Expense-sharing app", "In-memory key-value store"]]
+ ], r:[["Refactoring.Guru: design patterns in Python","https://refactoring.guru/design-patterns/python",""],["Python Design Patterns","https://python-patterns.guide/","Brandon Rhodes"],["Architecture Patterns with Python","https://www.cosmicpython.com/","Harry Percival and Bob Gregory, free online"],["Design Patterns (Gang of Four)","","Gamma, Helm, Johnson, Vlissides"],["Head First Design Patterns, 2nd ed.","","Freeman and Robson"],["awesome-low-level-design","https://github.com/ashishps1/awesome-low-level-design","LLD problems and solutions"]]}
+]},
+
+{part:"Applied Python", intro:"The main domains where Python is used professionally. Go deep on the ones your work needs.", sections:[
+ {id:"web", t:"Networking and web development", lv:["Core","Advanced"], d:"From raw sockets to production APIs.", g:[
+  ["Networking", ["TCP and UDP basics", "`socket` and `selectors`", "HTTP fundamentals", "`urllib`, requests and httpx", "WebSockets"]],
+  ["Serving", ["WSGI (PEP 3333) and ASGI", "Gunicorn and Uvicorn", "Reverse proxies (nginx)"]],
+  ["Frameworks", ["Flask: routing, blueprints, application context", "Django: ORM, views, templates, admin, middleware, Django REST Framework", "FastAPI: dependency injection, Pydantic validation, OpenAPI"]],
+  ["APIs", ["REST design", "Authentication: sessions, JWT, OAuth2", "Pagination and versioning", "GraphQL (Strawberry) and gRPC basics"]],
+  ["Background work", ["Celery, RQ, Dramatiq", "Scheduling with APScheduler", "Caching with Redis"]]
+ ], r:[["Socket Programming HOWTO","https://docs.python.org/3/howto/sockets.html",""],["FastAPI documentation","https://fastapi.tiangolo.com/",""],["Django documentation","https://docs.djangoproject.com/",""],["Flask documentation","https://flask.palletsprojects.com/",""],["Pydantic documentation","https://docs.pydantic.dev/",""]]},
+
+ {id:"db", t:"Databases and persistence", lv:["Core","Advanced"], d:"Talk to databases correctly and efficiently.", g:[
+  ["Databases", ["SQL fundamentals with `sqlite3`", "DB-API 2.0 (PEP 249)", "Transactions and isolation levels", "Connection pooling", "SQLAlchemy Core and ORM (2.0 style)", "Sessions and the unit of work", "The N+1 problem and eager loading", "Migrations with Alembic", "Django ORM", "Async database access (asyncpg, SQLAlchemy asyncio)", "Redis and MongoDB clients", "Indexing and query performance basics"]]
+ ], r:[["SQLAlchemy documentation and unified tutorial","https://docs.sqlalchemy.org/",""],["sqlite3","https://docs.python.org/3/library/sqlite3.html",""],["Use The Index, Luke","https://use-the-index-luke.com/","SQL indexing, free online"]]},
+
+ {id:"data", t:"Data and scientific Python", lv:["Core","Advanced"], d:"The numerical stack that makes Python the language of data.", g:[
+  ["NumPy", ["`ndarray` and dtypes", "Broadcasting", "Vectorization", "Views vs copies, strides"]],
+  ["DataFrames", ["pandas: `Series`, `DataFrame`, `loc` / `iloc`", "`groupby`, merge and join, reshaping", "Time series", "pandas performance tips", "Polars and its lazy API", "DuckDB from Python"]],
+  ["Visualization and notebooks", ["Matplotlib, Seaborn, Plotly", "Jupyter and IPython magics"]],
+  ["Machine learning entry points", ["scikit-learn workflow: fit, predict, pipelines", "PyTorch basics"]]
+ ], r:[["NumPy documentation","https://numpy.org/doc/stable/",""],["pandas documentation","https://pandas.pydata.org/docs/",""],["Python for Data Analysis, 3rd ed.","https://wesmckinney.com/book/","Wes McKinney, free online"],["Python Data Science Handbook","https://jakevdp.github.io/PythonDataScienceHandbook/","Jake VanderPlas, free online"],["From Python to Numpy","https://www.labri.fr/perso/nrougier/from-python-to-numpy/","Nicolas Rougier, free"]]},
+
+ {id:"automation", t:"Scripting, automation and deployment", lv:["Core"], d:"Everyday Python for getting work done and shipping it.", g:[
+  ["Automation", ["File and folder automation", "Running external programs with `subprocess`", "Excel, PDF and CSV processing", "Web scraping with requests and Beautiful Soup, Playwright, Scrapy (respecting robots.txt and terms)", "Sending email with `smtplib`", "Calling REST APIs", "Scheduling with cron"]],
+  ["Deployment", ["Docker for Python: slim images, multi-stage builds", "Running services with systemd", "Environment configuration for production"]]
+ ], r:[["Automate the Boring Stuff with Python","https://automatetheboringstuff.com/","Al Sweigart"],["Python for DevOps","","Gift, Behrman, Deza and Gheorghiu"]]}
+]},
+
+{part:"Data structures and algorithms", intro:"The full DSA track, from complexity analysis to advanced graph and string algorithms, with Python-specific tooling.", sections:[
+ {id:"complexity", t:"Complexity analysis", lv:["Core"], d:"Reason about cost before you write code.", g:[
+  ["Asymptotics", ["Big-O, Big-Omega, Big-Theta", "Best, average and worst case", "Space complexity and auxiliary space", "Amortized analysis: aggregate, accounting and potential methods"]],
+  ["Recurrences", ["Recurrence relations", "Recursion-tree method", "Master theorem", "Akra-Bazzi (awareness)"]],
+  ["In practice", ["Cost of Python operations (`list.pop(0)`, `in` on list vs set, string concatenation)", "Reading constraints to choose a target complexity", "P, NP, NP-complete and reductions"]]
+ ], r:[["Introduction to Algorithms (CLRS), 4th ed.","","Cormen, Leiserson, Rivest, Stein"],["MIT 6.006 Introduction to Algorithms","https://ocw.mit.edu/courses/6-006-introduction-to-algorithms-spring-2020/","free lectures and notes"],["Grokking Algorithms, 2nd ed.","","Aditya Bhargava, gentle introduction"],["TimeComplexity","https://wiki.python.org/moin/TimeComplexity","Python wiki"]]},
+
+ {id:"pytoolkit", t:"Python toolkit for DSA", lv:["Core"], d:"The standard library pieces you will reach for in almost every problem.", g:[
+  ["Toolkit", ["`collections.deque` for O(1) queue operations", "`Counter`, `most_common` and counter arithmetic", "`defaultdict(list)`, `defaultdict(int)`, `defaultdict(set)`", "`heapq` idioms: tuples, negation for max-heap, and max-heap functions (3.14)", "`bisect` with `key=` (3.10+)", "`itertools` for combinatorics", "`functools.cache` for memoized DP", "`math.comb`, `perm`, `gcd`, `lcm`, `isqrt`, `inf`", "`sortedcontainers`: `SortedList`, `SortedDict`", "Deep recursion: `sys.setrecursionlimit`, `threading.stack_size`, or an explicit stack", "Fast input with `sys.stdin.readline`", "The 2D list pitfall `[[0] * m] * n`", "Tuples for multi-key sorting and comparisons", "`ord`, `chr`, `int(x, base)`, `bin`, `hex`, `int.bit_count`"]]
+ ], r:[["collections","https://docs.python.org/3/library/collections.html",""],["heapq","https://docs.python.org/3/library/heapq.html",""],["bisect","https://docs.python.org/3/library/bisect.html",""],["Sorted Containers","https://grantjenks.com/docs/sortedcontainers/",""],["Python Algorithms, 2nd ed.","","Magnus Lie Hetland"]]},
+
+ {id:"math", t:"Math and bit manipulation", lv:["Core","Advanced"], d:"The number theory, combinatorics and bit tricks that show up across problems.", g:[
+  ["Number theory", ["Divisibility, GCD and LCM (Euclid)", "Extended Euclid", "Primality by trial division", "Sieve of Eratosthenes, segmented sieve, smallest-prime-factor sieve", "Prime factorization", "Modular arithmetic and modular inverse (Fermat, extended Euclid)", "Fast exponentiation", "Chinese Remainder Theorem", "Euler's totient"]],
+  ["Combinatorics", ["Permutations and combinations", "nCr mod p with factorial precomputation", "Pascal's triangle", "Catalan numbers", "Inclusion-exclusion", "Pigeonhole principle"]],
+  ["Bit manipulation", ["Binary representation and two's complement", "Python's unbounded negative integers and masking", "AND, OR, XOR, NOT, shifts", "Set, clear, toggle and test a bit", "Lowest set bit `x & -x`", "Counting bits with `bit_count()`", "XOR tricks: single number, swap, missing number", "Enumerating subsets with bitmasks", "Gray code"]],
+  ["Other math", ["Matrix exponentiation", "Fisher-Yates shuffle", "Reservoir sampling", "Probability basics"]]
+ ], r:[["cp-algorithms: algebra section","https://cp-algorithms.com/",""],["Competitive Programmer's Handbook","https://cses.fi/book/book.pdf","Antti Laaksonen, free PDF"],["Concrete Mathematics","","Graham, Knuth and Patashnik, advanced"]]},
+
+ {id:"arrays", t:"Arrays, strings and hashing", lv:["Core"], d:"The foundation for the majority of interview and real-world problems.", g:[
+  ["Arrays", ["Static vs dynamic arrays", "In-place modification", "Rotation and reversal", "Prefix sums and 2D prefix sums", "Difference arrays", "Kadane's algorithm (maximum subarray)", "Dutch national flag partitioning", "Boyer-Moore majority vote", "Next permutation"]],
+  ["Matrices", ["Transpose and rotate", "Spiral traversal", "Search in a sorted matrix", "Set matrix zeroes in place"]],
+  ["Strings", ["Cost of immutability; building with a list and `join`", "Palindromes and anagrams", "Frequency counting", "Parsing and tokenizing", "Run-length encoding"]],
+  ["Hashing", ["Hash functions and collisions", "Chaining vs open addressing", "Load factor and rehashing", "Designing composite keys with tuples and `frozenset`", "Rolling hash"]]
+ ], r:[["NeetCode roadmap","https://neetcode.io/roadmap","arrays and hashing section"],["Problem Solving with Algorithms and Data Structures using Python","https://runestone.academy/","Miller and Ranum, free interactive book on Runestone"],["LeetCode","https://leetcode.com/",""]]},
+
+ {id:"linked", t:"Linked lists", lv:["Core"], d:"Pointer manipulation, dummy nodes and the classic list problems.", g:[
+  ["Linked lists", ["Singly, doubly and circular linked lists", "Insertion and deletion", "Reversal, iterative and recursive", "Dummy (sentinel) nodes", "Finding the middle with fast and slow pointers", "Cycle detection and cycle start (Floyd)", "Merge two sorted lists; merge k sorted lists", "Remove nth node from the end", "Reorder list; palindrome linked list", "Intersection of two lists", "Copy list with random pointer", "LRU cache with a hash map and doubly linked list", "Skip lists (awareness)"]]
+ ], r:[["VisuAlgo: linked lists","https://visualgo.net/en/list","animated visualizations"],["NeetCode roadmap","https://neetcode.io/roadmap","linked list section"]]},
+
+ {id:"stacks", t:"Stacks, queues and deques", lv:["Core"], d:"LIFO and FIFO structures, and the monotonic variants that solve range problems.", g:[
+  ["Stacks and queues", ["Stack with `list`, queue with `deque`", "`queue.Queue` for threads", "Circular queue and ring buffer", "Queue using stacks and stack using queues", "Balanced parentheses", "Expression evaluation; infix to postfix (shunting-yard)", "Min stack", "Converting recursion to an explicit stack"]],
+  ["Monotonic structures", ["Monotonic stack: next greater and next smaller element", "Largest rectangle in a histogram", "Stock span and daily temperatures", "Trapping rain water", "Monotonic deque: sliding window maximum"]]
+ ], r:[["VisuAlgo: stack, queue, deque","https://visualgo.net/en/list",""],["NeetCode roadmap","https://neetcode.io/roadmap","stack section"]]},
+
+ {id:"recursion", t:"Recursion, divide and conquer, backtracking", lv:["Core","Advanced"], d:"Break problems into smaller copies of themselves and search solution spaces systematically.", g:[
+  ["Recursion", ["Base case and recursive case", "Call stack and recursion trees", "Head vs tail recursion", "Converting recursion to iteration"]],
+  ["Divide and conquer", ["Merge sort and quicksort as divide and conquer", "Fast power", "Counting inversions", "Closest pair of points", "Karatsuba multiplication"]],
+  ["Backtracking", ["Choose, explore, un-choose template", "Subsets (with and without duplicates)", "Permutations (with and without duplicates)", "Combinations and combination sum", "N-Queens", "Sudoku solver", "Word search", "Palindrome partitioning", "Generate parentheses", "Letter combinations of a phone number", "Pruning strategies", "Branch and bound"]]
+ ], r:[["The Algorithm Design Manual, 3rd ed.","","Steven Skiena, backtracking chapter"],["Abdul Bari: Algorithms","","YouTube course"],["NeetCode roadmap","https://neetcode.io/roadmap","backtracking section"]]},
+
+ {id:"sorting", t:"Sorting and searching", lv:["Core"], d:"Know every standard sort and every shape of binary search.", g:[
+  ["Sorting", ["Bubble, selection, insertion sort", "Merge sort", "Quicksort: Lomuto and Hoare partitions, random pivot, 3-way partition", "Heap sort", "Counting sort, radix sort, bucket sort", "Hybrid sorts: Timsort, Powersort, introsort", "Stability, in-place, adaptivity", "Comparison-sort lower bound of n log n", "Custom ordering with `key` and `cmp_to_key`", "External sorting (awareness)"]],
+  ["Searching", ["Linear search", "Binary search, iterative and recursive", "Lower and upper bound; `bisect_left` and `bisect_right`", "First and last occurrence", "Search in a rotated sorted array", "Peak element", "Binary search on the answer (minimize the maximum, capacity problems)", "Binary search on real numbers", "Ternary search", "Exponential search", "Quickselect for the kth element", "Median of two sorted arrays"]]
+ ], r:[["VisuAlgo: sorting","https://visualgo.net/en/sorting",""],["Algorithms, 4th ed.","https://algs4.cs.princeton.edu/","Sedgewick and Wayne, book site"],["bisect","https://docs.python.org/3/library/bisect.html",""]]},
+
+ {id:"trees", t:"Trees", lv:["Core","Advanced","Expert"], d:"From traversals to range-query structures and tree decompositions.", g:[
+  ["Binary trees", ["Terminology and representations", "Preorder, inorder, postorder (recursive and iterative)", "Morris traversal", "Level-order traversal and zigzag", "Left, right, top and bottom views", "Height, diameter, balance check", "Path sums", "Lowest common ancestor", "Serialize and deserialize", "Construct from traversals", "Vertical order traversal"]],
+  ["Binary search trees", ["Search, insert, delete", "Validate a BST", "Inorder successor and predecessor", "kth smallest element", "BST iterator", "Sorted array to balanced BST"]],
+  ["Balanced trees", ["AVL rotations", "Red-black tree properties", "B-trees and B+ trees (databases)", "Treaps and splay trees (awareness)", "`SortedList` as the practical substitute in Python"]],
+  ["Tries", ["Insert, search, prefix search", "Wildcard search", "Word search II", "Autocomplete", "Binary trie for maximum XOR"]],
+  ["Range-query structures", ["Segment tree: build, query, point update", "Lazy propagation", "Fenwick tree (binary indexed tree)", "Sparse table for range minimum", "Square-root decomposition"]],
+  ["Tree techniques", ["DP on trees", "Rerooting", "Binary lifting for LCA", "Euler tour", "Heavy-light decomposition", "Centroid decomposition"]]
+ ], r:[["VisuAlgo: BST, AVL, segment tree, Fenwick tree","https://visualgo.net/en",""],["cp-algorithms: data structures","https://cp-algorithms.com/",""],["Introduction to Algorithms (CLRS)","","chapters on BSTs, red-black trees and B-trees"]]},
+
+ {id:"heaps", t:"Heaps and priority queues", lv:["Core"], d:"Always know the smallest (or largest) element cheaply.", g:[
+  ["Heaps", ["Binary heap structure and array layout", "Sift up, sift down; why heapify is O(n)", "`heapq`: `heappush`, `heappop`, `heapify`, `heapreplace`, `heappushpop`", "`nlargest`, `nsmallest`, `merge`", "Max-heaps: negation or the 3.14 max-heap functions", "Tie-breaking with tuples", "`queue.PriorityQueue`", "Lazy deletion and indexed priority queues", "d-ary heaps; binomial and Fibonacci heaps (awareness)"]],
+  ["Classic uses", ["Top-k elements", "k-way merge", "Running median with two heaps", "Task scheduling", "Heap-based Dijkstra"]]
+ ], r:[["heapq","https://docs.python.org/3/library/heapq.html",""],["VisuAlgo: binary heap","https://visualgo.net/en/heap",""]]},
+
+ {id:"graphs", t:"Graphs", lv:["Advanced","Expert"], d:"Traversal, shortest paths, spanning trees, connectivity and flows.", g:[
+  ["Representation", ["Adjacency list and adjacency matrix", "Edge list", "Grids and implicit graphs", "Directed, undirected, weighted, DAGs"]],
+  ["Traversal", ["BFS and DFS (recursive and iterative)", "Connected components and flood fill", "Multi-source BFS", "Cycle detection in directed and undirected graphs", "Bipartite check (2-coloring)", "Topological sort: Kahn's algorithm and DFS"]],
+  ["Shortest paths", ["BFS for unweighted graphs", "0-1 BFS", "Dijkstra", "Bellman-Ford and negative cycles", "Floyd-Warshall", "Shortest paths in a DAG", "A* search"]],
+  ["Spanning trees and union-find", ["Union-find with path compression and union by rank or size", "Kruskal's algorithm", "Prim's algorithm"]],
+  ["Advanced connectivity", ["Strongly connected components: Kosaraju and Tarjan", "Bridges and articulation points", "Eulerian paths and circuits (Hierholzer)", "Hamiltonian paths via bitmask DP", "2-SAT"]],
+  ["Flows and matching", ["Max flow: Ford-Fulkerson, Edmonds-Karp, Dinic", "Min cut", "Bipartite matching and Hopcroft-Karp", "Hungarian algorithm (awareness)"]],
+  ["In practice", ["NetworkX for real-world graph work"]]
+ ], r:[["cp-algorithms: graphs","https://cp-algorithms.com/",""],["USACO Guide","https://usaco.guide/","structured graph and DP modules"],["William Fiset: Graph Theory","","YouTube playlist"],["Introduction to Algorithms (CLRS)","","graph algorithms part"],["NetworkX documentation","https://networkx.org/documentation/stable/",""]]},
+
+ {id:"dp", t:"Dynamic programming", lv:["Advanced","Expert"], d:"Define the state, find the transition, then optimize.", g:[
+  ["Fundamentals", ["Overlapping subproblems and optimal substructure", "Top-down memoization with `functools.cache`", "Bottom-up tabulation", "Defining states and transitions", "Space optimization with rolling arrays", "Reconstructing the solution"]],
+  ["1D DP", ["Climbing stairs and Fibonacci", "House robber", "Decode ways", "Word break", "Coin change: minimum coins and number of ways", "Jump game"]],
+  ["Grid DP", ["Unique paths", "Minimum path sum", "Maximal square", "Dungeon game"]],
+  ["Knapsack family", ["0/1 knapsack", "Unbounded knapsack", "Bounded knapsack", "Subset sum and partition equal subset", "Target sum"]],
+  ["Sequence DP", ["Longest increasing subsequence in O(n log n) with `bisect`", "Longest common subsequence", "Edit distance", "Longest palindromic subsequence and substring", "Distinct subsequences", "Regex and wildcard matching"]],
+  ["Interval DP", ["Matrix chain multiplication", "Burst balloons", "Palindrome partitioning II", "Optimal BST"]],
+  ["Advanced DP", ["DP on trees", "DP on DAGs", "Bitmask DP (travelling salesman, assignment)", "Digit DP", "State-machine DP (stock buy and sell series)", "Probability and expected-value DP", "DP with prefix sums", "Divide-and-conquer and Knuth optimizations", "Convex hull trick", "Sum over subsets (SOS) DP"]]
+ ], r:[["AtCoder Educational DP Contest","https://atcoder.jp/contests/dp","26 classic DP problems"],["CSES Problem Set","https://cses.fi/problemset/","dynamic programming section"],["cp-algorithms: dynamic programming","https://cp-algorithms.com/",""],["Aditya Verma: Dynamic Programming","","YouTube playlist"]]},
+
+ {id:"greedy", t:"Greedy algorithms", lv:["Core","Advanced"], d:"Local choices that provably lead to a global optimum, and knowing when they don't.", g:[
+  ["Greedy", ["Greedy-choice property and exchange arguments", "Activity selection and interval scheduling", "Meeting rooms; merging and inserting intervals", "Fractional knapsack", "Huffman coding", "Jump game II", "Gas station", "Task scheduler", "Candy distribution", "Minimum platforms", "Job sequencing with deadlines", "Recognizing when greedy fails and DP is needed"]]
+ ], r:[["Algorithm Design","","Jon Kleinberg and Eva Tardos, greedy chapter"],["Introduction to Algorithms (CLRS)","","greedy algorithms chapter"]]},
+
+ {id:"strings", t:"Advanced string algorithms", lv:["Expert"], d:"Linear-time matching and suffix structures.", g:[
+  ["Pattern matching", ["Naive matching", "KMP and the prefix function", "Z-algorithm", "Rabin-Karp and double hashing", "Boyer-Moore (awareness)", "Aho-Corasick for many patterns"]],
+  ["Palindromes", ["Expand around center", "Manacher's algorithm"]],
+  ["Suffix structures", ["Suffix array and LCP array (Kasai)", "Suffix automaton", "Suffix trees (awareness)"]],
+  ["Other", ["Substring comparison with string hashing", "Minimum rotation (Booth)"]]
+ ], r:[["cp-algorithms: string processing","https://cp-algorithms.com/",""],["Competitive Programmer's Handbook","https://cses.fi/book/book.pdf","string algorithms chapter"]]},
+
+ {id:"advanced", t:"Specialized structures and techniques", lv:["Expert"], d:"The long tail: design-style structures, streaming, geometry and theory.", g:[
+  ["Design-style structures", ["LRU and LFU caches", "Rate limiter (token bucket, sliding window)", "Consistent hashing", "Bloom filter", "Time-based key-value store", "Insert, delete, get-random in O(1)"]],
+  ["Streaming and probabilistic", ["Reservoir sampling", "Count-min sketch", "HyperLogLog (awareness)", "Las Vegas vs Monte Carlo algorithms"]],
+  ["Techniques", ["Meet in the middle", "Sweep line", "Coordinate compression", "Offline queries and Mo's algorithm", "Persistent data structures (awareness)"]],
+  ["Computational geometry", ["Cross product and orientation", "Segment intersection", "Convex hull (monotone chain)", "Point in polygon"]],
+  ["Theory", ["NP-hard problems in practice", "Approximation algorithms"]]
+ ], r:[["The Algorithm Design Manual, 3rd ed.","","Steven Skiena, the catalog of algorithmic problems"],["cp-algorithms","https://cp-algorithms.com/",""],["Introduction to Algorithms (CLRS)","",""]]}
+]},
+
+{part:"Problem-solving patterns", intro:"The recurring shapes behind most algorithm problems. Learn to recognize the pattern from the problem statement.", sections:[
+ {id:"dsapatterns", t:"DSA patterns", lv:["Advanced"], d:"Each pattern is a reusable template. Solve 5 to 10 problems per pattern until recognition is automatic.", g:[
+  ["Pointers and windows", ["Two pointers from opposite ends: pair sum, 3Sum, container with most water", "Two pointers in the same direction: remove duplicates, move zeroes", "Fast and slow pointers: cycle detection, middle of list, happy number", "Fixed-size sliding window", "Variable-size sliding window: longest substring without repeats, minimum window substring", "The at-most-k trick for exactly-k counting"]],
+  ["Array transforms", ["Prefix sum with a hash map: subarray sum equals k", "Difference array for range updates", "Kadane-style running best", "Cyclic sort for numbers in range 1 to n", "In-place linked list reversal: sublists and k-groups", "Merge intervals", "Matrix traversal: spiral, diagonal, rotation"]],
+  ["Search and ordering", ["Modified binary search", "Binary search on the answer", "Top-k elements with a size-k heap or quickselect", "K-way merge", "Two heaps: median of a stream, sliding window median", "Bucket sort: top-k frequent, maximum gap", "Monotonic stack", "Monotonic queue", "Line sweep: events, skyline, meeting rooms II"]],
+  ["Trees and graphs", ["Tree BFS: level order, right side view, minimum depth", "Tree DFS: path sums, diameter, returning multiple values from recursion", "Grid BFS and DFS: number of islands, rotting oranges", "Multi-source BFS", "Topological sort: course schedule, alien dictionary", "Union-find: components, redundant connection, accounts merge", "Dijkstra variants: network delay, cheapest flights within k stops", "Trie-based search"]],
+  ["Combinatorial search and DP", ["Subsets via iteration or BFS", "Backtracking: permutations, combinations, N-Queens", "0/1 knapsack pattern", "Unbounded knapsack pattern", "Fibonacci-style DP", "Palindromic subsequence DP", "Longest common substring and subsequence DP", "LIS pattern", "Grid DP", "Interval DP", "State-machine DP", "Bitmask DP", "Greedy with sorting and exchange arguments"]],
+  ["Bits and math", ["Bitwise XOR: single number, missing number", "Bitmasks for subsets", "Math and geometry: GCD, primes, rotate image", "Randomization: shuffle and reservoir sampling"]],
+  ["Meta-skills", ["Recognizing patterns from constraints and keywords", "Brute force first, then optimize", "Edge-case checklist: empty, single element, duplicates, negatives, overflow", "Dry-running and writing your own test cases", "Explaining your approach out loud (UMPIRE method)", "Spaced repetition of solved problems"]]
+ ], r:[["Tech Interview Handbook","https://www.techinterviewhandbook.org/","free, includes study plans and cheatsheets"],["NeetCode 150 and roadmap","https://neetcode.io/roadmap",""],["LeetCode Patterns","https://seanprashad.com/leetcode-patterns/","Sean Prashad, problems grouped by pattern"],["Grokking the Coding Interview Patterns","https://www.designgurus.io/","Design Gurus course"],["LeetCode study plans","https://leetcode.com/studyplan/",""],["Cracking the Coding Interview and Beyond Cracking the Coding Interview","","Gayle Laakmann McDowell and co-authors"],["Elements of Programming Interviews in Python","","Aziz, Lee and Prakash"]]},
+
+ {id:"practice", t:"Practice milestones", lv:["Core","Advanced"], d:"Apply everything above on real problem sets and projects.", g:[
+  ["Problem sets", ["Complete the Blind 75", "Complete the NeetCode 150", "CSES Problem Set: introductory, sorting and searching, DP, graph sections", "AtCoder Beginner Contests", "Codeforces Div. 2 and Div. 3 rounds", "Advent of Code in Python", "Project Euler (first 50 problems)", "Exercism Python track for idiomatic code review"]],
+  ["Projects", ["A CLI tool packaged and published to PyPI", "A REST API with FastAPI or Django, tests and CI", "An asyncio web crawler with rate limiting", "A small interpreter or expression evaluator using `ast`", "A C or Rust extension for a hot function", "Read and annotate one CPython source file end to end"]]
+ ], r:[["CSES Problem Set","https://cses.fi/problemset/",""],["AtCoder","https://atcoder.jp/",""],["Codeforces","https://codeforces.com/",""],["Exercism: Python track","https://exercism.org/tracks/python","free mentoring"],["Advent of Code","https://adventofcode.com/",""],["Project Euler","https://projecteuler.net/",""]]}
+]}
+];
+
+const KEY = "python-e2e-topic-map-v1";
+let state = {};
+try { state = JSON.parse(localStorage.getItem(KEY) || "{}") || {}; } catch (e) { state = {}; }
+function save(){ try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) {} }
+function esc(s){ return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+function fmt(s){ return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>"); }
+const ROMAN = ["I","II","III","IV","V","VI","VII","VIII"];
+
+const content = document.getElementById("content");
+const toc = document.getElementById("toc");
+const secMeta = [];
+let num = 0, tocHtml = "";
+
+DATA.forEach((p, pi) => {
+  const part = document.createElement("section");
+  part.className = "part";
+  let html = `<header class="part-head"><h2><span class="pn">${ROMAN[pi]}</span>${esc(p.part)}</h2><p>${esc(p.intro)}</p></header>`;
+  tocHtml += `<h3 data-part="${pi}">${ROMAN[pi]}. ${esc(p.part)}</h3><ol>`;
+  p.sections.forEach(s => {
+    num++;
+    let body = "";
+    const ids = [];
+    s.g.forEach((g, gi) => {
+      body += `<div class="grp"><h4>${fmt(g[0])}</h4><ul>`;
+      g[1].forEach((it, ii) => {
+        const id = `${s.id}.${gi}.${ii}`;
+        ids.push(id);
+        const hay = (it + " " + g[0] + " " + s.t).toLowerCase();
+        body += `<li data-id="${id}" data-hay="${esc(hay)}"${state[id] ? ' class="done"' : ""}><label><input type="checkbox" data-id="${id}"${state[id] ? " checked" : ""}><span>${fmt(it)}</span></label></li>`;
+      });
+      body += `</ul></div>`;
+    });
+    const res = `<div class="res"><h4>Resources</h4><ul>` + s.r.map(r =>
+      `<li>${r[1] ? `<a href="${esc(r[1])}" target="_blank" rel="noopener">${esc(r[0])}</a>` : `<cite>${esc(r[0])}</cite>`}${r[2] ? ` <span class="rn">${fmt(r[2])}</span>` : ""}</li>`
+    ).join("") + `</ul></div>`;
+    html += `<details class="sec" id="${s.id}" data-lv="${s.lv.join(" ")}"><summary><span class="sn">${num}</span><span class="st">${esc(s.t)}</span><span class="sc" data-sc="${s.id}"></span><span class="sl">${s.lv.join(" to ")}</span></summary><div class="sec-body"><p class="sd">${fmt(s.d)}</p>${body}${res}</div></details>`;
+    tocHtml += `<li data-toc="${s.id}"><a href="#${s.id}" data-open="${s.id}"><span>${num}. ${esc(s.t)}</span><small data-tc="${s.id}"></small></a></li>`;
+    secMeta.push({ id: s.id, lv: s.lv, ids, part: pi });
+  });
+  tocHtml += `</ol>`;
+  part.innerHTML = html;
+  part.dataset.part = pi;
+  content.appendChild(part);
+});
+toc.innerHTML = tocHtml;
+
+function updateCounts(){
+  let total = 0, done = 0;
+  secMeta.forEach(m => {
+    const d = m.ids.filter(id => state[id]).length;
+    total += m.ids.length; done += d;
+    const txt = `${d}/${m.ids.length}`;
+    const sc = document.querySelector(`[data-sc="${m.id}"]`);
+    const tc = document.querySelector(`[data-tc="${m.id}"]`);
+    const full = d === m.ids.length;
+    sc.textContent = txt; sc.classList.toggle("full", full);
+    tc.textContent = txt; tc.parentElement.classList.toggle("full", full);
+  });
+  const pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById("tot").textContent = total;
+  document.getElementById("dn").textContent = done;
+  document.getElementById("pct").textContent = `# ${pct}% complete`;
+  document.getElementById("barfill").style.width = pct + "%";
+}
+
+content.addEventListener("change", e => {
+  const cb = e.target;
+  if (!cb.matches('input[type="checkbox"][data-id]')) return;
+  const id = cb.dataset.id;
+  if (cb.checked) state[id] = 1; else delete state[id];
+  cb.closest("li").classList.toggle("done", cb.checked);
+  save(); updateCounts();
+  if (hideDone.checked) applyFilters();
+});
+
+toc.addEventListener("click", e => {
+  const a = e.target.closest("a[data-open]");
+  if (a) { const d = document.getElementById(a.dataset.open); if (d) d.open = true; }
+});
+
+const q = document.getElementById("q");
+const hideDone = document.getElementById("hideDone");
+const empty = document.getElementById("empty");
+let level = "All";
+
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  level = b.dataset.lv;
+  document.querySelectorAll(".seg button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  applyFilters();
+}));
+
+function applyFilters(){
+  const query = q.value.trim().toLowerCase();
+  let anyVisible = false;
+  secMeta.forEach(m => {
+    const sec = document.getElementById(m.id);
+    const levelOk = level === "All" || m.lv.includes(level);
+    let visibleCount = 0;
+    sec.querySelectorAll(".grp").forEach(g => {
+      let gv = 0;
+      g.querySelectorAll("li").forEach(li => {
+        const show = levelOk && (!query || li.dataset.hay.includes(query)) && !(hideDone.checked && state[li.dataset.id]);
+        li.classList.toggle("hidden", !show);
+        if (show) gv++;
+      });
+      g.classList.toggle("hidden", gv === 0);
+      visibleCount += gv;
+    });
+    const secShow = visibleCount > 0;
+    sec.classList.toggle("hidden", !secShow);
+    document.querySelector(`[data-toc="${m.id}"]`).classList.toggle("hidden", !secShow);
+    if (query && secShow) sec.open = true;
+    if (secShow) anyVisible = true;
+  });
+  document.querySelectorAll(".part").forEach(p => {
+    const vis = p.querySelector("details.sec:not(.hidden)");
+    p.classList.toggle("hidden", !vis);
+  });
+  document.querySelectorAll("nav.toc h3").forEach(h => {
+    const ol = h.nextElementSibling;
+    h.style.display = ol.querySelector("li:not(.hidden)") ? "" : "none";
+  });
+  if (!anyVisible) {
+    empty.textContent = query
+      ? `No topics match "${q.value.trim()}" at this level. Try a shorter word, switch the level to All, or clear the search.`
+      : "Every topic at this level is finished. Turn off Hide finished to see them again.";
+  }
+  empty.classList.toggle("show", !anyVisible);
+}
+
+let t;
+q.addEventListener("input", () => { clearTimeout(t); t = setTimeout(applyFilters, 120); });
+hideDone.addEventListener("change", applyFilters);
+document.getElementById("expand").addEventListener("click", () => document.querySelectorAll("details.sec:not(.hidden)").forEach(d => d.open = true));
+document.getElementById("collapse").addEventListener("click", () => document.querySelectorAll("details.sec").forEach(d => d.open = false));
+document.addEventListener("keydown", e => {
+  if (e.key === "/" && document.activeElement !== q && !/input|textarea/i.test(document.activeElement.tagName)) { e.preventDefault(); q.focus(); }
+});
+
+if (location.hash) { const d = document.getElementById(location.hash.slice(1)); if (d && d.tagName === "DETAILS") d.open = true; }
+updateCounts();
+</script>
+</body>
+</html>

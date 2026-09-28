@@ -51,6 +51,17 @@
     margin-bottom: 12px;
   }
   .hero-sub { font-size: 12px; color: var(--muted); letter-spacing: 1px; }
+  .hero-link {
+    position: absolute; top: 20px; right: 24px;
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px; border-radius: 6px;
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--accent); text-decoration: none;
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+    transition: all 0.2s;
+  }
+  .hero-link:hover { border-color: var(--accent); background: rgba(0,212,255,0.08); }
+  @media (max-width: 640px) { .hero { padding-top: 72px; } .hero-link { top: 16px; right: 16px; } }
   .stats-bar { display: flex; justify-content: center; gap: 40px; margin-top: 28px; flex-wrap: wrap; }
   .stat { text-align: center; }
   .stat-num { font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; color: var(--accent); }
@@ -749,6 +760,7 @@ footer {
 <body>
 
 <div class="hero">
+  <a class="hero-link" href="python-end-to-end-topic-map.html" title="Python, end to end: complete topic map">🐍 Python Topic Map →</a>
   <div class="hero-label">// architect-level curriculum · 24 domains · 371 topics</div>
   <h1>Data Engineering<br>Complete Mastery Landscape</h1>
   <div class="hero-sub">All Domains · All Topics · All Resources · Track Your Progress</div>
