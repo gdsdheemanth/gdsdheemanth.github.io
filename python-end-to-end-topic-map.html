@@ -48690,6 +48690,7 @@ This section teaches you to create your own kinds of objects. It assumes you hav
 - Write classes with `__init__`, instance methods, class methods, static methods and properties, and explain what `self` really is.
 - Predict where Python finds an attribute: on the instance, on the class, or on a base class in method resolution order.
 - Use inheritance and `super()` correctly, including multiple inheritance, mixins and the diamond.
+- Explain polymorphism and the forms it takes in Python (overriding, duck typing, operator overloading, `singledispatch`), and why Python has no method overloading.
 - Describe what an object must be able to do with duck typing, abstract base classes and Protocols, and pick the right one.
 - Replace hand-written boilerplate with dataclasses, named tuples and enums, and know when attrs or Pydantic is the better tool.
 - Design with composition, delegation and a light touch of SOLID instead of deep class trees.
@@ -49816,9 +49817,183 @@ No. Make the timeout a class attribute or constructor parameter and set it in th
 
 ## Abstractions and interfaces
 
-So far the focus was on how classes are built. This group is about **what an object promises to do** and how code can rely on that. Python's default answer is **duck typing**: if an object has a `read()` method, you can read from it, whatever its class. Python cares about what an object *can do*, not what it *is*.
+So far the focus was on how classes are built. This group is about **what an object promises to do** and how code can rely on that. Python's default answer is **duck typing**: if an object has a `read()` method, you can read from it, whatever its class. Python cares about what an object *can do*, not what it *is*. Being able to treat different kinds of objects through one interface is called **polymorphism**, and the group starts there.
 
 When you want the promise written down, there are two tools. An **abstract base class** (ABC) is nominal: classes must inherit from it (or be registered), and Python enforces it at run time. A **Protocol** is structural: any class with the right methods matches, and a type checker verifies it before the program runs. `collections.abc` combines both ideas for the built-in container protocols.
+
+### Polymorphism: one interface, many implementations
+
+::: plain
+Polymorphism means "many forms". You write code once against an idea, such as "a shape that has an area" or "something that can speak", and it works with many different kinds of objects, each doing the job in its own way. Think of the power button on a universal remote: you press the same button, and the TV, the soundbar and the projector each switch on in their own way. The code doing the pressing never needs to know which device it is talking to.
+:::
+
+Here is the classic example. Every shape can report its area, but each kind of shape computes it differently:
+
+```python
+import math
+
+class Shape:
+    def area(self):
+        raise NotImplementedError
+
+    def describe(self):
+        return f"{type(self).__name__} with area {self.area():.2f}"
+
+class Circle(Shape):
+    def __init__(self, r):
+        self.r = r
+
+    def area(self):
+        return math.pi * self.r ** 2
+
+class Rect(Shape):
+    def __init__(self, w, h):
+        self.w, self.h = w, h
+
+    def area(self):
+        return self.w * self.h
+
+shapes = [Circle(1), Rect(2, 3)]
+for s in shapes:
+    print(s.describe())
+# Circle with area 3.14
+# Rect with area 6.00
+print(sum(s.area() for s in shapes))   # 9.141592653589793
+```
+
+Look at the loop: it calls `s.describe()` and `s.area()` without ever asking what `s` is. Python decides which `area` to run **at the moment of the call**, by looking at the object's class. That is the heart of polymorphism: the *caller* stays the same, and the *object* chooses the behaviour. Notice also that `describe` is written once, in `Shape`, yet it calls the right `area` for each subclass, because `self.area()` is looked up on the actual object.
+
+The payoff is that adding a new shape needs no change to the loop or to `describe`. You write a `Triangle` class with its own `area`, put it in the list, and everything works.
+
+**Polymorphism in Python takes several forms.** Most of them you have already met or will meet soon, under other names:
+
+| Form | How Python does it | Covered in detail in |
+|---|---|---|
+| Overriding (subtype polymorphism) | a subclass redefines a method of its parent | Method overriding and extension |
+| Duck typing | any object with the right method works, whatever its class | Duck typing, EAFP vs LBYL (next topic) |
+| Operator overloading | dunder methods such as `__add__`, `__len__`, `__eq__` | The Python data model |
+| Dispatch on argument type | `functools.singledispatch` and `singledispatchmethod` | Functions in depth |
+| Formal interfaces | abstract base classes and Protocols | the rest of this group |
+| Generics (parametric polymorphism) | type parameters such as `list[T]` | Type hints and static typing |
+
+**Duck typing** is the form Python uses most, and it needs no inheritance at all:
+
+```python
+class Duck:
+    def speak(self):
+        return "Quack"
+
+class Robot:
+    def speak(self):
+        return "Beep"
+
+def introduce(thing):
+    return f"It says {thing.speak()}"
+
+print(introduce(Duck()))    # It says Quack
+print(introduce(Robot()))   # It says Beep
+```
+
+`Duck` and `Robot` share no parent class; `introduce` only needs a `speak` method.
+
+**The built-ins are polymorphic too.** `len` works on strings, lists and dicts, and `+` adds numbers, joins strings and concatenates lists. Each type supplies its own `__len__` or `__add__`, and you can give your own classes the same ability:
+
+```python
+print(len("abc"), len([1, 2]), len({"a": 1}))   # 3 2 1
+print(1 + 2, "a" + "b", [1] + [2])              # 3 ab [1, 2]
+
+class Vector:
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+
+    def __repr__(self):
+        return f"Vector({self.x}, {self.y})"
+
+print(Vector(1, 2) + Vector(3, 4))   # Vector(4, 6)
+```
+
+**Python has no method overloading.** In Java or C++ you can define several methods with the same name and different parameter lists, and the compiler picks one. In Python a class body is ordinary code, so a second `def` with the same name simply replaces the first:
+
+```python
+class Printer:
+    def show(self, x):
+        return f"one: {x}"
+
+    def show(self, x, y):          # replaces the first show
+        return f"two: {x}, {y}"
+
+p = Printer()
+print(p.show(1, 2))   # two: 1, 2
+try:
+    p.show(1)
+except TypeError as e:
+    print(e)          # Printer.show() missing 1 required positional argument: 'y'
+```
+
+You get the same effect in other ways: default arguments (`def show(self, x, y=None)`), `*args`, or, when the behaviour should depend on the **type** of an argument, `functools.singledispatch`:
+
+```python
+from functools import singledispatch
+
+@singledispatch
+def render(value):
+    return f"value: {value!r}"
+
+@render.register
+def _(value: int):
+    return f"int: {value:,}"
+
+@render.register
+def _(value: list):
+    return "list: " + ", ".join(render(v) for v in value)
+
+print(render(1234567))    # int: 1,234,567
+print(render("hi"))       # value: 'hi'
+print(render([1, "x"]))   # list: int: 1, value: 'x'
+```
+
+> **Pitfall:** A chain like `if isinstance(shape, Circle): ... elif isinstance(shape, Rect): ...` is usually polymorphism waiting to happen. Every new shape forces you to edit that function, and it is easy to miss one. Put the behaviour in the classes as a method, and the chain disappears.
+
+> **Tip:** An overriding method should keep the parent's promise: accept the same arguments and return the same kind of result. Code written for `Shape` must keep working when it receives a `Circle`. This is the Liskov substitution principle, covered in SOLID principles applied to Python.
+
+::: deeper
+**How the call is dispatched.** For `s.area()`, Python searches `type(s).__mro__` for the name `area`, finds the function on the first class that defines it, binds it to `s` (the descriptor protocol turns it into a bound method) and calls it. This happens on every call, which is why it is called *late binding* or *dynamic dispatch*. Replacing a method on the class at run time changes the behaviour of every existing instance. See Bound methods and `self`, and MRO and C3 linearization.
+
+**Operators dispatch in two steps.** `a + b` first tries `a.__add__(b)`. If that returns `NotImplemented` (the special value, not an exception), Python tries the reflected `b.__radd__(a)`. If the right operand is an instance of a subclass of the left operand's type and overrides the reflected method, it is tried first. That is how `2 * Vector(...)` can work when you define `__rmul__`.
+
+**More dispatch tools.**
+
+- `functools.singledispatchmethod` does the same for methods, dispatching on the first argument after `self`.
+- `singledispatch` looks at one argument only. For dispatch on several arguments' types (multiple dispatch), third-party libraries such as `plum` exist; in practice `match` with class patterns often reads better.
+- `typing.overload` declares several signatures **for the type checker only**. At run time there is still exactly one implementation, written after the `@overload` stubs.
+
+**Parametric polymorphism.** A generic function works the same way for every element type, and the type checker tracks which one you used:
+
+```python
+def first[T](items: list[T]) -> T:
+    return items[0]
+
+print(first([3, 1, 2]), first(["a", "b"]))   # 3 a
+```
+
+> **Interview:** "What is polymorphism and how does Python support it?" One interface, many implementations: the caller uses an operation and the object decides how to perform it. Python supports it through overriding, duck typing (the most common form, no inheritance needed), operator overloading with dunder methods, `functools.singledispatch`, ABCs and Protocols for explicit interfaces, and generics for type-level polymorphism.
+
+> **Interview:** "Does Python support method overloading?" No. A later `def` with the same name replaces the earlier one. Use default arguments, `*args`/`**kwargs`, `singledispatch` for type-based behaviour, and `typing.overload` when you only need several signatures for the type checker.
+:::
+
+::: check
+?? What does polymorphism mean, in one sentence?
+One interface, many implementations: the same call (such as `shape.area()`) works on different kinds of objects, and each object performs it in its own way.
+
+?? A class defines `def show(self, x)` and then `def show(self, x, y)`. What happens when you call `obj.show(1)`?
+It raises `TypeError`, because the second `def` replaced the first: Python has no method overloading. Use a default argument or `singledispatch` instead.
+
+?? Why is a long chain of `isinstance` checks often a sign that polymorphism is missing?
+Each new type forces an edit to that function. Moving the behaviour into a method on each class lets new types plug in without changing the calling code.
+:::
 
 ### Duck typing, EAFP vs LBYL
 
@@ -50743,6 +50918,7 @@ Code written for rectangles expects setting the width to leave the height alone;
 | Alternative constructor | `@classmethod` then `def from_str(cls, s): return cls(...)` |
 | Helper with no `self` | `@staticmethod` |
 | Shared vs per-instance data | class attribute in the body, mutable state in `__init__` |
+| Same call, different behaviour per type | override a method in each subclass, or `@functools.singledispatch` |
 | Inspect an object's attributes | `vars(obj)` |
 | Save memory, block typos | `__slots__ = ("x", "y")` |
 | Mark something internal | `_name` (convention), `__name` only to avoid subclass clashes |
@@ -85223,6 +85399,7 @@ PARTS.push({n:"The language", k:"spark", i:"Syntax, the object model and every f
    ["Method overriding and extension","A subclass replaces a method by redefining it, or extends it by calling `super().method(...)` before or after its own logic. Avoid overriding just to change data that a class attribute or constructor parameter could configure."]],
    [["The Python 2.3 Method Resolution Order", PYD+"howto/mro.html","C3 explained"],["Python's super() considered super!", "https://rhettinger.wordpress.com/2011/05/26/super-considered-super/","Raymond Hettinger"]], ["mro"]],
   ["Abstractions and interfaces", [
+   ["Polymorphism: one interface, many implementations","The same call works on different kinds of objects, and each object performs it its own way. Python gets it from overriding, duck typing, operator overloading with dunder methods, `functools.singledispatch`, and ABCs and Protocols. Python has no method overloading: a second `def` with the same name replaces the first."],
    ["Duck typing, EAFP vs LBYL","If it has the methods you need, use it, without checking its type. EAFP (\"easier to ask forgiveness than permission\": `try`/`except`) is idiomatic and race-free; LBYL (\"look before you leap\": check first) is clearer when failure is common or checks are cheap."],
    ["`abc.ABC` and `@abstractmethod`","An abstract base class with `@abstractmethod` methods cannot be instantiated until a subclass implements them all, so missing methods fail at construction, not deep inside a call."],
    ["Virtual subclasses with `register` and `__subclasshook__`","`MyABC.register(SomeClass)` makes `isinstance` succeed without inheritance; `__subclasshook__` can accept any class with the right methods. This is how `collections.abc.Iterable` recognizes classes that only define `__iter__`."],
