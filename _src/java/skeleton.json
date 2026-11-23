@@ -1,0 +1,1855 @@
+[
+ {
+  "part": [
+   "Start here",
+   "spark",
+   "The 24-week plan, the combined project, finding roles and telling your switch story."
+  ],
+  "id": "start",
+  "t": "The plan: 24-week roadmap",
+  "d": "How to use this guide, the week-by-week roadmap, a daily routine and version notes.",
+  "groups": []
+ },
+ {
+  "part": [
+   "Start here",
+   "spark",
+   "The 24-week plan, the combined project, finding roles and telling your switch story."
+  ],
+  "id": "projects",
+  "t": "The combined project: ShopSphere",
+  "d": "One portfolio project that uses every skill in the guide, built in phases.",
+  "groups": []
+ },
+ {
+  "part": [
+   "Start here",
+   "spark",
+   "The 24-week plan, the combined project, finding roles and telling your switch story."
+  ],
+  "id": "jobs",
+  "t": "Roles and applying",
+  "d": "Job titles, where to target, resume and LinkedIn setup, referrals and offers.",
+  "groups": []
+ },
+ {
+  "part": [
+   "Start here",
+   "spark",
+   "The 24-week plan, the combined project, finding roles and telling your switch story."
+  ],
+  "id": "story",
+  "t": "The switch story",
+  "d": "How to explain your career switch in interviews, with answers to the hard questions.",
+  "groups": []
+ },
+ {
+  "part": [
+   "Core Java in depth",
+   "stream",
+   "The foundation, taught in full depth: language basics, OOP, exceptions, generics, collections, functional Java, I/O and build tools."
+  ],
+  "id": "corebasics",
+  "t": "Core Java 1: language basics and OOP",
+  "d": "The JVM, types, strings and control flow, then classes, the four pillars of OOP, and the Object contract.",
+  "groups": [
+   {
+    "t": "Setup & language basics",
+    "topics": [
+     {
+      "t": "JDK vs JRE vs JVM; install JDK 21 (Eclipse Temurin), IntelliJ IDEA Community",
+      "sub": "How compilation works: .java → bytecode → JVM"
+     },
+     {
+      "t": "Primitive types, wrapper classes, autoboxing, type casting",
+      "sub": "int vs Integer, Integer cache (-128 to 127)"
+     },
+     {
+      "t": "Operators, control flow, loops, switch expressions",
+      "sub": ""
+     },
+     {
+      "t": "Arrays (1D/2D), Arrays utility class",
+      "sub": ""
+     },
+     {
+      "t": "Strings: immutability, string pool, StringBuilder vs StringBuffer, common methods, text blocks",
+      "sub": ""
+     },
+     {
+      "t": "Packages, imports, classpath, the main method, var (local type inference)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Object-Oriented Programming",
+    "topics": [
+     {
+      "t": "Classes, objects, constructors, constructor chaining, this & super",
+      "sub": ""
+     },
+     {
+      "t": "Encapsulation, inheritance, polymorphism, abstraction (the 4 pillars)",
+      "sub": "With real examples, not just definitions"
+     },
+     {
+      "t": "Method overloading vs overriding, dynamic dispatch, covariant return types",
+      "sub": ""
+     },
+     {
+      "t": "Abstract classes vs interfaces (default, static, private methods)",
+      "sub": ""
+     },
+     {
+      "t": "static and final keywords; static blocks; access modifiers",
+      "sub": ""
+     },
+     {
+      "t": "Inner, static nested, local and anonymous classes",
+      "sub": ""
+     },
+     {
+      "t": "Object class methods: equals(), hashCode() contract, toString(), clone()",
+      "sub": "Critical interview topic"
+     },
+     {
+      "t": "Immutable classes; composition vs inheritance",
+      "sub": ""
+     },
+     {
+      "t": "Enums (with fields & methods), records, sealed classes",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Core Java in depth",
+   "stream",
+   "The foundation, taught in full depth: language basics, OOP, exceptions, generics, collections, functional Java, I/O and build tools."
+  ],
+  "id": "corecoll",
+  "t": "Core Java 2: exceptions, generics and collections",
+  "d": "Handling errors properly, writing type-safe generic code, and the collections every Java interview asks about.",
+  "groups": [
+   {
+    "t": "Exception handling",
+    "topics": [
+     {
+      "t": "Exception hierarchy: Throwable, Error, checked vs unchecked",
+      "sub": ""
+     },
+     {
+      "t": "try-catch-finally, multi-catch, try-with-resources, AutoCloseable",
+      "sub": ""
+     },
+     {
+      "t": "throw vs throws, custom exceptions, exception chaining",
+      "sub": ""
+     },
+     {
+      "t": "Best practices: don't swallow exceptions, use specific exceptions, log properly",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Generics",
+    "topics": [
+     {
+      "t": "Generic classes & methods, bounded types (<T extends Number>)",
+      "sub": ""
+     },
+     {
+      "t": "Wildcards: ?, ? extends, ? super (PECS rule)",
+      "sub": ""
+     },
+     {
+      "t": "Type erasure and its limitations",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Collections Framework",
+    "topics": [
+     {
+      "t": "Collection hierarchy: List, Set, Queue, Deque, Map",
+      "sub": ""
+     },
+     {
+      "t": "ArrayList vs LinkedList (internals & Big-O)",
+      "sub": ""
+     },
+     {
+      "t": "HashSet, LinkedHashSet, TreeSet",
+      "sub": ""
+     },
+     {
+      "t": "HashMap internals: hashing, buckets, collisions, treeification (Java 8+), load factor, resizing",
+      "sub": "Asked in almost every Java interview"
+     },
+     {
+      "t": "LinkedHashMap (LRU cache), TreeMap, EnumMap, WeakHashMap, IdentityHashMap",
+      "sub": ""
+     },
+     {
+      "t": "PriorityQueue (heap), ArrayDeque (stack/queue)",
+      "sub": ""
+     },
+     {
+      "t": "Comparable vs Comparator; Comparator.comparing().thenComparing()",
+      "sub": ""
+     },
+     {
+      "t": "Iterator, ListIterator; fail-fast vs fail-safe iterators",
+      "sub": ""
+     },
+     {
+      "t": "Collections & Arrays utility methods; immutable collections (List.of, Map.of)",
+      "sub": ""
+     },
+     {
+      "t": "Sequenced collections (Java 21): getFirst(), getLast(), reversed()",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Core Java in depth",
+   "stream",
+   "The foundation, taught in full depth: language basics, OOP, exceptions, generics, collections, functional Java, I/O and build tools."
+  ],
+  "id": "corefunc",
+  "t": "Core Java 3: functional Java, I/O and build tools",
+  "d": "Lambdas, streams, collectors, Optional and dates, then files, JSON, money with BigDecimal, Maven and Gradle.",
+  "groups": [
+   {
+    "t": "Functional Java (Java 8+)",
+    "topics": [
+     {
+      "t": "Lambda expressions & functional interfaces (Function, Predicate, Consumer, Supplier, BiFunction)",
+      "sub": ""
+     },
+     {
+      "t": "Method references",
+      "sub": ""
+     },
+     {
+      "t": "Streams API: map, filter, reduce, collect, sorted, distinct, limit, flatMap",
+      "sub": ""
+     },
+     {
+      "t": "Collectors: groupingBy, partitioningBy, toMap, joining, counting, summingInt",
+      "sub": "Practise a lot: common live-coding questions"
+     },
+     {
+      "t": "Lazy evaluation, intermediate vs terminal operations, parallel streams & their pitfalls",
+      "sub": ""
+     },
+     {
+      "t": "Optional: correct usage and anti-patterns",
+      "sub": ""
+     },
+     {
+      "t": "Date/Time API: LocalDate, LocalDateTime, Instant, ZonedDateTime, Duration, DateTimeFormatter",
+      "sub": "Time zones matter in real apps"
+     }
+    ]
+   },
+   {
+    "t": "I/O, JSON & build tools",
+    "topics": [
+     {
+      "t": "File I/O, NIO.2 (Path, Files), reading CSV files",
+      "sub": ""
+     },
+     {
+      "t": "Serialization basics; JSON with Jackson (ObjectMapper, annotations)",
+      "sub": ""
+     },
+     {
+      "t": "BigDecimal for money (never double!), rounding modes",
+      "sub": "Needed for prices and any exact decimal maths"
+     },
+     {
+      "t": "Maven: pom.xml, lifecycle, dependencies & scopes, plugins, multi-module",
+      "sub": ""
+     },
+     {
+      "t": "Gradle basics (read and modify a build.gradle)",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Back end",
+   "kafka",
+   "Advanced Java, SQL, Spring Boot, microservices and Kafka."
+  ],
+  "id": "advjava",
+  "t": "Advanced Java",
+  "d": "What separates a Java developer from someone who knows Java syntax. Concurrency and JVM questions come up in most Java interviews.",
+  "groups": [
+   {
+    "t": "Multithreading & concurrency",
+    "topics": [
+     {
+      "t": "Process vs thread; Thread, Runnable, Callable; thread lifecycle & states",
+      "sub": ""
+     },
+     {
+      "t": "synchronized (methods/blocks), intrinsic locks, volatile, happens-before",
+      "sub": ""
+     },
+     {
+      "t": "Java Memory Model, visibility & atomicity problems, race conditions",
+      "sub": ""
+     },
+     {
+      "t": "wait/notify, producer-consumer problem",
+      "sub": ""
+     },
+     {
+      "t": "Deadlock, livelock, starvation: causes and prevention",
+      "sub": ""
+     },
+     {
+      "t": "Locks: ReentrantLock, ReadWriteLock, StampedLock, Condition",
+      "sub": ""
+     },
+     {
+      "t": "Atomic classes (AtomicInteger, LongAdder), CAS",
+      "sub": ""
+     },
+     {
+      "t": "ExecutorService, thread pools (fixed, cached, scheduled), ThreadPoolExecutor parameters",
+      "sub": ""
+     },
+     {
+      "t": "Future, CompletableFuture (thenApply, thenCompose, allOf, exception handling)",
+      "sub": ""
+     },
+     {
+      "t": "Concurrent collections: ConcurrentHashMap, CopyOnWriteArrayList, BlockingQueue",
+      "sub": ""
+     },
+     {
+      "t": "Synchronizers: CountDownLatch, CyclicBarrier, Semaphore, Phaser",
+      "sub": ""
+     },
+     {
+      "t": "ForkJoinPool & work stealing; ThreadLocal",
+      "sub": ""
+     },
+     {
+      "t": "Virtual threads (Java 21): what they are, when to use, pinning",
+      "sub": "Hot topic in 2025–26 interviews"
+     },
+     {
+      "t": "Structured concurrency & scoped values (newer Java)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "JVM internals & performance",
+    "topics": [
+     {
+      "t": "Class loading: bootstrap, platform, application class loaders; delegation model",
+      "sub": ""
+     },
+     {
+      "t": "JVM memory: heap (young/old), stack, metaspace, code cache",
+      "sub": ""
+     },
+     {
+      "t": "Garbage collection: mark-sweep, generational GC, G1, ZGC; GC roots",
+      "sub": ""
+     },
+     {
+      "t": "JIT compilation, bytecode basics (javap)",
+      "sub": ""
+     },
+     {
+      "t": "Memory leaks in Java, OutOfMemoryError & StackOverflowError causes",
+      "sub": ""
+     },
+     {
+      "t": "Profiling & diagnosis: heap dumps, thread dumps, VisualVM, JFR, JDK Mission Control",
+      "sub": ""
+     },
+     {
+      "t": "Common JVM flags: -Xms, -Xmx, -XX:+UseG1GC",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Modern Java (17 → 21 → 25)",
+    "topics": [
+     {
+      "t": "Records, sealed classes, pattern matching for instanceof",
+      "sub": ""
+     },
+     {
+      "t": "Switch expressions & pattern matching for switch, record patterns",
+      "sub": ""
+     },
+     {
+      "t": "Text blocks, enhanced NullPointerException messages",
+      "sub": ""
+     },
+     {
+      "t": "Java 21: virtual threads, sequenced collections, record patterns",
+      "sub": ""
+     },
+     {
+      "t": "Java 25: compact source files & instance main methods, flexible constructor bodies, scoped values, module imports",
+      "sub": ""
+     },
+     {
+      "t": "Java modules (JPMS): awareness level",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Reflection, annotations & JDBC",
+    "topics": [
+     {
+      "t": "Reflection API basics, how frameworks like Spring use it",
+      "sub": ""
+     },
+     {
+      "t": "Built-in & custom annotations, retention policies",
+      "sub": ""
+     },
+     {
+      "t": "Dynamic proxies (JDK proxy vs CGLIB): foundation of Spring AOP",
+      "sub": ""
+     },
+     {
+      "t": "JDBC: DriverManager, Connection, PreparedStatement, ResultSet, batch updates",
+      "sub": ""
+     },
+     {
+      "t": "Transactions in JDBC, connection pooling (HikariCP), SQL injection prevention",
+      "sub": ""
+     },
+     {
+      "t": "Logging: SLF4J + Logback, log levels, structured logging, MDC",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Back end",
+   "kafka",
+   "Advanced Java, SQL, Spring Boot, microservices and Kafka."
+  ],
+  "id": "sql",
+  "t": "SQL & Databases",
+  "d": "You already use SQL at work. Make it excellent: SQL rounds are common and you can stand out here.",
+  "groups": [
+   {
+    "t": "Relational fundamentals",
+    "topics": [
+     {
+      "t": "Tables, primary/foreign/composite/surrogate keys, constraints (UNIQUE, NOT NULL, CHECK)",
+      "sub": ""
+     },
+     {
+      "t": "Normalization (1NF, 2NF, 3NF, BCNF) and when to denormalize",
+      "sub": ""
+     },
+     {
+      "t": "ER modeling: one-to-one, one-to-many, many-to-many (join tables)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Querying",
+    "topics": [
+     {
+      "t": "SELECT, WHERE, ORDER BY, LIMIT/OFFSET, DISTINCT, LIKE, IN, BETWEEN",
+      "sub": ""
+     },
+     {
+      "t": "Aggregates & GROUP BY, HAVING vs WHERE",
+      "sub": ""
+     },
+     {
+      "t": "JOINs: inner, left, right, full outer, self, cross",
+      "sub": "Classic: find rows in A that are missing in B with LEFT JOIN … IS NULL"
+     },
+     {
+      "t": "Subqueries, correlated subqueries, EXISTS vs IN",
+      "sub": ""
+     },
+     {
+      "t": "CTEs (WITH), recursive CTEs (hierarchies)",
+      "sub": ""
+     },
+     {
+      "t": "Window functions: ROW_NUMBER, RANK, DENSE_RANK, LAG/LEAD, running totals, PARTITION BY",
+      "sub": "Very common in interviews"
+     },
+     {
+      "t": "CASE expressions, NULL handling (COALESCE, NULLIF), set operators (UNION, INTERSECT, EXCEPT)",
+      "sub": ""
+     },
+     {
+      "t": "String & date functions",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "DDL, DML & programmability",
+    "topics": [
+     {
+      "t": "CREATE/ALTER/DROP; INSERT/UPDATE/DELETE; DELETE vs TRUNCATE vs DROP",
+      "sub": ""
+     },
+     {
+      "t": "UPSERT (INSERT … ON CONFLICT / MERGE)",
+      "sub": ""
+     },
+     {
+      "t": "Views, materialized views, stored procedures, functions, triggers",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Performance",
+    "topics": [
+     {
+      "t": "Indexes: B-tree, composite, covering, unique; when an index is not used",
+      "sub": ""
+     },
+     {
+      "t": "Clustered vs non-clustered indexes",
+      "sub": ""
+     },
+     {
+      "t": "Reading EXPLAIN / EXPLAIN ANALYZE query plans",
+      "sub": ""
+     },
+     {
+      "t": "Query optimization habits; keyset vs offset pagination; partitioning large tables",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Transactions & concurrency",
+    "topics": [
+     {
+      "t": "ACID properties",
+      "sub": ""
+     },
+     {
+      "t": "Isolation levels: read uncommitted, read committed, repeatable read, serializable",
+      "sub": ""
+     },
+     {
+      "t": "Anomalies: dirty read, non-repeatable read, phantom read, lost update",
+      "sub": ""
+     },
+     {
+      "t": "Locking: row/table locks, optimistic vs pessimistic, deadlocks; MVCC",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Beyond relational",
+    "topics": [
+     {
+      "t": "PostgreSQL (learn this) and MySQL; awareness of Oracle (common in large enterprises)",
+      "sub": ""
+     },
+     {
+      "t": "NoSQL types: document (MongoDB), key-value (Redis), wide-column (Cassandra)",
+      "sub": ""
+     },
+     {
+      "t": "Redis for caching, sessions, rate limiting",
+      "sub": ""
+     },
+     {
+      "t": "CAP theorem, SQL vs NoSQL tradeoffs",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Back end",
+   "kafka",
+   "Advanced Java, SQL, Spring Boot, microservices and Kafka."
+  ],
+  "id": "spring",
+  "t": "Spring & Spring Boot",
+  "d": "The heart of the backend. Learn how Spring works underneath (IoC, proxies, auto-configuration), not only the annotations.",
+  "groups": [
+   {
+    "t": "Spring Core",
+    "topics": [
+     {
+      "t": "Inversion of Control & Dependency Injection (constructor vs setter vs field injection)",
+      "sub": ""
+     },
+     {
+      "t": "ApplicationContext, BeanFactory, bean definition",
+      "sub": ""
+     },
+     {
+      "t": "Stereotypes: @Component, @Service, @Repository, @Controller; @Configuration + @Bean",
+      "sub": ""
+     },
+     {
+      "t": "@Autowired, @Qualifier, @Primary; resolving multiple beans",
+      "sub": ""
+     },
+     {
+      "t": "Bean scopes (singleton, prototype, request, session) and bean lifecycle (@PostConstruct, @PreDestroy)",
+      "sub": ""
+     },
+     {
+      "t": "Profiles, @Value, @ConfigurationProperties, externalized configuration",
+      "sub": ""
+     },
+     {
+      "t": "Spring AOP: aspects, advice types, pointcuts, how proxies work",
+      "sub": ""
+     },
+     {
+      "t": "Circular dependencies & how to avoid them",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Spring Boot",
+    "topics": [
+     {
+      "t": "Spring Initializr, starters, project structure",
+      "sub": ""
+     },
+     {
+      "t": "How auto-configuration works (@Conditional…, @SpringBootApplication breakdown)",
+      "sub": ""
+     },
+     {
+      "t": "application.yml/properties, profiles, environment-specific config",
+      "sub": ""
+     },
+     {
+      "t": "Embedded server, executable JAR, DevTools",
+      "sub": ""
+     },
+     {
+      "t": "Actuator: health, metrics, info endpoints",
+      "sub": ""
+     },
+     {
+      "t": "Logging configuration",
+      "sub": ""
+     },
+     {
+      "t": "Boot 2 → 3 → 4 changes: javax → jakarta, Java 17 baseline, observability, native images (awareness)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "REST API development",
+    "topics": [
+     {
+      "t": "@RestController, @RequestMapping/@GetMapping…, @PathVariable, @RequestParam, @RequestBody",
+      "sub": ""
+     },
+     {
+      "t": "ResponseEntity & proper HTTP status codes",
+      "sub": ""
+     },
+     {
+      "t": "DTOs vs entities; mapping with MapStruct",
+      "sub": ""
+     },
+     {
+      "t": "Validation with Jakarta Bean Validation (@Valid, @NotNull, custom validators)",
+      "sub": ""
+     },
+     {
+      "t": "Global exception handling: @RestControllerAdvice, ProblemDetail (RFC 9457)",
+      "sub": ""
+     },
+     {
+      "t": "Pagination, sorting, filtering; API versioning strategies",
+      "sub": ""
+     },
+     {
+      "t": "OpenAPI / Swagger UI with springdoc-openapi",
+      "sub": ""
+     },
+     {
+      "t": "File upload/download (MultipartFile), CORS configuration",
+      "sub": ""
+     },
+     {
+      "t": "Calling other APIs: RestClient, WebClient, OpenFeign",
+      "sub": ""
+     },
+     {
+      "t": "Idempotency and REST best practices",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Data access: Spring Data JPA & Hibernate",
+    "topics": [
+     {
+      "t": "JPA vs Hibernate vs Spring Data JPA",
+      "sub": ""
+     },
+     {
+      "t": "Entities, @Id strategies, @Column, embeddables",
+      "sub": ""
+     },
+     {
+      "t": "Relationships: @OneToOne, @OneToMany, @ManyToOne, @ManyToMany; owning side; cascade; orphanRemoval",
+      "sub": ""
+     },
+     {
+      "t": "Fetch types (LAZY vs EAGER), LazyInitializationException",
+      "sub": ""
+     },
+     {
+      "t": "N+1 problem & fixes: JOIN FETCH, @EntityGraph, batch size",
+      "sub": "Top interview question"
+     },
+     {
+      "t": "Repositories: derived queries, @Query (JPQL & native), projections, Specifications",
+      "sub": ""
+     },
+     {
+      "t": "Entity lifecycle states, persistence context, first-level & second-level cache",
+      "sub": ""
+     },
+     {
+      "t": "@Transactional: propagation, isolation, rollback rules, self-invocation pitfall",
+      "sub": ""
+     },
+     {
+      "t": "Optimistic locking (@Version), pessimistic locking",
+      "sub": ""
+     },
+     {
+      "t": "Auditing (@CreatedDate, @LastModifiedBy); DB migrations with Flyway or Liquibase",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Spring Security",
+    "topics": [
+     {
+      "t": "Authentication vs authorization; the SecurityFilterChain",
+      "sub": ""
+     },
+     {
+      "t": "UserDetailsService, PasswordEncoder (BCrypt)",
+      "sub": ""
+     },
+     {
+      "t": "Stateless JWT authentication end to end",
+      "sub": ""
+     },
+     {
+      "t": "OAuth2 / OpenID Connect: resource server, login with Keycloak/Google",
+      "sub": ""
+     },
+     {
+      "t": "Role- and method-level security (@PreAuthorize)",
+      "sub": ""
+     },
+     {
+      "t": "CSRF, CORS, session vs token security; OWASP Top 10 basics",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "More Spring features",
+    "topics": [
+     {
+      "t": "Caching with @Cacheable + Redis",
+      "sub": ""
+     },
+     {
+      "t": "Scheduling (@Scheduled) and async processing (@Async)",
+      "sub": ""
+     },
+     {
+      "t": "Spring Batch: jobs, steps, readers/processors/writers, chunking",
+      "sub": "For large file imports and batch jobs"
+     },
+     {
+      "t": "Application events (@EventListener)",
+      "sub": ""
+     },
+     {
+      "t": "Spring WebFlux / reactive programming: awareness level",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Back end",
+   "kafka",
+   "Advanced Java, SQL, Spring Boot, microservices and Kafka."
+  ],
+  "id": "micro",
+  "t": "Microservices",
+  "d": "Learn microservices after you can build a good monolith. Interviewers test whether you understand the trade-offs, not just the buzzwords.",
+  "groups": [
+   {
+    "t": "Concepts & design",
+    "topics": [
+     {
+      "t": "Monolith vs modular monolith vs microservices: pros, cons, when not to use microservices",
+      "sub": ""
+     },
+     {
+      "t": "Domain-Driven Design basics: bounded contexts, aggregates, ubiquitous language",
+      "sub": ""
+     },
+     {
+      "t": "Service decomposition strategies (by business capability / subdomain)",
+      "sub": ""
+     },
+     {
+      "t": "Database per service; shared-database anti-pattern",
+      "sub": ""
+     },
+     {
+      "t": "Twelve-Factor App principles",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Communication",
+    "topics": [
+     {
+      "t": "Synchronous: REST, gRPC (awareness); asynchronous: messaging/events",
+      "sub": ""
+     },
+     {
+      "t": "API Gateway (Spring Cloud Gateway): routing, auth, rate limiting",
+      "sub": ""
+     },
+     {
+      "t": "Service discovery (Eureka or Kubernetes DNS), client-side vs server-side load balancing",
+      "sub": ""
+     },
+     {
+      "t": "OpenFeign / RestClient for service-to-service calls",
+      "sub": ""
+     },
+     {
+      "t": "API contracts, versioning, backward compatibility",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Resilience",
+    "topics": [
+     {
+      "t": "Timeouts, retries with exponential backoff & jitter",
+      "sub": ""
+     },
+     {
+      "t": "Circuit breaker, bulkhead, rate limiter, fallbacks (Resilience4j)",
+      "sub": ""
+     },
+     {
+      "t": "Idempotency keys & idempotent consumers",
+      "sub": ""
+     },
+     {
+      "t": "Cascading failures and how to prevent them",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Data consistency patterns",
+    "topics": [
+     {
+      "t": "Why distributed transactions / 2PC are avoided; eventual consistency",
+      "sub": ""
+     },
+     {
+      "t": "Saga pattern: choreography vs orchestration, compensating transactions",
+      "sub": ""
+     },
+     {
+      "t": "Transactional outbox pattern (+ CDC with Debezium)",
+      "sub": ""
+     },
+     {
+      "t": "CQRS and event sourcing: concepts",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Operations & observability",
+    "topics": [
+     {
+      "t": "Centralized config (Spring Cloud Config / K8s ConfigMaps), secrets management",
+      "sub": ""
+     },
+     {
+      "t": "Centralized logging (ELK/Loki), correlation IDs",
+      "sub": ""
+     },
+     {
+      "t": "Metrics with Micrometer + Prometheus + Grafana",
+      "sub": ""
+     },
+     {
+      "t": "Distributed tracing with OpenTelemetry (Zipkin/Jaeger/Tempo)",
+      "sub": ""
+     },
+     {
+      "t": "Health checks, readiness/liveness probes",
+      "sub": ""
+     },
+     {
+      "t": "Service-to-service security: OAuth2 client credentials, mTLS awareness",
+      "sub": ""
+     },
+     {
+      "t": "Deployment strategies: rolling, blue-green, canary",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Back end",
+   "kafka",
+   "Advanced Java, SQL, Spring Boot, microservices and Kafka."
+  ],
+  "id": "kafka",
+  "t": "Apache Kafka & Event-Driven Systems",
+  "d": "Kafka is used in most modern event-driven backends. Learn the core model really well (partitions, offsets, consumer groups, delivery guarantees).",
+  "groups": [
+   {
+    "t": "Messaging fundamentals",
+    "topics": [
+     {
+      "t": "Point-to-point queues vs publish-subscribe",
+      "sub": ""
+     },
+     {
+      "t": "Why event-driven architecture; events vs commands",
+      "sub": ""
+     },
+     {
+      "t": "Kafka vs RabbitMQ vs ActiveMQ: when to use which",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Kafka core concepts",
+    "topics": [
+     {
+      "t": "Brokers, cluster, topics, partitions, offsets, segments",
+      "sub": ""
+     },
+     {
+      "t": "Replication, leader/follower, ISR, replication factor, min.insync.replicas",
+      "sub": ""
+     },
+     {
+      "t": "KRaft mode (Kafka 4.x, no ZooKeeper)",
+      "sub": ""
+     },
+     {
+      "t": "Retention (time/size) and log compaction",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Producers",
+    "topics": [
+     {
+      "t": "Message keys & partitioning (ordering per key)",
+      "sub": ""
+     },
+     {
+      "t": "acks (0, 1, all), retries, idempotent producer",
+      "sub": ""
+     },
+     {
+      "t": "Batching, linger.ms, compression",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Consumers",
+    "topics": [
+     {
+      "t": "Consumer groups, partition assignment, rebalancing",
+      "sub": ""
+     },
+     {
+      "t": "Offset commits: auto vs manual; at-most-once / at-least-once / exactly-once",
+      "sub": ""
+     },
+     {
+      "t": "Consumer lag & monitoring",
+      "sub": ""
+     },
+     {
+      "t": "Ordering guarantees and their limits",
+      "sub": ""
+     },
+     {
+      "t": "Handling duplicates: idempotent consumer design",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Data & schemas",
+    "topics": [
+     {
+      "t": "Serialization: JSON, Avro, Protobuf",
+      "sub": ""
+     },
+     {
+      "t": "Schema Registry & schema evolution (backward/forward compatibility)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Spring for Apache Kafka",
+    "topics": [
+     {
+      "t": "KafkaTemplate & @KafkaListener; configuration via Spring Boot",
+      "sub": ""
+     },
+     {
+      "t": "Error handling: DefaultErrorHandler, retry topics, dead-letter topics (DLT)",
+      "sub": ""
+     },
+     {
+      "t": "Kafka transactions & exactly-once in Spring",
+      "sub": ""
+     },
+     {
+      "t": "Testing with EmbeddedKafka or Testcontainers",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Advanced ecosystem",
+    "topics": [
+     {
+      "t": "Kafka Streams basics (stateless/stateful ops, KTable)",
+      "sub": ""
+     },
+     {
+      "t": "Kafka Connect & CDC with Debezium",
+      "sub": ""
+     },
+     {
+      "t": "Partition count choices, throughput tuning, monitoring tools",
+      "sub": ""
+     },
+     {
+      "t": "Use cases: order events, notifications, activity tracking, log aggregation, real-time analytics",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Front end",
+   "prep",
+   "HTML, CSS, JavaScript, TypeScript and React."
+  ],
+  "id": "frontend",
+  "t": "Frontend: Web + JavaScript + TypeScript + React",
+  "d": "For a Java full stack role, React needs to be solid but not as deep as the backend. JavaScript fundamentals matter most.",
+  "groups": [
+   {
+    "t": "Web fundamentals",
+    "topics": [
+     {
+      "t": "How the web works: HTTP/HTTPS, DNS, request/response, browser rendering",
+      "sub": ""
+     },
+     {
+      "t": "HTML5: semantic tags, forms, accessibility basics (labels, alt text, ARIA)",
+      "sub": ""
+     },
+     {
+      "t": "CSS: box model, specificity, positioning, flexbox, grid",
+      "sub": ""
+     },
+     {
+      "t": "Responsive design, media queries, mobile-first",
+      "sub": ""
+     },
+     {
+      "t": "Tailwind CSS (very common) and/or a component library (MUI, shadcn/ui)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "JavaScript (deep)",
+    "topics": [
+     {
+      "t": "var/let/const, scope, hoisting, temporal dead zone",
+      "sub": ""
+     },
+     {
+      "t": "Types, type coercion, == vs ===, truthy/falsy",
+      "sub": ""
+     },
+     {
+      "t": "Functions, closures, this, call/apply/bind, arrow functions",
+      "sub": ""
+     },
+     {
+      "t": "Prototypes, prototypal inheritance, classes",
+      "sub": ""
+     },
+     {
+      "t": "Destructuring, spread/rest, template literals, optional chaining, nullish coalescing",
+      "sub": ""
+     },
+     {
+      "t": "Array methods: map, filter, reduce, find, some, every, sort",
+      "sub": ""
+     },
+     {
+      "t": "ES modules (import/export)",
+      "sub": ""
+     },
+     {
+      "t": "Event loop, call stack, microtasks vs macrotasks",
+      "sub": "Common interview question"
+     },
+     {
+      "t": "Callbacks → Promises → async/await; Promise.all/allSettled/race; error handling",
+      "sub": ""
+     },
+     {
+      "t": "fetch API / axios; JSON",
+      "sub": ""
+     },
+     {
+      "t": "DOM manipulation, events, bubbling/capturing, event delegation",
+      "sub": ""
+     },
+     {
+      "t": "Debounce & throttle; localStorage/sessionStorage/cookies",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "TypeScript",
+    "topics": [
+     {
+      "t": "Basic types, interfaces vs type aliases, unions & intersections",
+      "sub": ""
+     },
+     {
+      "t": "Generics, type narrowing, utility types (Partial, Pick, Omit, Record)",
+      "sub": ""
+     },
+     {
+      "t": "Typing React props, state, events and API responses",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "React core",
+    "topics": [
+     {
+      "t": "Project setup with Vite; JSX; components & props",
+      "sub": ""
+     },
+     {
+      "t": "State with useState; immutability of state",
+      "sub": ""
+     },
+     {
+      "t": "useEffect: dependencies, cleanup, common mistakes",
+      "sub": ""
+     },
+     {
+      "t": "Lists & keys, conditional rendering, events",
+      "sub": ""
+     },
+     {
+      "t": "Forms: controlled vs uncontrolled; React Hook Form + Zod validation",
+      "sub": ""
+     },
+     {
+      "t": "Lifting state up, component composition, children",
+      "sub": ""
+     },
+     {
+      "t": "useRef, useReducer, useContext",
+      "sub": ""
+     },
+     {
+      "t": "useMemo, useCallback, React.memo: when they actually help",
+      "sub": ""
+     },
+     {
+      "t": "Custom hooks",
+      "sub": ""
+     },
+     {
+      "t": "React Router: routes, params, nested routes, protected routes",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "React in real apps",
+    "topics": [
+     {
+      "t": "Data fetching & caching with TanStack Query (or axios + hooks)",
+      "sub": ""
+     },
+     {
+      "t": "Global state: Context, Redux Toolkit or Zustand",
+      "sub": ""
+     },
+     {
+      "t": "Authentication flow with a Spring Boot JWT backend; where to store tokens securely",
+      "sub": ""
+     },
+     {
+      "t": "Error boundaries, Suspense, code splitting with lazy()",
+      "sub": ""
+     },
+     {
+      "t": "React 19: Actions, use(), useOptimistic, form actions (awareness)",
+      "sub": ""
+     },
+     {
+      "t": "Performance: avoiding unnecessary re-renders, React DevTools Profiler",
+      "sub": ""
+     },
+     {
+      "t": "Testing: Vitest + React Testing Library",
+      "sub": ""
+     },
+     {
+      "t": "Build & deploy: environment variables, Vercel/Netlify, serving via Nginx",
+      "sub": ""
+     },
+     {
+      "t": "Next.js: awareness level (server components, routing)",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Engineering practice",
+   "spark",
+   "DevOps and cloud, testing, software engineering practices, DSA and system design."
+  ],
+  "id": "devops",
+  "t": "DevOps, Git & Cloud",
+  "d": "A full stack developer is expected to ship code: version control, containers, pipelines and basic cloud.",
+  "groups": [
+   {
+    "t": "Linux & tools",
+    "topics": [
+     {
+      "t": "Shell basics: navigation, files, permissions, processes, pipes, grep, environment variables",
+      "sub": ""
+     },
+     {
+      "t": "SSH, curl, reading logs on servers",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Git & collaboration",
+    "topics": [
+     {
+      "t": "init, clone, add, commit, push, pull, branch, checkout/switch",
+      "sub": ""
+     },
+     {
+      "t": "Merge vs rebase; resolving conflicts",
+      "sub": ""
+     },
+     {
+      "t": "reset vs revert, stash, cherry-pick, reflog",
+      "sub": ""
+     },
+     {
+      "t": "Pull requests & code review flow on GitHub/GitLab/Bitbucket",
+      "sub": ""
+     },
+     {
+      "t": "Branching strategies: Git Flow vs trunk-based; Conventional Commits",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Containers",
+    "topics": [
+     {
+      "t": "Docker concepts: image, container, layers, registry",
+      "sub": ""
+     },
+     {
+      "t": "Writing a Dockerfile for Spring Boot (multi-stage builds, layered JARs)",
+      "sub": ""
+     },
+     {
+      "t": "Docker Compose: app + Postgres + Kafka + Redis locally",
+      "sub": ""
+     },
+     {
+      "t": "Volumes, networks, environment variables",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Kubernetes basics",
+    "topics": [
+     {
+      "t": "Pods, Deployments, ReplicaSets, Services, Ingress",
+      "sub": ""
+     },
+     {
+      "t": "ConfigMaps & Secrets, resource limits, probes",
+      "sub": ""
+     },
+     {
+      "t": "Scaling & rolling updates; Helm: awareness",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "CI/CD",
+    "topics": [
+     {
+      "t": "CI/CD concepts: build → test → scan → deploy",
+      "sub": ""
+     },
+     {
+      "t": "GitHub Actions workflow for a Maven + React project",
+      "sub": ""
+     },
+     {
+      "t": "Jenkins: awareness (very common in large companies)",
+      "sub": ""
+     },
+     {
+      "t": "Code quality gates: SonarQube",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Cloud (AWS focus)",
+    "topics": [
+     {
+      "t": "Core services: EC2, S3, RDS, IAM, VPC basics",
+      "sub": ""
+     },
+     {
+      "t": "Containers on AWS: ECS / EKS; serverless Lambda awareness",
+      "sub": ""
+     },
+     {
+      "t": "CloudWatch logs & metrics",
+      "sub": ""
+     },
+     {
+      "t": "Networking basics: load balancers, reverse proxy (Nginx), TLS/HTTPS",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Engineering practice",
+   "spark",
+   "DevOps and cloud, testing, software engineering practices, DSA and system design."
+  ],
+  "id": "testing",
+  "t": "Testing & Code Quality",
+  "d": "Tests in your projects send a strong signal. Many junior candidates skip them, so this is an easy way to stand out.",
+  "groups": [
+   {
+    "t": "Foundations",
+    "topics": [
+     {
+      "t": "Testing pyramid: unit, integration, end-to-end",
+      "sub": ""
+     },
+     {
+      "t": "TDD basics: red → green → refactor",
+      "sub": ""
+     },
+     {
+      "t": "What makes a good test (fast, isolated, deterministic, readable)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Java testing",
+    "topics": [
+     {
+      "t": "JUnit 5: annotations, assertions, lifecycle, @ParameterizedTest, @Nested",
+      "sub": ""
+     },
+     {
+      "t": "AssertJ fluent assertions",
+      "sub": ""
+     },
+     {
+      "t": "Mockito: mock vs spy, stubbing, verify, ArgumentCaptor, @InjectMocks",
+      "sub": ""
+     },
+     {
+      "t": "When not to mock (don't mock what you don't own)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Spring Boot testing",
+    "topics": [
+     {
+      "t": "@SpringBootTest vs test slices (@WebMvcTest, @DataJpaTest)",
+      "sub": ""
+     },
+     {
+      "t": "MockMvc for controller tests; @MockitoBean",
+      "sub": ""
+     },
+     {
+      "t": "Testcontainers for real PostgreSQL & Kafka in tests",
+      "sub": ""
+     },
+     {
+      "t": "API testing with Postman and REST Assured",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Frontend & beyond",
+    "topics": [
+     {
+      "t": "Vitest + React Testing Library",
+      "sub": ""
+     },
+     {
+      "t": "E2E testing: Playwright or Cypress (awareness)",
+      "sub": ""
+     },
+     {
+      "t": "Performance/load testing: JMeter, Gatling (awareness)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Code quality",
+    "topics": [
+     {
+      "t": "Code coverage with JaCoCo (and why 100% isn't the goal)",
+      "sub": ""
+     },
+     {
+      "t": "Static analysis: SonarQube/SonarLint, Checkstyle, SpotBugs",
+      "sub": ""
+     },
+     {
+      "t": "Formatting & linting (Spotless, ESLint, Prettier)",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Engineering practice",
+   "spark",
+   "DevOps and cloud, testing, software engineering practices, DSA and system design."
+  ],
+  "id": "se",
+  "t": "Software Engineering Practices, Standards & Methodologies",
+  "d": "How professional teams build software. You'll be asked about Agile, design principles and code reviews, and you'll use them from day one.",
+  "groups": [
+   {
+    "t": "SDLC & methodologies",
+    "topics": [
+     {
+      "t": "SDLC phases: requirements, design, implementation, testing, deployment, maintenance",
+      "sub": ""
+     },
+     {
+      "t": "Waterfall, V-model, iterative, Agile; DevOps culture",
+      "sub": ""
+     },
+     {
+      "t": "Agile Manifesto: 4 values & 12 principles",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Scrum & Kanban",
+    "topics": [
+     {
+      "t": "Scrum roles: Product Owner, Scrum Master, Developers",
+      "sub": ""
+     },
+     {
+      "t": "Events: sprint planning, daily stand-up, sprint review, retrospective",
+      "sub": ""
+     },
+     {
+      "t": "Artifacts: product backlog, sprint backlog, increment",
+      "sub": ""
+     },
+     {
+      "t": "User stories (INVEST), acceptance criteria, Definition of Ready / Done",
+      "sub": ""
+     },
+     {
+      "t": "Estimation: story points, planning poker, velocity, burndown charts",
+      "sub": ""
+     },
+     {
+      "t": "Kanban: boards, WIP limits, flow",
+      "sub": ""
+     },
+     {
+      "t": "SAFe: awareness (used by many large companies); Jira & Confluence usage",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Design principles",
+    "topics": [
+     {
+      "t": "SOLID principles, each with a Java example",
+      "sub": "Very common interview question"
+     },
+     {
+      "t": "DRY, KISS, YAGNI, separation of concerns",
+      "sub": ""
+     },
+     {
+      "t": "Coupling & cohesion, composition over inheritance, Law of Demeter",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Design patterns (GoF)",
+    "topics": [
+     {
+      "t": "Creational: Singleton, Factory Method, Abstract Factory, Builder, Prototype",
+      "sub": ""
+     },
+     {
+      "t": "Structural: Adapter, Decorator, Facade, Proxy, Composite",
+      "sub": ""
+     },
+     {
+      "t": "Behavioral: Strategy, Observer, Template Method, Command, Chain of Responsibility, State",
+      "sub": ""
+     },
+     {
+      "t": "Patterns used inside Spring (Proxy, Template, Factory, Singleton, Observer)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Architecture",
+    "topics": [
+     {
+      "t": "Layered architecture (controller → service → repository)",
+      "sub": ""
+     },
+     {
+      "t": "Clean / hexagonal (ports & adapters) architecture",
+      "sub": ""
+     },
+     {
+      "t": "MVC, REST design guidelines, event-driven architecture",
+      "sub": ""
+     },
+     {
+      "t": "Architecture Decision Records (ADRs)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Clean code & collaboration",
+    "topics": [
+     {
+      "t": "Naming, small functions, comments, readable code",
+      "sub": ""
+     },
+     {
+      "t": "Code smells & refactoring techniques",
+      "sub": ""
+     },
+     {
+      "t": "Code review: giving and receiving feedback, PR etiquette, small PRs",
+      "sub": ""
+     },
+     {
+      "t": "Semantic versioning, changelogs, README & API documentation",
+      "sub": ""
+     },
+     {
+      "t": "Writing good tickets, bug reports and commit messages",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Production engineering",
+    "topics": [
+     {
+      "t": "Logging & error handling standards",
+      "sub": ""
+     },
+     {
+      "t": "Security by design: OWASP Top 10, secrets management, least privilege",
+      "sub": ""
+     },
+     {
+      "t": "Feature flags, environments (dev/QA/UAT/prod), release management",
+      "sub": ""
+     },
+     {
+      "t": "Incident management, on-call, root-cause analysis, blameless postmortems",
+      "sub": "Use examples from your current production-support work"
+     },
+     {
+      "t": "SLAs, SLOs, monitoring & alerting basics",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Engineering practice",
+   "spark",
+   "DevOps and cloud, testing, software engineering practices, DSA and system design."
+  ],
+  "id": "dsa",
+  "t": "DSA, Low-Level Design & System Design",
+  "d": "For 0–3 year roles: easy-to-medium DSA, LLD/machine coding at product companies, and basic HLD awareness. Do 1 problem a day in Java from week 1.",
+  "groups": [
+   {
+    "t": "DSA foundations",
+    "topics": [
+     {
+      "t": "Big-O time & space complexity",
+      "sub": ""
+     },
+     {
+      "t": "Arrays & strings; hashing (HashMap/HashSet patterns)",
+      "sub": ""
+     },
+     {
+      "t": "Two pointers, sliding window, prefix sums",
+      "sub": ""
+     },
+     {
+      "t": "Stacks, queues, monotonic stack",
+      "sub": ""
+     },
+     {
+      "t": "Linked lists (reverse, cycle, merge)",
+      "sub": ""
+     },
+     {
+      "t": "Binary search and its variants",
+      "sub": ""
+     },
+     {
+      "t": "Recursion & backtracking",
+      "sub": ""
+     },
+     {
+      "t": "Sorting algorithms (merge sort, quick sort) & their complexities",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "DSA intermediate",
+    "topics": [
+     {
+      "t": "Trees: traversals, BST, height/diameter, LCA",
+      "sub": ""
+     },
+     {
+      "t": "Heaps / priority queues: top-K problems",
+      "sub": ""
+     },
+     {
+      "t": "Graphs: BFS, DFS, topological sort, union-find, Dijkstra (basic)",
+      "sub": ""
+     },
+     {
+      "t": "Greedy & intervals",
+      "sub": ""
+     },
+     {
+      "t": "Dynamic programming basics (1D/2D, knapsack, LIS, LCS)",
+      "sub": ""
+     },
+     {
+      "t": "Target: NeetCode 150 or the Striver SDE sheet (~120–150 problems)",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "Low-Level Design (LLD) / machine coding",
+    "topics": [
+     {
+      "t": "UML class diagrams & sequence diagrams (basic)",
+      "sub": ""
+     },
+     {
+      "t": "Applying SOLID + patterns to a design problem",
+      "sub": ""
+     },
+     {
+      "t": "Practice: parking lot, library management, ATM, Splitwise, elevator, snake & ladder",
+      "sub": ""
+     },
+     {
+      "t": "Practice: rate limiter, LRU cache, logger, in-memory key-value store",
+      "sub": ""
+     },
+     {
+      "t": "Machine-coding round practice: build working code in 60–90 minutes",
+      "sub": ""
+     }
+    ]
+   },
+   {
+    "t": "High-Level Design (HLD) basics",
+    "topics": [
+     {
+      "t": "Scalability: vertical vs horizontal, stateless services, load balancing",
+      "sub": ""
+     },
+     {
+      "t": "Caching: Redis, CDN, cache strategies & invalidation",
+      "sub": ""
+     },
+     {
+      "t": "Database replication, sharding, indexing at scale",
+      "sub": ""
+     },
+     {
+      "t": "CAP theorem, consistency models",
+      "sub": ""
+     },
+     {
+      "t": "Message queues, rate limiting, API gateway",
+      "sub": ""
+     },
+     {
+      "t": "Practice designs: URL shortener, notification system, chat system, e-commerce checkout, ticket booking",
+      "sub": ""
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Interview prep",
+   "prep",
+   "The question bank with model answers, by topic."
+  ],
+  "id": "iq",
+  "t": "Interview Q&A",
+  "d": "Model answers to the questions Java full stack interviews ask most, from Core Java to HR.",
+  "groups": []
+ }
+]
