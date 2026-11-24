@@ -1,0 +1,893 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Agentic AI glossary</title>
+<meta name="description" content="A glossary of agentic AI terms explained in plain words: LLMs, prompting, tools, MCP, A2A, agent patterns, memory, RAG, multi-agent systems, frameworks, evaluation, safety and operations.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F6F5F1; --surface:#FFFFFF; --sunk:#EFEDE7; --ink:#1A1C21; --muted:#5D6370; --faint:#8A8F99; --rule:#E2DFD7;
+  --accent:#C2410C; --accent-soft:#FDEBDF; --kafka:#0F766E; --kafka-soft:#DDF3EF; --stream:#6D28D9; --stream-soft:#EEE7FC; --prep:#1D4ED8; --prep-soft:#E3EAFC;
+  --code-bg:#EFEDE7; --mark:#FFE7A0; --ok:#15803D; --ok-soft:#DCF2E3;
+  --dg-box:#FFFFFF; --dg-fill:#F2F0EA; --dg-line:#9097A3;
+  --ui:"Plus Jakarta Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --read:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --mono:"JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --top:58px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#101216; --surface:#171A20; --sunk:#1D2128; --ink:#E7E5E0; --muted:#A0A6B1; --faint:#737985; --rule:#2A2F38;
+    --accent:#FB8A4C; --accent-soft:#3A2418; --kafka:#45C9B4; --kafka-soft:#13302C; --stream:#B197FC; --stream-soft:#2A2140; --prep:#7EA6FF; --prep-soft:#1C2742;
+    --code-bg:#232830; --mark:#5C4A12; --ok:#4ADE80; --ok-soft:#17311F;
+    --dg-box:#1D2128; --dg-fill:#232830; --dg-line:#6C7380;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#101216; --surface:#171A20; --sunk:#1D2128; --ink:#E7E5E0; --muted:#A0A6B1; --faint:#737985; --rule:#2A2F38;
+  --accent:#FB8A4C; --accent-soft:#3A2418; --kafka:#45C9B4; --kafka-soft:#13302C; --stream:#B197FC; --stream-soft:#2A2140; --prep:#7EA6FF; --prep-soft:#1C2742;
+  --code-bg:#232830; --mark:#5C4A12; --ok:#4ADE80; --ok-soft:#17311F;
+  --dg-box:#1D2128; --dg-fill:#232830; --dg-line:#6C7380;
+  color-scheme: dark;
+}
+*,*::before,*::after{ box-sizing:border-box; }
+html{ scroll-padding-top:calc(var(--top) + 16px); -webkit-text-size-adjust:100%; }
+body{ margin:0; background:var(--bg); color:var(--ink); font:15px/1.55 var(--ui); -webkit-font-smoothing:antialiased; padding-bottom:env(safe-area-inset-bottom,0px); }
+a{ color:inherit; }
+code{ font-family:var(--mono); font-size:.84em; background:var(--code-bg); padding:.08em .38em; border-radius:4px; overflow-wrap:anywhere; }
+button{ font:inherit; color:inherit; }
+:focus-visible{ outline:2px solid var(--k, var(--accent)); outline-offset:2px; border-radius:4px; }
+[data-k="spark"]{ --k:var(--accent); --ks:var(--accent-soft); }
+[data-k="stream"]{ --k:var(--stream); --ks:var(--stream-soft); }
+[data-k="kafka"]{ --k:var(--kafka); --ks:var(--kafka-soft); }
+[data-k="prep"]{ --k:var(--prep); --ks:var(--prep-soft); }
+
+/* top bar */
+.top{ position:sticky; top:0; z-index:30; height:var(--top); background:color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter:saturate(1.4) blur(10px); -webkit-backdrop-filter:saturate(1.4) blur(10px); border-bottom:1px solid var(--rule); display:flex; align-items:center; gap:12px; padding:0 16px; padding-top:env(safe-area-inset-top,0px); }
+.brand{ display:flex; align-items:center; gap:10px; text-decoration:none; font-weight:800; letter-spacing:-.01em; white-space:nowrap; }
+.brand .logo{ width:28px; height:28px; border-radius:7px; background:linear-gradient(135deg,var(--accent),var(--stream) 55%,var(--kafka)); display:grid; place-items:center; color:#fff; font-size:14px; }
+.brand small{ display:block; font-weight:600; font-size:11px; color:var(--muted); letter-spacing:.02em; }
+.iconbtn{ display:inline-grid; place-items:center; min-width:36px; height:36px; padding:0 10px; border:1px solid var(--rule); border-radius:8px; background:var(--surface); cursor:pointer; font-size:13px; font-weight:600; }
+.iconbtn:hover{ border-color:var(--faint); }
+#menuBtn{ display:none; }
+.search{ flex:1 1 auto; max-width:520px; margin-left:auto; display:flex; align-items:center; gap:8px; height:38px; padding:0 12px; border:1px solid var(--rule); border-radius:10px; background:var(--surface); }
+.search:focus-within{ border-color:var(--accent); }
+.search svg{ flex:none; color:var(--faint); }
+.search input{ flex:1; min-width:0; border:0; outline:0; background:transparent; color:var(--ink); font:inherit; }
+.search kbd{ font:500 11px var(--mono); color:var(--faint); border:1px solid var(--rule); border-radius:4px; padding:1px 5px; }
+.seg{ display:inline-flex; border:1px solid var(--rule); border-radius:9px; overflow:hidden; background:var(--surface); }
+.seg button{ border:0; background:transparent; padding:0 11px; height:34px; cursor:pointer; font-size:13px; font-weight:600; color:var(--muted); }
+.seg button[aria-pressed="true"]{ background:var(--ink); color:var(--bg); }
+.topprog{ display:flex; align-items:center; gap:8px; font:600 12px var(--ui); color:var(--muted); white-space:nowrap; }
+.ring{ --p:0; width:30px; height:30px; border-radius:50%; background:conic-gradient(var(--ok) calc(var(--p)*1%), var(--rule) 0); display:grid; place-items:center; }
+.ring::after{ content:""; width:22px; height:22px; border-radius:50%; background:var(--bg); }
+
+/* layout */
+.shell{ display:grid; grid-template-columns:288px minmax(0,1fr) 248px; min-height:calc(100vh - var(--top)); }
+.shell.norail{ grid-template-columns:288px minmax(0,1fr); }
+.nav{ position:sticky; top:var(--top); height:calc(100vh - var(--top)); overflow-y:auto; border-right:1px solid var(--rule); padding:14px 10px 40px 14px; background:var(--bg); }
+.navtools{ display:flex; flex-wrap:wrap; gap:6px; padding:0 4px 12px; border-bottom:1px solid var(--rule); margin-bottom:10px; }
+.chip{ border:1px solid var(--rule); background:var(--surface); border-radius:999px; padding:3px 10px; font-size:12px; font-weight:600; color:var(--muted); cursor:pointer; }
+.chip[aria-pressed="true"]{ background:var(--ink); border-color:var(--ink); color:var(--bg); }
+.chip.mobonly{ display:none; }
+.np{ margin-bottom:6px; }
+.nph{ width:100%; display:flex; align-items:center; gap:8px; border:0; background:transparent; text-align:left; padding:8px 6px; border-radius:6px; cursor:pointer; font-size:12px; font-weight:800; letter-spacing:.04em; text-transform:uppercase; color:var(--muted); }
+.nph:hover{ background:var(--sunk); }
+.nph i{ width:8px; height:8px; border-radius:2px; background:var(--k); flex:none; }
+.nph span{ flex:1; }
+.nph b{ font-weight:600; font-size:11px; letter-spacing:0; color:var(--faint); }
+.np.collapsed ol{ display:none; }
+.np ol{ list-style:none; margin:0 0 4px; padding:0; }
+.np a{ display:flex; align-items:baseline; gap:8px; padding:6px 8px 6px 22px; border-radius:6px; text-decoration:none; font-size:13.5px; font-weight:500; color:var(--ink); position:relative; }
+.np a:hover{ background:var(--sunk); }
+.np a span{ flex:1; }
+.np a small{ font:500 11px var(--mono); color:var(--faint); white-space:nowrap; }
+.np a.full small{ color:var(--ok); }
+.np a[aria-current="page"]{ background:var(--ks); color:var(--ink); font-weight:700; }
+.np a[aria-current="page"]::before{ content:""; position:absolute; left:8px; top:9px; bottom:9px; width:3px; border-radius:2px; background:var(--k); }
+main{ min-width:0; padding:28px clamp(16px,4vw,48px) 96px; }
+.col{ max-width:780px; margin:0 auto; }
+.rail{ position:sticky; top:var(--top); height:calc(100vh - var(--top)); overflow-y:auto; padding:28px 18px 40px 6px; font-size:13px; }
+.rail h4{ font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); margin:0 0 8px; }
+.rail ol{ list-style:none; margin:0 0 22px; padding:0; border-left:1px solid var(--rule); }
+.rail a{ display:flex; gap:8px; padding:4px 0 4px 12px; margin-left:-1px; border-left:2px solid transparent; text-decoration:none; color:var(--muted); }
+.rail a:hover{ color:var(--ink); }
+.rail a.on{ color:var(--ink); border-left-color:var(--k); font-weight:600; }
+.rail a span{ flex:1; }
+.rail a small{ font:11px var(--mono); color:var(--faint); }
+.rail .keys{ color:var(--faint); line-height:1.9; }
+.rail kbd{ font:500 11px var(--mono); border:1px solid var(--rule); border-radius:4px; padding:0 5px; color:var(--muted); background:var(--surface); }
+.scrim{ display:none; }
+
+/* home */
+.hero{ padding:12px 0 8px; }
+.eyebrow{ font-size:12px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); margin:0 0 10px; }
+.hero h1{ font-size:clamp(2rem,5vw,3.3rem); line-height:1.02; letter-spacing:-.035em; margin:0 0 16px; font-weight:800; }
+.hero h1 em{ font-style:normal; background:linear-gradient(90deg,var(--accent),var(--stream),var(--kafka)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+.hero p{ font:18px/1.6 var(--read); color:var(--muted); margin:0 0 20px; max-width:64ch; }
+.stats{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:10px; margin:22px 0; }
+.stat{ background:var(--surface); border:1px solid var(--rule); border-radius:12px; padding:14px 16px; }
+.stat b{ display:block; font-size:24px; font-weight:800; letter-spacing:-.02em; }
+.stat span{ font-size:12px; color:var(--muted); font-weight:600; }
+.cta{ display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 30px; }
+.btn{ display:inline-flex; align-items:center; gap:8px; height:40px; padding:0 16px; border-radius:10px; border:1px solid var(--rule); background:var(--surface); text-decoration:none; font-weight:700; font-size:14px; cursor:pointer; }
+.btn.pri{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.howto{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin:0 0 34px; }
+.howto div{ border-top:3px solid var(--rule); padding-top:10px; font-size:13.5px; color:var(--muted); }
+.howto b{ display:block; color:var(--ink); font-size:14px; margin-bottom:2px; }
+.parts{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.pcard{ background:var(--surface); border:1px solid var(--rule); border-top:4px solid var(--k); border-radius:12px; padding:16px 18px; }
+.pcard h3{ margin:0 0 4px; font-size:16px; font-weight:800; letter-spacing:-.01em; display:flex; gap:8px; align-items:baseline; }
+.pcard h3 small{ font:600 12px var(--mono); color:var(--k); }
+.pcard p{ margin:0 0 10px; font-size:13px; color:var(--muted); }
+.pcard ul{ list-style:none; margin:0; padding:0; }
+.pcard li a{ display:grid; grid-template-columns:minmax(0,1fr) 56px; align-items:center; gap:10px; padding:5px 0; text-decoration:none; font-size:13.5px; font-weight:500; border-top:1px dashed var(--rule); }
+.mini{ height:5px; border-radius:3px; background:var(--sunk); overflow:hidden; }
+.mini i{ display:block; height:100%; background:var(--ok); width:0; }
+
+/* section */
+.crumb{ font-size:12.5px; font-weight:600; color:var(--muted); margin-bottom:10px; display:flex; gap:6px; flex-wrap:wrap; }
+.crumb a{ text-decoration:none; color:var(--k); }
+article.sec h1{ font-size:clamp(1.8rem,4vw,2.6rem); line-height:1.08; letter-spacing:-.03em; margin:0 0 12px; font-weight:800; }
+.meta{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin-bottom:16px; }
+.lv{ font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:3px 8px; border-radius:5px; background:var(--sunk); color:var(--muted); }
+.lv-Interview{ background:var(--prep-soft); color:var(--prep); }
+.lv-Expert{ background:var(--stream-soft); color:var(--stream); }
+.secp{ margin-left:auto; font:600 12px var(--mono); color:var(--muted); }
+.lede{ font:19px/1.6 var(--read); margin:0 0 26px; color:var(--ink); }
+.grp{ margin:34px 0 0; }
+.gh{ display:flex; align-items:baseline; gap:10px; border-bottom:2px solid var(--ink); padding-bottom:6px; margin-bottom:6px; }
+.gh h2{ margin:0; font-size:19px; font-weight:800; letter-spacing:-.015em; flex:1; }
+.gh span{ font:600 12px var(--mono); color:var(--muted); }
+.gh span.full{ color:var(--ok); }
+ol.topics{ list-style:none; margin:0; padding:0; }
+.topic{ display:grid; grid-template-columns:22px minmax(0,1fr); gap:12px; padding:14px 0; border-bottom:1px solid var(--rule); }
+.topic input{ appearance:none; -webkit-appearance:none; width:20px; height:20px; margin:2px 0 0; border:2px solid var(--faint); border-radius:6px; cursor:pointer; display:grid; place-items:center; background:var(--surface); }
+.topic input:checked{ background:var(--ok); border-color:var(--ok); }
+.topic input:checked::after{ content:""; width:10px; height:5px; border:2px solid #fff; border-top:0; border-right:0; transform:rotate(-45deg) translate(1px,-1px); }
+.tt{ display:block; font-weight:700; font-size:15.5px; line-height:1.4; cursor:pointer; }
+.tx{ margin:6px 0 0; font:16.5px/1.65 var(--read); color:var(--ink); }
+.tx code, .lede code{ font-size:.8em; }
+.topic.done .tt{ color:var(--muted); }
+.topic.flash{ animation:flash 1.6s ease; }
+@keyframes flash{ 0%,40%{ background:var(--mark); } 100%{ background:transparent; } }
+body.compact .tx{ display:none; }
+body.compact .topic{ padding:8px 0; }
+body.hidedone .topic.done{ display:none; }
+.res{ margin:14px 0 0; padding:12px 14px; background:var(--sunk); border-radius:10px; }
+.res h4{ margin:0 0 6px; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); }
+.res ul{ list-style:none; margin:0; padding:0; display:grid; gap:4px; }
+.res li{ display:flex; gap:8px; align-items:baseline; font-size:13.5px; }
+.res .ty{ flex:none; font:600 10px var(--mono); text-transform:uppercase; letter-spacing:.04em; padding:1px 6px; border-radius:4px; background:var(--surface); color:var(--k); border:1px solid var(--rule); min-width:52px; text-align:center; }
+.res a{ font-weight:600; text-decoration:underline; text-decoration-color:color-mix(in srgb, var(--k) 45%, transparent); text-underline-offset:2px; }
+.res cite{ font-style:normal; font-weight:600; }
+.res em{ font-style:normal; color:var(--muted); }
+figure.fig{ margin:18px 0 8px; background:var(--surface); border:1px solid var(--rule); border-radius:12px; overflow:hidden; }
+.fig .canvas{ overflow-x:auto; padding:14px; cursor:zoom-in; }
+.fig .canvas svg{ display:block; width:100%; height:auto; min-width:560px; }
+.fig .canvas img{ display:block; max-width:100%; height:auto; margin:0 auto; background:#fff; border-radius:6px; }
+.fig figcaption{ padding:10px 14px; border-top:1px solid var(--rule); font-size:13px; color:var(--muted); display:flex; gap:10px; align-items:baseline; }
+.fig figcaption b{ color:var(--ink); }
+.fig figcaption span{ flex:1; }
+.fig figcaption small{ color:var(--faint); font-size:11.5px; }
+.pager{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:44px; }
+.pager a{ display:block; padding:14px 16px; border:1px solid var(--rule); border-radius:12px; background:var(--surface); text-decoration:none; }
+.pager a:hover{ border-color:var(--k); }
+.pager small{ display:block; font-size:11px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--faint); }
+.pager b{ font-size:15px; }
+.pager .nx{ text-align:right; grid-column:2; }
+
+/* lesson */
+.lesson{ margin:4px 0 8px; }
+.lhead{ display:flex; align-items:center; gap:10px; padding:10px 0; border-top:2px solid var(--k); border-bottom:1px solid var(--rule); position:sticky; top:var(--top); background:var(--bg); z-index:3; }
+.ltag{ font-size:11px; font-weight:800; letter-spacing:.08em; text-transform:uppercase; color:var(--k); }
+.lmeta{ flex:1; font-size:12.5px; color:var(--muted); font-weight:600; }
+.lbtn{ border:1px solid var(--rule); background:var(--surface); border-radius:7px; padding:4px 10px; font-size:12px; font-weight:700; cursor:pointer; color:var(--muted); }
+.lbody{ font:17.5px/1.72 var(--read); }
+.lbody p{ margin:0 0 16px; }
+.lbody h2.lh{ font:800 22px/1.25 var(--ui); letter-spacing:-.015em; margin:40px 0 12px; }
+.lbody h3.lh3{ font:700 17px/1.3 var(--ui); margin:26px 0 8px; }
+.lbody ul, .lbody ol{ margin:0 0 16px; padding-left:24px; }
+.lbody li{ margin:5px 0; }
+.lbody li::marker{ color:var(--k); }
+.lbody strong{ font-weight:600; }
+.lbody a{ color:var(--k); text-underline-offset:2px; }
+.lbody code{ font-size:.8em; }
+pre.code{ margin:0 0 18px; padding:14px 16px; background:var(--sunk); border:1px solid var(--rule); border-radius:10px; overflow-x:auto; font:13px/1.6 var(--mono); position:relative; }
+pre.code code{ background:none; padding:0; font-size:inherit; white-space:pre; overflow-wrap:normal; }
+pre.code[data-lang]::before{ content:attr(data-lang); position:absolute; top:6px; right:10px; font:600 10px var(--mono); text-transform:uppercase; letter-spacing:.06em; color:var(--faint); }
+.callout{ margin:0 0 18px; padding:12px 16px; border-left:4px solid var(--faint); background:var(--surface); border-radius:0 10px 10px 0; font:15.5px/1.6 var(--ui); }
+.callout strong{ font-weight:800; }
+.c-tip{ border-left-color:var(--ok); }
+.c-pitfall, .c-warning{ border-left-color:#DC2626; }
+.c-interview{ border-left-color:var(--prep); background:var(--prep-soft); }
+.c-example{ border-left-color:var(--stream); }
+.tbl{ overflow-x:auto; margin:0 0 18px; border:1px solid var(--rule); border-radius:10px; }
+.tbl table{ border-collapse:collapse; width:100%; font:14px/1.5 var(--ui); }
+.tbl th{ text-align:left; background:var(--sunk); font-weight:700; }
+.tbl th, .tbl td{ padding:8px 12px; border-bottom:1px solid var(--rule); vertical-align:top; }
+.tbl tr:last-child td{ border-bottom:0; }
+details.qa{ margin:0 0 10px; border:1px solid var(--rule); border-radius:10px; background:var(--surface); }
+details.qa summary{ cursor:pointer; padding:12px 16px; font:700 15px/1.45 var(--ui); list-style:none; display:flex; gap:10px; }
+details.qa summary::before{ content:"?"; flex:none; width:22px; height:22px; border-radius:50%; background:var(--ks); color:var(--k); display:grid; place-items:center; font-size:13px; }
+details.qa[open] summary::before{ content:"✓"; }
+details.qa summary::-webkit-details-marker{ display:none; }
+details.qa p{ margin:0; padding:0 16px 14px 48px; font:16px/1.6 var(--read); }
+.lhidden{ display:none; color:var(--muted); font-size:14px; padding:10px 0; }
+.lesson.closed .lbody{ display:none; }
+body.compact .lesson .lbody{ display:none; }
+body.compact .lesson .lhidden{ display:block; }
+body.compact .lesson .lbtn{ display:none; }
+.lesson.deep{ margin-top:40px; }
+.art{ padding:6px 0 10px; border-bottom:1px solid var(--rule); margin-bottom:8px; scroll-margin-top:110px; }
+.art:last-of-type{ border-bottom:0; }
+.art.flash{ background:var(--ks); border-radius:8px; }
+.art h3.st{ font:800 19px/1.3 var(--ui); margin:28px 0 10px; }
+.lbody h3.st{ font:700 16.5px/1.35 var(--ui); margin:24px 0 6px; scroll-margin-top:110px; }
+.lbody h3.st code{ font-size:.85em; }
+.lbody .res{ margin:14px 0 8px; font-family:var(--ui); }
+.lbody h3.st.flash{ background:var(--ks); border-radius:6px; }
+/* course layout: one path, layered topics */
+.lbody h4.lh4{ font:800 12px/1.3 var(--ui); letter-spacing:.07em; text-transform:uppercase; color:var(--muted); margin:22px 0 8px; }
+.overview{ scroll-margin-top:110px; }
+.map{ margin:6px 0 10px; padding:14px 16px; background:var(--surface); border:1px solid var(--rule); border-radius:12px; font-family:var(--ui); }
+.map ol{ margin:6px 0 0; padding-left:22px; }
+.map li{ margin:8px 0; }
+.map a{ text-decoration:none; color:inherit; display:block; }
+.map a b{ display:block; font-size:15px; color:var(--k); }
+.map a span{ display:block; font-size:13px; line-height:1.5; color:var(--muted); }
+.map a:hover b{ text-decoration:underline; }
+.lbody h2.lh{ display:flex; align-items:baseline; gap:10px; scroll-margin-top:110px; }
+.gn{ flex:none; font:800 13px/1 var(--mono); color:var(--k); background:var(--ks); border-radius:6px; padding:5px 8px; transform:translateY(-2px); }
+.bridge{ color:var(--ink); }
+.ctopic h3.st{ display:flex; gap:10px; align-items:baseline; font:800 19px/1.35 var(--ui); margin:30px 0 12px; }
+.tn{ flex:none; font:700 12px var(--mono); color:var(--muted); min-width:2.6em; }
+.laytag{ font:800 11px/1 var(--ui); letter-spacing:.08em; text-transform:uppercase; color:var(--k); margin:0 0 8px; }
+.lay{ margin:0 0 18px; border-radius:12px; }
+.lay > :last-child{ margin-bottom:0; }
+.lay.plain{ padding:14px 16px; background:var(--ks); }
+.lay.plain p{ margin:0 0 10px; }
+.lay.check{ padding:14px 16px 6px; border:1px dashed var(--rule); }
+.lay.check details.qa{ background:var(--bg); }
+.lay.try{ padding:14px 16px; border:1px solid var(--rule); background:var(--surface); }
+details.lay.deeper{ border:1px solid var(--rule); background:var(--surface); }
+details.lay.deeper > summary{ cursor:pointer; list-style:none; display:flex; align-items:baseline; gap:10px; padding:12px 16px; font:800 14px var(--ui); color:var(--ink); }
+details.lay.deeper > summary::-webkit-details-marker{ display:none; }
+details.lay.deeper > summary::before{ content:"+"; flex:none; width:20px; height:20px; border-radius:6px; background:var(--sunk); color:var(--k); display:grid; place-items:center; font:800 14px/1 var(--mono); }
+details.lay.deeper[open] > summary::before{ content:"−"; }
+details.lay.deeper > summary small{ font-weight:600; font-size:12.5px; color:var(--muted); }
+.layin{ padding:4px 16px 2px; border-top:1px solid var(--rule); }
+.layin > :first-child{ margin-top:12px; }
+@media (max-width:640px){ .lay.plain, .lay.check, .lay.try{ padding-left:12px; padding-right:12px; } .layin{ padding-left:12px; padding-right:12px; } details.lay.deeper > summary small{ display:none; } }
+details.qa pre.code{ margin:0 16px 14px 48px; }
+@media (max-width:640px){ details.qa pre.code{ margin-left:16px; } }
+.guides{ display:flex; flex-direction:column; gap:4px; padding:0 4px 12px; margin-bottom:10px; border-bottom:1px solid var(--rule); }
+.guides a{ font-size:12.5px; font-weight:700; color:var(--muted); text-decoration:none; padding:5px 6px; border-radius:6px; }
+.guides a:hover{ background:var(--sunk); color:var(--ink); }
+.lay.guide{ padding:12px 16px; border:1px solid var(--rule); border-left:4px solid var(--k); background:var(--surface); }
+.lbody .ctopic .res{ margin-top:8px; }
+.markrow{ display:flex; justify-content:center; margin:36px 0 8px; }
+.markbtn{ border:1px solid var(--rule); background:var(--surface); color:var(--ink); border-radius:999px; padding:10px 20px; font:700 14px var(--ui); cursor:pointer; }
+.markbtn[aria-pressed="true"]{ background:var(--ok-soft); border-color:var(--ok); color:var(--ok); }
+.tlhead{ margin:44px 0 0; padding-top:16px; border-top:2px solid var(--k); }
+.tlhead h2{ margin:0 0 4px; font-size:24px; font-weight:800; letter-spacing:-.02em; }
+.tlhead p{ margin:0; color:var(--muted); font-size:14px; }
+.sres h2.sh{ font-size:13px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; color:var(--muted); margin:22px 0 10px; }
+
+
+/* practice lab */
+.pracnav{ display:block; margin:0 4px 12px; padding:10px 12px; border-radius:10px; background:var(--prep-soft); border:1px solid color-mix(in srgb, var(--prep) 35%, transparent); text-decoration:none; }
+.pracnav b{ display:block; color:var(--prep); font-size:14px; }
+.pracnav small{ color:var(--muted); font-size:11.5px; }
+.pracnav[aria-current="page"]{ outline:2px solid var(--prep); }
+.pracbtn{ text-decoration:none; color:var(--prep); }
+.pracban{ display:block; margin:0 0 26px; padding:14px 18px; border-radius:12px; background:var(--prep-soft); border:1px solid color-mix(in srgb, var(--prep) 35%, transparent); text-decoration:none; }
+.pracban b{ display:block; color:var(--prep); font-size:16px; margin-bottom:2px; }
+.pracban span{ color:var(--muted); font-size:14px; }
+.pr .ph1{ font-size:clamp(1.7rem,4vw,2.4rem); letter-spacing:-.03em; margin:6px 0 10px; font-weight:800; }
+.pr .ph2{ font-size:18px; font-weight:800; margin:26px 0 8px; }
+.pr .ph3{ font-size:14px; font-weight:800; margin:18px 0 8px; text-transform:uppercase; letter-spacing:.04em; color:var(--muted); }
+.plede{ font:17px/1.6 var(--read); color:var(--muted); margin:0 0 18px; }
+.ptabs{ display:flex; flex-wrap:wrap; gap:6px; margin:0 0 20px; padding-bottom:10px; border-bottom:1px solid var(--rule); }
+.ptabs a{ padding:6px 12px; border-radius:8px; text-decoration:none; font-weight:700; font-size:13.5px; color:var(--muted); }
+.ptabs a[aria-current="page"]{ background:var(--ink); color:var(--bg); }
+.pgrid{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; margin:0 0 22px; }
+.pcardx{ display:block; text-align:left; padding:16px 18px; border-radius:12px; border:1px solid var(--rule); background:var(--surface); text-decoration:none; cursor:pointer; font:inherit; color:inherit; }
+.pcardx:hover{ border-color:var(--prep); }
+.pcardx b{ display:block; font-size:16px; margin-bottom:4px; }
+.pcardx span{ display:block; font-size:13.5px; color:var(--muted); }
+.pcardx em{ display:block; font-style:normal; margin-top:8px; font:600 12px var(--mono); color:var(--prep); }
+.pfil{ display:flex; flex-wrap:wrap; gap:8px 14px; align-items:center; margin:0 0 14px; font-size:13.5px; color:var(--muted); }
+.pfil select{ font:inherit; color:var(--ink); background:var(--surface); border:1px solid var(--rule); border-radius:8px; padding:5px 8px; margin-left:6px; max-width:240px; }
+.plist{ list-style:none; margin:0; padding:0; }
+.plist a{ display:flex; align-items:center; gap:12px; padding:11px 4px; border-bottom:1px solid var(--rule); text-decoration:none; }
+.plist a:hover .pt b{ color:var(--prep); }
+.pn{ font:600 12px var(--mono); color:var(--faint); min-width:22px; }
+.pt{ flex:1; min-width:0; }
+.pt b{ display:block; font-size:15px; }
+.pt small{ color:var(--muted); font:12px var(--mono); }
+.lvl{ font:700 11px var(--ui); padding:2px 8px; border-radius:5px; background:var(--sunk); color:var(--muted); }
+.lvl-Easy{ background:var(--ok-soft); color:var(--ok); } .lvl-Medium{ background:var(--accent-soft); color:var(--accent); } .lvl-Hard{ background:var(--stream-soft); color:var(--stream); }
+.ok{ width:18px; color:var(--ok); font-weight:800; }
+.okb{ font:700 12px var(--ui); color:var(--ok); }
+.phead{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; }
+.phead .ph1{ flex:1 1 auto; }
+.pq{ font:17px/1.65 var(--read); margin:14px 0; }
+.ptables{ font-size:13px; color:var(--muted); margin:0 0 12px; display:flex; flex-wrap:wrap; gap:6px; align-items:center; }
+.details.hint{ margin-bottom:6px; }
+.ped{ width:100%; min-height:220px; resize:vertical; font:13.5px/1.55 var(--mono); color:var(--ink); background:var(--surface); border:1px solid var(--rule); border-radius:10px; padding:12px 14px; tab-size:2; margin-top:10px; }
+.ped:focus{ outline:2px solid var(--prep); outline-offset:1px; }
+.ped.notes{ font:15px/1.6 var(--ui); min-height:180px; }
+.pbar{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; margin:10px 0 14px; }
+.pbtn{ font:700 13.5px var(--ui); padding:8px 14px; border-radius:9px; border:1px solid var(--rule); background:var(--surface); color:var(--ink); cursor:pointer; }
+.pbtn.pri{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+.pbtn.ghost{ background:transparent; }
+.pbtn.sm{ padding:4px 10px; font-size:12.5px; }
+.pbtn.good{ border-color:var(--ok); color:var(--ok); } .pbtn.bad{ border-color:#DC2626; color:#DC2626; }
+.pbtn kbd{ font:500 10px var(--mono); opacity:.7; margin-left:4px; }
+.pstat{ font:600 12.5px var(--mono); color:var(--muted); } .pstat.good{ color:var(--ok); } .pstat.bad{ color:#DC2626; }
+.ptimer{ display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border:1px solid var(--rule); border-radius:10px; background:var(--surface); margin:4px 0 6px; }
+.ptimer .tv{ font:700 18px var(--mono); min-width:64px; }
+.ptimer.over .tv{ color:#DC2626; }
+.ptimer small{ color:var(--faint); font-size:12px; }
+.ptbl{ overflow-x:auto; border:1px solid var(--rule); border-radius:10px; }
+.ptbl table{ border-collapse:collapse; width:100%; font:12.5px/1.45 var(--mono); }
+.ptbl th{ text-align:left; background:var(--sunk); padding:6px 10px; position:sticky; top:0; }
+.ptbl td{ padding:5px 10px; border-top:1px solid var(--rule); white-space:nowrap; }
+.ptbl td.nul{ color:var(--faint); font-style:italic; }
+.pmeta{ font:12.5px var(--mono); color:var(--muted); margin:6px 0 12px; }
+.pverdict{ padding:12px 14px; border-radius:10px; margin:0 0 12px; font-size:14px; line-height:1.5; }
+.pverdict.good{ background:var(--ok-soft); border:1px solid var(--ok); }
+.pverdict.bad{ background:var(--accent-soft); border:1px solid var(--accent); }
+.fcard{ padding:20px; border:1px solid var(--rule); border-top:4px solid var(--k); border-radius:12px; background:var(--surface); }
+.fcard small{ display:block; font-weight:700; color:var(--muted); font-size:12px; margin-bottom:8px; }
+.fcard .ff{ font:600 19px/1.45 var(--ui); }
+.fcard .fb{ font:17px/1.6 var(--read); margin-top:14px; padding-top:14px; border-top:1px dashed var(--rule); }
+.fbtns{ display:flex; flex-wrap:wrap; gap:8px; margin-top:18px; }
+.fbtns span{ display:flex; flex-wrap:wrap; gap:8px; }
+.flink{ display:inline-block; margin-top:14px; font-size:13px; color:var(--k); }
+.rub{ list-style:none; padding:0; margin:0 0 6px; }
+.rub li{ padding:6px 0; border-bottom:1px solid var(--rule); font-size:14.5px; }
+.rub input{ margin-right:8px; accent-color:var(--ok); }
+.mq{ padding:14px 0; border-bottom:1px solid var(--rule); }
+.mqh{ display:flex; gap:10px; font:16px/1.55 var(--read); margin-bottom:8px; }
+.mqh small{ display:block; font:700 11.5px var(--ui); color:var(--muted); margin-bottom:2px; }
+.mscore{ display:flex; gap:6px; flex-wrap:wrap; }
+.phist{ padding-left:18px; font-size:14px; }
+@media (max-width:640px){ .pgrid{ grid-template-columns:minmax(0,1fr); } .pracbtn{ display:none; } .ped{ min-height:180px; } }
+
+/* search */
+.sres h1{ font-size:22px; margin:0 0 4px; }
+.sres > p{ color:var(--muted); margin:0 0 18px; }
+.hit{ display:block; padding:12px 14px; border:1px solid var(--rule); border-radius:10px; background:var(--surface); text-decoration:none; margin-bottom:8px; }
+.hit:hover{ border-color:var(--accent); }
+.hit small{ display:block; font-size:11.5px; font-weight:700; color:var(--muted); margin-bottom:2px; }
+.hit b{ display:block; font-size:14.5px; }
+.hit span{ display:block; font:14.5px/1.5 var(--read); color:var(--muted); margin-top:3px; }
+mark{ background:var(--mark); color:inherit; border-radius:2px; padding:0 1px; }
+
+/* svg diagrams */
+.dg text{ fill:var(--ink); font-family:var(--ui); font-size:13px; }
+.dg .sm{ font-size:11px; fill:var(--muted); }
+.dg .b{ font-weight:700; }
+.dg .mono{ font-family:var(--mono); font-size:11px; }
+.dg .box{ fill:var(--dg-box); stroke:var(--dg-line); stroke-width:1.2; }
+.dg .fill{ fill:var(--dg-fill); stroke:var(--dg-line); stroke-width:1; }
+.dg .ln{ stroke:var(--dg-line); stroke-width:1.4; fill:none; }
+.dg .dash{ stroke-dasharray:5 4; }
+.dg .sp{ fill:var(--accent-soft); stroke:var(--accent); stroke-width:1.2; }
+.dg .st{ fill:var(--stream-soft); stroke:var(--stream); stroke-width:1.2; }
+.dg .ka{ fill:var(--kafka-soft); stroke:var(--kafka); stroke-width:1.2; }
+.dg .pr{ fill:var(--prep-soft); stroke:var(--prep); stroke-width:1.2; }
+.dg .okf{ fill:var(--ok-soft); stroke:var(--ok); stroke-width:1.2; }
+.dg .acc{ stroke:var(--accent); stroke-width:2; fill:none; }
+.dg .kac{ stroke:var(--kafka); stroke-width:2; fill:none; }
+.dg .stc{ stroke:var(--stream); stroke-width:2; fill:none; }
+.dg .mk{ fill:var(--dg-line); }
+.dg .bad{ fill:none; stroke:#DC2626; stroke-width:2; }
+.dg .tR{ fill:#DC2626; }
+.dg .tA{ fill:var(--accent); } .dg .tK{ fill:var(--kafka); } .dg .tS{ fill:var(--stream); } .dg .tP{ fill:var(--prep); }
+
+dialog.lb{ border:0; padding:0; max-width:min(1200px,96vw); width:96vw; background:var(--surface); color:var(--ink); border-radius:14px; }
+dialog.lb::backdrop{ background:rgba(10,12,16,.72); }
+.lb .lbin{ padding:16px; overflow:auto; max-height:86vh; }
+.lb .lbin svg{ width:100%; height:auto; min-width:760px; }
+.lb .lbin img{ max-width:100%; display:block; margin:0 auto; background:#fff; }
+.lb .lbbar{ display:flex; align-items:center; gap:10px; padding:10px 14px; border-top:1px solid var(--rule); font-size:13px; color:var(--muted); }
+.lb .lbbar span{ flex:1; }
+
+footer.foot{ margin-top:56px; padding-top:18px; border-top:1px solid var(--rule); font-size:12.5px; color:var(--faint); }
+.empty{ padding:40px 0; color:var(--muted); }
+
+@media (max-width:1279px){ .shell{ grid-template-columns:276px minmax(0,1fr); } .rail{ display:none; } }
+@media (max-width:959px){
+  #menuBtn{ display:inline-grid; }
+  .brand small{ display:none; }
+  .shell, .shell.norail{ grid-template-columns:minmax(0,1fr); }
+  .nav{ position:fixed; z-index:40; top:0; left:0; bottom:0; height:100%; width:min(320px,86vw); transform:translateX(-102%); transition:transform .22s ease; padding-top:calc(16px + env(safe-area-inset-top,0px)); box-shadow:0 0 40px rgba(0,0,0,.25); }
+  body.navopen .nav{ transform:none; }
+  body.navopen .scrim{ display:block; position:fixed; inset:0; z-index:35; background:rgba(10,12,16,.45); }
+  .topprog .lbl, .seg.view .wide{ display:none; }
+  .stats{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .parts, .howto{ grid-template-columns:minmax(0,1fr); }
+}
+@media (max-width:640px){
+  .top{ gap:8px; padding:0 10px; }
+  .brand .txt{ display:none; }
+  .search kbd{ display:none; }
+  .topprog{ display:none; }
+  .seg.view{ display:none; }
+  .chip.mobonly{ display:inline-block; }
+  .lede{ font-size:17px; }
+  .tx{ font-size:16px; }
+  .pager{ grid-template-columns:minmax(0,1fr); }
+  .pager .nx{ grid-column:1; }
+  .fig figcaption{ flex-direction:column; gap:4px; }
+  .lbody{ font-size:16.5px; }
+  .lbody h2.lh{ font-size:20px; }
+}
+@media (prefers-reduced-motion: reduce){ .nav{ transition:none; } .topic.flash{ animation:none; } }
+@media print{ .top,.nav,.rail,.pager{ display:none !important; } .shell{ display:block; } body.compact .tx{ display:block; } }
+</style>
+</head>
+<body>
+<header class="top">
+  <button class="iconbtn" id="menuBtn" aria-label="Open sections" aria-controls="nav">☰</button>
+  <a class="brand" href="#" aria-label="Home"><span class="logo">📖</span><span class="txt">Agentic AI glossary<small>Terms explained</small></span></a>
+  <label class="search"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><circle cx="7" cy="7" r="5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M11 11l3.5 3.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><input id="q" type="search" placeholder="Search topics and explanations" aria-label="Search topics and explanations" autocomplete="off"><kbd>/</kbd></label>
+  <button class="iconbtn" id="themeBtn" aria-label="Switch colour theme" title="Theme">◐</button>
+  <div class="topprog" title="Overall progress"><span class="ring" id="ring"></span><span class="lbl" id="progLbl">0%</span></div>
+</header>
+<div class="shell" id="shell">
+  <nav class="nav" id="nav" aria-label="Sections">
+    <div class="guides"><a href="index.html">🗄️ Data engineering course</a><a href="agentic-ai-guide.html">🤖 Agentic AI course</a><a href="agentic-ai-glossary.html">📖 Agentic AI glossary</a><a href="java-fullstack-guide.html">☕ Java full stack guide</a><a href="pyspark-streaming-kafka-topic-map.html">⚡ PySpark + Kafka guide</a><a href="python-end-to-end-topic-map.html">🐍 Python guide</a></div>
+    <div id="navParts"></div>
+  </nav>
+  <main id="main" tabindex="-1"></main>
+  <aside class="rail" id="rail" aria-label="On this page"></aside>
+</div>
+<div class="scrim" id="scrim"></div>
+<dialog class="lb" id="lb"><div class="lbin" id="lbin"></div><div class="lbbar"><span id="lbcap"></span><button class="iconbtn" id="lbclose">Close</button></div></dialog>
+<script>
+
+var MK = function(id){ return '<defs><marker id="' + id + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0,0 L10,5 L0,10 z"/></marker></defs>'; };
+var FIGS = {};
+/* helpers for lesson diagrams */
+function B(x, y, w, h, c, lines, bold){
+  var s = '<rect class="' + c + '" x="' + x + '" y="' + y + '" width="' + w + '" height="' + h + '" rx="8"/>';
+  var n = lines.length, lh = 16, y0 = y + h / 2 - (n - 1) * lh / 2 + 4;
+  lines.forEach(function(t, i){ s += '<text x="' + (x + w / 2) + '" y="' + (y0 + i * lh) + '" text-anchor="middle"' + (i === 0 ? (bold === false ? '' : ' class="b"') : ' class="sm"') + '>' + t + '</text>'; });
+  return s;
+}
+function A(id, d, cls){ return '<path class="' + (cls || "ln") + '" d="' + d + '" marker-end="url(#' + id + ')"/>'; }
+function T(x, y, t, c, anchor){ return '<text x="' + x + '" y="' + y + '"' + (c ? ' class="' + c + '"' : '') + (anchor ? ' text-anchor="' + anchor + '"' : '') + '>' + t + '</text>'; }
+function S(id, h, label, body){ return '<svg class="dg" viewBox="0 0 760 ' + h + '" role="img" aria-label="' + label + '">' + MK(id) + body + '</svg>'; }
+
+
+/* figs2: Part I (the language) diagrams, original drawings */
+
+var PARTS = [{"n": "Glossary", "k": "kafka", "i": "Every agentic AI term, explained in plain words.", "s": []}];
+(function(){
+"use strict";
+var KEY = "agentic-ai-glossary-v1";
+var ROMAN = ["I","II","III","IV","V","VI","VII","VIII","IX","X","XI","XII","XIII","XIV","XV"];
+function load(k, d){ try { var v = localStorage.getItem(KEY + ":" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } }
+function store(k, v){ try { localStorage.setItem(KEY + ":" + k, JSON.stringify(v)); } catch (e) {} }
+var done = load("done", {}) || {};
+var prefs = load("prefs", {}) || {};
+prefs.mode = prefs.mode || "read"; prefs.level = prefs.level || "All";
+
+function $(s){ return document.querySelector(s); }
+function $$(s, r){ return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
+function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]; }); }
+function fmt(s){ return esc(s).replace(/`([^`]+)`/g, "<code>$1</code>"); }
+function plain(s){ return String(s).replace(/`/g, ""); }
+
+/* index the data */
+var SECS = [], BY = {}, TOTAL = 0;
+PARTS.forEach(function(p, pi){
+  p.s.forEach(function(s){
+    s.pi = pi; s.k = p.k; s.ids = [];
+    s.g.forEach(function(g, gi){ g[1].forEach(function(it, ii){ s.ids.push(s.id + "." + gi + "." + ii); }); });
+    TOTAL += s.ids.length; SECS.push(s); BY[s.id] = s;
+  });
+});
+
+var main = $("#main"), rail = $("#rail"), navParts = $("#navParts"), shell = $("#shell"), q = $("#q");
+var current = null;
+
+function lvOk(s){ return true; }
+function isRead(s){ return !!done["sec:" + s.id]; }
+
+/* nav */
+function renderNav(){
+  var h = "";
+  PARTS.forEach(function(p, pi){
+    var secs = p.s.filter(lvOk); if (!secs.length) return;
+    var collapsed = (prefs.collapsed || {})[pi] ? " collapsed" : "";
+    h += '<div class="np' + collapsed + '" data-k="' + p.k + '" data-pi="' + pi + '"><button class="nph" type="button" aria-expanded="' + (!collapsed) + '"><i></i><span>' + ROMAN[pi] + ". " + esc(p.n) + '</span><b data-pc="' + pi + '"></b></button><ol>';
+    secs.forEach(function(s){ h += '<li><a href="#' + s.id + '" data-sec="' + s.id + '"><span>' + esc(s.t) + '</span><small data-nc="' + s.id + '"></small></a></li>'; });
+    h += "</ol></div>";
+  });
+  navParts.innerHTML = h || '<p class="empty">No sections at this level.</p>';
+  counts(); markNav();
+}
+navParts.addEventListener("click", function(e){
+  var b = e.target.closest(".nph");
+  if (b){ var np = b.parentElement, pi = np.dataset.pi; np.classList.toggle("collapsed"); b.setAttribute("aria-expanded", String(!np.classList.contains("collapsed"))); prefs.collapsed = prefs.collapsed || {}; prefs.collapsed[pi] = np.classList.contains("collapsed"); store("prefs", prefs); return; }
+  if (e.target.closest("a")) document.body.classList.remove("navopen");
+});
+function markNav(){
+  $$(".np a").forEach(function(a){ if (current && a.dataset.sec === current.id) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current"); });
+  var cur = current && navParts.querySelector('a[data-sec="' + current.id + '"]');
+  if (cur){ var np = cur.closest(".np"); if (np.classList.contains("collapsed")){ np.classList.remove("collapsed"); } var r = cur.getBoundingClientRect(), nr = $("#nav").getBoundingClientRect(); if (r.top < nr.top + 60 || r.bottom > nr.bottom) cur.scrollIntoView({block:"center"}); }
+}
+
+/* reading progress: whole sections */
+function counts(){
+  var all = 0;
+  PARTS.forEach(function(p, pi){ var d = p.s.filter(isRead).length; var el = navParts.querySelector('[data-pc="' + pi + '"]'); if (el) el.textContent = d + "/" + p.s.length; });
+  SECS.forEach(function(s){
+    var r = isRead(s); if (r) all++;
+    $$('[data-nc="' + s.id + '"]').forEach(function(el){ el.textContent = r ? "✓" : ""; el.parentElement.classList.toggle("full", r); });
+    $$('[data-mini="' + s.id + '"]').forEach(function(el){ el.style.width = r ? "100%" : "0"; });
+    $$('[data-mark="' + s.id + '"]').forEach(function(b){ b.setAttribute("aria-pressed", String(r)); b.textContent = r ? "✓ Read" : "Mark section as read"; });
+  });
+  var pct = SECS.length ? Math.round(all / SECS.length * 100) : 0;
+  $("#ring").style.setProperty("--p", pct); $("#progLbl").textContent = pct + "% · " + all + "/" + SECS.length;
+  var hp = $("#homePct"); if (hp) hp.textContent = pct + "%";
+  var hd = $("#homeDone"); if (hd) hd.textContent = all;
+}
+
+/* resources */
+function kind(u){
+  if (!u) return "Book";
+  if (/youtube\.com|youtu\.be/.test(u)) return "Video";
+  if (/\.pdf($|\?)|vldb\.org|usenix\.org|research\.google|arxiv\.org|aphyr\.com/.test(u)) return "Paper";
+  if (/github\.com/.test(u)) return "Repo";
+  if (/peps\.python\.org/.test(u)) return "PEP";
+  if (/leetcode\.com|neetcode\.io|hackerrank\.com|codeforces\.com|exercism\.org/.test(u)) return "Practice";
+  if (/docs\.python\.org|devguide\.python\.org|packaging\.python\.org|wiki\.python\.org|readthedocs\.io|cp-algorithms\.com/.test(u)) return "Docs";
+  if (/succinctly-free-ebooks|oreilly\.com\/library|oreilly\.com\/catalog|manning\.com|pragprog\.com|dataintensive\.net|amazon\.[a-z.]+\/.*\/dp\//.test(u)) return "Book";
+  if (/coursera\.org|udemy\.com|cloudskillsboost\.google|skills\.google|datacamp\.com|educative\.io|edx\.org|learn\.|academy|\/courses?\//.test(u)) return "Course";
+  if (/cloud\.google\.com\/[a-z-]+\/docs|cloud\.google\.com\/architecture|cloud\.google\.com\/docs|developer\.hashicorp|kubernetes\.io|postgresql\.org\/docs|redis\.io\/docs|flink\.apache|beam\.apache|trino\.io|duckdb\.org|clickhouse\.com\/docs|druid\.apache|pinot\.apache|delta\.io|paimon\.apache|arrow\.apache|avro\.apache|orc\.apache|hadoop\.apache|hive\.apache|hbase\.apache|getdbt\.com|dagster\.io|prefect\.io|datahubproject|cassandra\.apache|calcite\.apache|velox-lib|starrocks\.io|doris\.apache|pulsar\.apache|nifi\.apache|dvc\.org|lakefs\.io|mlflow\.org/.test(u)) return "Docs";
+  if (/cloud\.google\.com\/blog|engineering\.|\/blog\/|medium\.com|substack\.com/.test(u)) return "Blog";
+  if (/developer\.confluent\.io\/courses|databricks\.com\/learn|datavidhya\.com\/learn|certification/.test(u)) return "Course";
+  if (/spark\.apache\.org|kafka\.apache\.org|cwiki\.apache\.org|issues\.apache\.org|iceberg\.apache\.org|hudi\.apache\.org|parquet\.apache\.org|airflow\.apache\.org|docs\.|openlineage\.io|datafusion\.apache|gluten\.apache|celeborn\.apache|books\.japila|graphframes\.io|debezium\.io/.test(u)) return "Docs";
+  return "Article";
+}
+function resBox(list, title){
+  if (!list || !list.length) return "";
+  return '<div class="res"><h4>' + (title || "Read more") + '</h4><ul>' + list.map(function(r){
+    var ty = r[3] || kind(r[1]);
+    var main = r[1] ? '<a href="' + esc(r[1]) + '" target="_blank" rel="noopener">' + esc(r[0]) + '</a>' : '<cite>' + esc(r[0]) + '</cite>';
+    return '<li><span class="ty">' + ty + '</span><span>' + main + (r[2] ? ' <em>· ' + fmt(r[2]) + '</em>' : '') + '</span></li>';
+  }).join("") + '</ul></div>';
+}
+
+/* figures */
+function figs(keys){
+  return (keys || []).map(function(k){
+    var f = FIGS[k]; if (!f) return "";
+    var body = f.svg ? f.svg : '<img src="' + esc(f.img) + '" alt="' + esc(f.alt || f.cap) + '" loading="lazy" decoding="async"' + (f.w ? ' width="' + f.w + '" height="' + f.h + '"' : '') + '>';
+    return '<figure class="fig" data-fig="' + k + '"><div class="canvas" role="button" tabindex="0" aria-label="Enlarge diagram: ' + esc(f.cap) + '">' + body + '</div><figcaption><span><b>' + esc(f.t || "Diagram") + '.</b> ' + fmt(f.cap) + '</span>' + (f.credit ? '<small>' + esc(f.credit) + '</small>' : '<small>Original diagram</small>') + '</figcaption></figure>';
+  }).join("");
+}
+var lb = $("#lb");
+function openFig(fig){
+  var f = FIGS[fig.dataset.fig]; if (!f || !lb.showModal) return;
+  $("#lbin").innerHTML = fig.querySelector(".canvas").innerHTML; $("#lbcap").textContent = (f.t ? f.t + ". " : "") + plain(f.cap);
+  lb.showModal();
+}
+$("#lbclose").addEventListener("click", function(){ lb.close(); });
+lb.addEventListener("click", function(e){ if (e.target === lb) lb.close(); });
+
+/* lessons: a small markdown dialect */
+var LESSON = {};
+$$('script[data-lesson]').forEach(function(el){ LESSON[el.dataset.lesson] = el.textContent.replace(/^\n+/, ""); });
+var DEEP = {};
+$$('script[data-deep]').forEach(function(el){
+  var sid = el.dataset.deep, groups = [], cur = null, topic = null;
+  el.textContent.replace(/\r/g, "").split("\n").forEach(function(line){
+    if (/^## /.test(line)){ cur = {title: line.slice(3).trim(), topics: []}; groups.push(cur); topic = null; return; }
+    if (/^### /.test(line) && cur){ topic = {title: line.slice(4).trim(), body: []}; cur.topics.push(topic); return; }
+    if (topic) topic.body.push(line); else if (cur){ cur.intro = (cur.intro || "") + line + "\n"; }
+  });
+  groups.forEach(function(g){ g.topics.forEach(function(t){ t.body = t.body.join("\n").trim(); }); });
+  DEEP[sid] = groups;
+});
+var COURSE = {};
+$$('script[data-course]').forEach(function(el){
+  var c = {intro: "", groups: []}, cur = null, topic = null;
+  el.textContent.replace(/\r/g, "").split("\n").forEach(function(line){
+    if (/^## /.test(line)){ cur = {title: line.slice(3).trim(), intro: "", topics: []}; c.groups.push(cur); topic = null; return; }
+    if (/^### /.test(line) && cur){ topic = {title: line.slice(4).trim(), body: []}; cur.topics.push(topic); return; }
+    if (topic) topic.body.push(line); else if (cur) cur.intro += line + "\n"; else c.intro += line + "\n";
+  });
+  c.groups.forEach(function(g){ g.topics.forEach(function(t){ t.body = t.body.join("\n").trim(); }); });
+  COURSE[el.dataset.course] = c;
+});
+function deepText(sid, gi, ii){
+  var c = COURSE[sid]; if (c && c.groups[gi] && c.groups[gi].topics[ii]) return c.groups[gi].topics[ii].body;
+  var d = DEEP[sid]; return d && d[gi] && d[gi].topics[ii] ? d[gi].topics[ii].body : "";
+}
+var LESSON_WORDS = 0; Object.keys(LESSON).forEach(function(k){ LESSON_WORDS += LESSON[k].split(/\s+/).length; });
+Object.keys(DEEP).forEach(function(k){ DEEP[k].forEach(function(g){ g.topics.forEach(function(t){ LESSON_WORDS += t.body.split(/\s+/).length; }); }); });
+Object.keys(COURSE).forEach(function(k){ LESSON_WORDS += COURSE[k].intro.split(/\s+/).length; COURSE[k].groups.forEach(function(g){ LESSON_WORDS += g.intro.split(/\s+/).length; g.topics.forEach(function(t){ LESSON_WORDS += t.body.split(/\s+/).length; }); }); });
+function inl(s){
+  var codes = [];
+  var t = String(s).replace(/`([^`]+)`/g, function(_, c){ codes.push(c); return "\u0000" + (codes.length - 1) + "\u0000"; });
+  var e = esc(t);
+  e = e.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>');
+  e = e.replace(/\*\*([^*]+?)\*\*/g, "<strong>$1</strong>");
+  e = e.replace(/(^|[\s(])\*([^*\s][^*]*?)\*(?=[\s).,;:!?]|$)/g, "$1<em>$2</em>");
+  return e.replace(/\u0000(\d+)\u0000/g, function(_, i){ return "<code>" + esc(codes[+i]) + "</code>"; });
+}
+function mdTable(rows){
+  var cells = function(r){ return r.replace(/^\|/, "").replace(/\|\s*$/, "").split(/(?<!\\)\|/).map(function(c){ return c.trim().replace(/\\\|/g, "|"); }); };
+  var head = cells(rows[0]), body = rows.slice(1).filter(function(r){ return !/^\|\s*:?-{2,}/.test(r); });
+  return '<div class="tbl"><table><thead><tr>' + head.map(function(c){ return "<th>" + inl(c) + "</th>"; }).join("") + '</tr></thead><tbody>' + body.map(function(r){ return "<tr>" + cells(r).map(function(c){ return "<td>" + inl(c) + "</td>"; }).join("") + "</tr>"; }).join("") + "</tbody></table></div>";
+}
+var BLOCK = /^(```|#{2,4}\s|>|\?\?\s|\||- |\d+\.\s|\[\[fig:|:::)/;
+var LAYER = {plain: "In plain words", deeper: "Go deeper", check: "Check yourself", try: "Try it yourself", guide: "Full depth in the companion guide"};
+var RTYPES = /^(Book|Docs|Paper|Course|Video|Article|Repo|Talk|Blog|Spec|Tool):\s*/;
+function resList(lines){
+  var items = [];
+  lines.forEach(function(l){
+    var t = l.replace(/^\s*-\s+/, ""), ty = "", m2;
+    if (!/^\s*-\s+/.test(l)) return;
+    if ((m2 = t.match(RTYPES))){ ty = m2[1]; t = t.slice(m2[0].length); }
+    var mm = t.match(/^\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)\s*(?:[·—–-]\s*(.*))?$/);
+    if (mm) items.push([mm[1], mm[2], mm[3] || "", ty]); else items.push([t.replace(/^\*|\*$/g, ""), "", "", ty || "Book"]);
+  });
+  return resBox(items, "Resources to learn this topic in depth");
+}
+function layer(kind, inner){
+  if (kind === "deeper") return '<details class="lay deeper"><summary><span>Go deeper</span><small>internals, edge cases and interview angles</small></summary><div class="layin">' + inner + '</div></details>';
+  return '<div class="lay ' + esc(kind) + '"><div class="laytag">' + esc(LAYER[kind] || kind) + '</div>' + inner + '</div>';
+}
+function md(src, sid){
+  var lines = src.replace(/\r/g, "").split("\n"), i = 0, h = "", heads = [], m;
+  while (i < lines.length){
+    var L = lines[i];
+    if (/^\s*$/.test(L)){ i++; continue; }
+    if ((m = L.match(/^```(\w*)/))){ var code = []; i++; while (i < lines.length && !/^```/.test(lines[i])){ code.push(lines[i]); i++; } i++; h += '<pre class="code"' + (m[1] ? ' data-lang="' + m[1] + '"' : "") + "><code>" + esc(code.join("\n")) + "</code></pre>"; continue; }
+    if ((m = L.match(/^:::\s*(\w+)\s*$/))){ var inner = [], depth = 1, fence = false; i++; while (i < lines.length){ if (/^```/.test(lines[i])) fence = !fence; if (!fence){ if (/^:::\s*\w+\s*$/.test(lines[i])) depth++; else if (/^:::\s*$/.test(lines[i]) && !--depth) break; } inner.push(lines[i]); i++; } i++; if (m[1] === "resources"){ h += resList(inner); continue; } var sub = md(inner.join("\n"), sid); h += layer(m[1], sub.html); continue; }
+    if ((m = L.match(/^####\s+(.*)$/))){ h += '<h4 class="lh4">' + inl(m[1]) + "</h4>"; i++; continue; }
+    if ((m = L.match(/^(#{2,3})\s+(.*)$/))){ if (m[1].length === 2){ var aid = sid + "--l" + heads.length; heads.push([aid, m[2]]); h += '<h2 class="lh" id="' + aid + '">' + inl(m[2]) + "</h2>"; } else h += '<h3 class="lh3">' + inl(m[2]) + "</h3>"; i++; continue; }
+    if ((m = L.match(/^\[\[fig:([\w-]+)\]\]\s*$/))){ h += figs([m[1]]); i++; continue; }
+    if (/^>/.test(L)){ var q = []; while (i < lines.length && /^>/.test(lines[i])){ q.push(lines[i].replace(/^>\s?/, "")); i++; } var t = q.join(" "), kind = ((t.match(/^\*\*(\w+)/) || [])[1] || "note").toLowerCase(); h += '<div class="callout c-' + kind + '">' + inl(t) + "</div>"; continue; }
+    if (/^\?\?\s/.test(L)){
+      var qq = L.replace(/^\?\?\s+/, ""), ans = [], extra = ""; i++;
+      while (i < lines.length && !/^\s*$/.test(lines[i]) && !/^\?\?\s/.test(lines[i])){ ans.push(lines[i]); i++; }
+      if (!ans.length){ var j = i; while (j < lines.length && /^\s*$/.test(lines[j])) j++; var fm = j < lines.length && lines[j].match(/^```(\w*)/); if (fm){ var cl = []; j++; while (j < lines.length && !/^```/.test(lines[j])){ cl.push(lines[j]); j++; } i = j + 1; extra = '<pre class="code"' + (fm[1] ? ' data-lang="' + fm[1] + '"' : "") + "><code>" + esc(cl.join("\n")) + "</code></pre>"; } }
+      h += '<details class="qa"><summary><span>' + inl(qq) + "</span></summary>" + (ans.length ? "<p>" + inl(ans.join(" ")) + "</p>" : "") + extra + "</details>"; continue;
+    }
+    if (/^\|/.test(L)){ var rows = []; while (i < lines.length && /^\|/.test(lines[i])){ rows.push(lines[i]); i++; } h += mdTable(rows); continue; }
+    if (/^(- |\d+\.\s)/.test(L)){
+      var ordered = /^\d+\.\s/.test(L), items = [];
+      while (i < lines.length && (/^(- |\d+\.\s)/.test(lines[i]) || /^ {2,}\S/.test(lines[i]))){
+        if (/^(- |\d+\.\s)/.test(lines[i])) items.push(lines[i].replace(/^(- |\d+\.\s+)/, "")); else items[items.length - 1] += " " + lines[i].trim();
+        i++;
+      }
+      h += (ordered ? "<ol>" : "<ul>") + items.map(function(x){ return "<li>" + inl(x) + "</li>"; }).join("") + (ordered ? "</ol>" : "</ul>"); continue;
+    }
+    var buf = []; while (i < lines.length && !/^\s*$/.test(lines[i]) && !BLOCK.test(lines[i])){ buf.push(lines[i]); i++; }
+    if (buf.length) h += "<p>" + inl(buf.join(" ")) + "</p>"; else i++;
+  }
+  return {html:h, heads:heads};
+}
+
+/* views */
+function renderHome(){
+  current = null; shell.classList.add("norail"); rail.innerHTML = "";
+  var last = prefs.last && BY[prefs.last];
+  var nfig = Object.keys(FIGS).length;
+  var nles = SECS.length;
+  var h = '<div class="col"><section class="hero"><p class="eyebrow">Agentic AI glossary</p><h1>Agentic AI <em>glossary</em></h1><p>Every term you will meet in the agentic AI world, explained in plain words: models and tokens, prompting, tools and protocols, agent patterns, memory and retrieval, multi-agent systems, frameworks and platforms, evaluation, safety and operations. Each entry gives a short definition, an example where it helps, and a link to the course topic that teaches it in depth. Press / to search.</p></section>';
+  h += '<div class="stats"><div class="stat"><b>' + nles + '</b><span>sections · ' + Math.round(LESSON_WORDS / 1000) + 'k words</span></div><div class="stat"><b>' + TOTAL + '</b><span>topics, each fully explained</span></div><div class="stat"><b>' + nfig + '</b><span>diagrams</span></div><div class="stat"><b id="homePct">0%</b><span><span id="homeDone">0</span> sections read</span></div></div>';
+  h += '<div class="cta"><a class="btn pri" href="#' + SECS[0].id + '">Browse the glossary →</a><a class="btn" href="agentic-ai-guide.html">Agentic AI course</a><a class="btn" href="index.html">Data engineering course</a></div>';
+  h += '<div class="howto"><div><b>Read in order</b>Each section builds on the previous ones. Read "In plain words" first, skip "Go deeper" on a first pass, and answer "Check yourself" before moving on.</div><div><b>Search everything</b>Press <code>/</code> and type an error, config or concept: search covers titles and explanations.</div><div><b>Move quickly</b>Use the sidebar, or <code>[</code> and <code>]</code> for the previous and next section. Click any diagram to enlarge it.</div></div>';
+  h += '<div class="parts">';
+  PARTS.forEach(function(p, pi){
+    var secs = p.s.filter(lvOk); if (!secs.length) return;
+    h += '<div class="pcard" data-k="' + p.k + '"><h3><small>' + ROMAN[pi] + '</small>' + esc(p.n) + '</h3><p>' + esc(p.i) + '</p><ul>' + secs.map(function(s){ return '<li><a href="#' + s.id + '"><span>' + esc(s.t) + '</span><span class="mini"><i data-mini="' + s.id + '"></i></span></a></li>'; }).join("") + '</ul></div>';
+  });
+  h += '</div>' + foot() + '</div>';
+  main.innerHTML = h; document.title = "Agentic AI glossary"; markNav(); counts();
+}
+function foot(){ return '<footer class="foot">Definitions written for this glossary, checked against official documentation and papers as of November 2026.</footer>'; }
+
+function renderCourse(s, focusItem){
+  var c = COURSE[s.id], h = '', used = {};
+  var scan = function(t){ t.replace(/\[\[fig:([\w-]+)\]\]/g, function(_, k){ used[k] = 1; return ""; }); };
+  scan(c.intro); c.groups.forEach(function(g){ scan(g.intro); g.topics.forEach(function(t){ scan(t.body); }); });
+  var notUsed = function(keys){ return (keys || []).filter(function(k){ if (used[k]) return false; used[k] = 1; return true; }); };
+  var words = c.intro.split(/\s+/).length, ntop = 0;
+  c.groups.forEach(function(g){ words += g.intro.split(/\s+/).length; g.topics.forEach(function(t){ words += t.body.split(/\s+/).length; }); });
+  s.g.forEach(function(g){ ntop += g[1].length; });
+  var rails = [];
+  h += '<section class="lesson course" id="' + s.id + '--course"><div class="lhead"><span class="ltag">Course</span><span class="lmeta">' + Math.max(1, Math.round(words / 200)) + ' min read · ' + s.g.length + ' parts · ' + ntop + ' topics</span></div><div class="lbody">';
+  h += '<div class="overview" id="' + s.id + '--start">' + md(c.intro, s.id + '-i').html + '<div class="map"><div class="laytag">In this section</div><ol>' + s.g.map(function(g, gi){ return '<li><a href="#' + s.id + '--' + gi + '" data-jump="' + s.id + '--' + gi + '"><b>' + fmt(g[0]) + '</b><span>' + g[1].map(function(it){ return fmt(it[0]); }).join(" · ") + '</span></a></li>'; }).join("") + '</ol></div></div>';
+  rails.push([s.id + '--start', "Start here"]);
+  s.g.forEach(function(g, gi){
+    var cg = c.groups[gi] || {intro: "", topics: []};
+    h += '<h2 class="lh" id="' + s.id + '--' + gi + '"><span class="gn">' + (gi + 1) + '</span>' + fmt(g[0]) + '</h2>' + figs(notUsed(g[3])) + (cg.intro.trim() ? '<div class="bridge">' + md(cg.intro, s.id + '-b' + gi).html + '</div>' : '');
+    rails.push([s.id + '--' + gi, g[0]]);
+    g[1].forEach(function(it, ii){
+      var t = cg.topics[ii];
+      h += '<div class="art ctopic" id="t-' + s.id + '-' + gi + '-' + ii + '"><h3 class="lh3 st"><span class="tn">' + (gi + 1) + '.' + (ii + 1) + '</span><span>' + fmt(it[0]) + '</span></h3>' + (t ? md(t.body, s.id + '-d' + gi + '-' + ii).html : '<p>' + fmt(it[1] || "") + '</p>') + '</div>';
+    });
+    h += resBox(g[2], "Further reading");
+  });
+  c.groups.slice(s.g.length).forEach(function(g, k){
+    var id = s.id + '--x' + k;
+    h += '<h2 class="lh wrap" id="' + id + '">' + inl(g.title) + '</h2>' + md(g.intro, id).html;
+    g.topics.forEach(function(t){ h += '<h3 class="lh3">' + inl(t.title) + '</h3>' + md(t.body, id).html; });
+    rails.push([id, g.title]);
+  });
+  if (s.r && s.r.length){ h += '<h2 class="lh" id="' + s.id + '--refs">Books and references</h2>' + resBox(s.r, "For the whole section"); rails.push([s.id + '--refs', "Books and references"]); }
+  var sf = figs(notUsed(s.f)); if (sf) h = h.replace('<div class="lbody">', '<div class="lbody">' + sf);
+  return {html: h + '</div></section>', rails: rails};
+}
+
+function renderSection(s, focusItem){
+  current = s; var p = PARTS[s.pi], idx = SECS.indexOf(s), prev = SECS[idx - 1], next = SECS[idx + 1];
+  shell.classList.remove("norail");
+  var h = '<div class="col"><article class="sec" data-k="' + s.k + '"><nav class="crumb" aria-label="Breadcrumb"><a href="#">Home</a><span>/</span><span>' + ROMAN[s.pi] + ". " + esc(p.n) + '</span></nav><h1>' + esc(s.t) + '</h1><div class="meta">' + s.lv.map(function(l){ return '<span class="lv lv-' + l + '">' + l + '</span>'; }).join("") + '</div><p class="lede">' + fmt(s.d) + '</p>';
+  if (COURSE[s.id]){
+    var cr = renderCourse(s);
+    h += cr.html + '<div class="markrow"><button type="button" class="markbtn" data-mark="' + s.id + '" aria-pressed="false">Mark section as read</button></div>';
+    h += '<nav class="pager" aria-label="Section navigation">' + (prev ? '<a href="#' + prev.id + '"><small>← Previous</small><b>' + esc(prev.t) + '</b></a>' : '') + (next ? '<a class="nx" href="#' + next.id + '"><small>Next →</small><b>' + esc(next.t) + '</b></a>' : '') + '</nav>' + foot() + '</article></div>';
+    main.innerHTML = h;
+    rail.innerHTML = '<div data-k="' + s.k + '"><h4>On this page</h4><ol>' + cr.rails.map(function(x){ return '<li><a href="#' + x[0] + '" data-jump="' + x[0] + '"><span>' + esc(plain(x[1]).replace(/\*\*/g, "")) + '</span></a></li>'; }).join("") + '</ol><h4>Keys</h4><div class="keys"><kbd>/</kbd> search<br><kbd>[</kbd> <kbd>]</kbd> previous / next section<br><kbd>Esc</kbd> clear search</div></div>';
+    document.title = s.t + " · Agentic AI glossary";
+    prefs.last = s.id; store("prefs", prefs);
+    markNav(); counts(); observe();
+    if (focusItem){ var fe = document.getElementById(focusItem); if (fe){ fe.scrollIntoView({block:"center"}); fe.classList.add("flash"); } }
+    else window.scrollTo(0, 0);
+    return;
+  }
+  var les = LESSON[s.id] ? md(LESSON[s.id], s.id) : null;
+  var used = {}; (LESSON[s.id] || "").replace(/\[\[fig:([\w-]+)\]\]/g, function(_, k){ used[k] = 1; return ""; });
+  (DEEP[s.id] || []).forEach(function(g){ g.topics.forEach(function(t){ t.body.replace(/\[\[fig:([\w-]+)\]\]/g, function(_, k){ used[k] = 1; return ""; }); }); });
+  var notUsed = function(keys){ return (keys || []).filter(function(k){ if (used[k]) return false; used[k] = 1; return true; }); };
+  var words = (LESSON[s.id] || "").split(/\s+/).length;
+  s.g.forEach(function(g, gi){ g[1].forEach(function(it, ii){ words += (it[0] + " " + (deepText(s.id, gi, ii) || it[1] || "")).split(/\s+/).length; }); });
+  var mins = Math.max(1, Math.round(words / 200));
+  if (les){
+    h += '<section class="lesson" id="' + s.id + '--lesson"><div class="lhead"><span class="ltag">Lesson</span><span class="lmeta">' + mins + ' min read in total · ' + les.heads.length + ' parts</span></div><div class="lbody">' + figs(notUsed(s.f)) + les.html + '</div></section>';
+  }
+  h += '<section class="lesson deep" id="' + s.id + '--deep"><div class="lhead"><span class="ltag">In depth</span><span class="lmeta">' + (les ? 'every detail of the subject, part by part' : mins + ' min read') + '</span></div><div class="lbody">' + (les ? '' : figs(notUsed(s.f)));
+  s.g.forEach(function(g, gi){
+    h += '<h2 class="lh" id="' + s.id + '--' + gi + '">' + fmt(g[0]) + '</h2>' + figs(notUsed(g[3]));
+    g[1].forEach(function(it, ii){
+      var body = deepText(s.id, gi, ii);
+      h += '<div class="art" id="t-' + s.id + '-' + gi + '-' + ii + '"><h3 class="lh3 st">' + fmt(it[0]) + '</h3>' + (body ? md(body, s.id + '-d' + gi + '-' + ii).html : (it[1] ? '<p>' + fmt(it[1]) + '</p>' : '')) + '</div>';
+    });
+    h += resBox(g[2], "Further reading");
+  });
+  if (s.r && s.r.length) h += '<h2 class="lh" id="' + s.id + '--refs">Books and references</h2>' + resBox(s.r, "For the whole section");
+  h += '</div></section>';
+  h += '<div class="markrow"><button type="button" class="markbtn" data-mark="' + s.id + '" aria-pressed="false">Mark section as read</button></div>';
+  h += '<nav class="pager" aria-label="Section navigation">' + (prev ? '<a href="#' + prev.id + '"><small>← Previous</small><b>' + esc(prev.t) + '</b></a>' : '') + (next ? '<a class="nx" href="#' + next.id + '"><small>Next →</small><b>' + esc(next.t) + '</b></a>' : '') + '</nav>' + foot() + '</article></div>';
+  main.innerHTML = h;
+  var lh = function(x){ return '<li><a href="#' + x[0] + '" data-jump="' + x[0] + '"><span>' + esc(plain(x[1]).replace(/\*\*/g, "")) + '</span></a></li>'; };
+  rail.innerHTML = '<div data-k="' + s.k + '">' + (les ? '<h4>Lesson</h4><ol>' + les.heads.map(lh).join("") + '</ol>' : '') + '<h4>In depth</h4><ol>' + s.g.map(function(g, gi){ return lh([s.id + '--' + gi, g[0]]); }).join("") + '</ol><h4>Keys</h4><div class="keys"><kbd>/</kbd> search<br><kbd>[</kbd> <kbd>]</kbd> previous / next section<br><kbd>Esc</kbd> clear search</div></div>';
+  document.title = s.t + " · Agentic AI glossary";
+  prefs.last = s.id; store("prefs", prefs);
+  markNav(); counts(); observe();
+  if (focusItem){ var el = document.getElementById(focusItem); if (el){ el.scrollIntoView({block:"center"}); el.classList.add("flash"); } }
+  else window.scrollTo(0, 0);
+}
+
+/* on-this-page highlighting */
+var io;
+function observe(){
+  if (io) io.disconnect(); if (!("IntersectionObserver" in window)) return;
+  io = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ $$(".rail a").forEach(function(a){ a.classList.toggle("on", a.dataset.jump === e.target.id); }); } }); }, {rootMargin:"-20% 0px -70% 0px"});
+  $$("h2.lh[id], .overview[id]").forEach(function(g){ io.observe(g); });
+}
+rail.addEventListener("click", function(e){ var a = e.target.closest("a[data-jump]"); if (!a) return; e.preventDefault(); var t = document.getElementById(a.dataset.jump); if (t) t.scrollIntoView({behavior:"smooth", block:"start"}); });
+
+/* search */
+function hl(text, ql){
+  var t = plain(text), i = t.toLowerCase().indexOf(ql); if (i < 0) return esc(t);
+  return esc(t.slice(0, i)) + "<mark>" + esc(t.slice(i, i + ql.length)) + "</mark>" + esc(t.slice(i + ql.length));
+}
+function snippet(text, ql){
+  var t = plain(text), i = t.toLowerCase().indexOf(ql); if (i < 0) return esc(t.length > 180 ? t.slice(0, 180) + "…" : t);
+  var a = Math.max(0, i - 70), b = Math.min(t.length, i + ql.length + 110);
+  return (a ? "…" : "") + hl(t.slice(a, b), ql) + (b < t.length ? "…" : "");
+}
+function renderSearch(raw){
+  var ql = raw.trim().toLowerCase(); current = null; shell.classList.add("norail"); rail.innerHTML = "";
+  var hits = [];
+  SECS.forEach(function(s){
+    if (!lvOk(s)) return;
+    s.g.forEach(function(g, gi){ g[1].forEach(function(it, ii){
+      var body = deepText(s.id, gi, ii) || it[1] || "";
+      var hay = plain(it[0] + " " + body + " " + g[0] + " " + s.t).toLowerCase();
+      if (hay.indexOf(ql) >= 0) hits.push({s:s, g:g, gi:gi, ii:ii, it:it, body:body.replace(/```[\s\S]*?```/g, " ").replace(/:::\s*\w*/g, " ").replace(/[#*>|]|\?\?|\[\[fig:[\w-]+\]\]/g, ""), score:(plain(it[0]).toLowerCase().indexOf(ql) >= 0 ? 0 : 1)});
+    }); });
+  });
+  hits.sort(function(a, b){ return a.score - b.score; });
+  var lhits = [];
+  SECS.forEach(function(s){
+    var c = COURSE[s.id]; if (!c) return;
+    [[s.id + "--start", "Start here", c.intro]].concat(c.groups.slice(0, s.g.length).map(function(g, gi){ return [s.id + "--" + gi, g.title, g.intro]; })).forEach(function(x){
+      var low = x[2].toLowerCase(), at = low.indexOf(ql); if (at < 0) return;
+      lhits.push({s:s, href:x[0], head:x[1], kind:"Overview", snip:x[2].slice(Math.max(0, at - 90), at + ql.length + 120).replace(/\n+/g, " ").replace(/[#*>|`]|\?\?|:::\s*\w*|\[\[fig:[\w-]+\]\]/g, "")});
+    });
+  });
+  SECS.forEach(function(s){
+    var txt = LESSON[s.id]; if (!txt || !lvOk(s)) return;
+    var low = txt.toLowerCase(), at = low.indexOf(ql); if (at < 0) return;
+    var before = txt.slice(0, at), hn = (before.match(/^## /gm) || []).length;
+    var head = hn ? (before.match(/^## (.*)$/gm) || []).pop().slice(3) : "Introduction";
+    lhits.push({s:s, href:hn ? s.id + "--l" + (hn - 1) : s.id + "--lesson", head:head, kind:"Lesson", snip:txt.slice(Math.max(0, at - 90), at + ql.length + 120).replace(/\n+/g, " ").replace(/[#*>|`]|\?\?|\[\[fig:[\w-]+\]\]/g, "")});
+  });
+  var h = '<div class="col sres"><h1>Search: “' + esc(raw.trim()) + '”</h1><p>' + hits.length + ' topic match' + (hits.length === 1 ? "" : "es") + (lhits.length ? ' and ' + lhits.length + ' in section and group overviews' : '') + '. Press Esc to clear.</p>';
+  if (!hits.length && !lhits.length) h += '<p class="empty">Nothing matches. Try a shorter word, a config name without its prefix.</p>';
+  if (lhits.length){ h += '<h2 class="sh">In overviews</h2>'; lhits.slice(0, 40).forEach(function(x){ h += '<a class="hit" href="#' + x.href + '" data-k="' + x.s.k + '"><small>' + x.kind + ' · ' + esc(x.s.t) + '</small><b>' + esc(plain(x.head).replace(/\*\*/g, "")) + '</b><span>…' + hl(x.snip, ql) + '…</span></a>'; }); }
+  if (hits.length && lhits.length) h += '<h2 class="sh">In topics</h2>';
+  hits.slice(0, 250).forEach(function(x){
+    var id = x.s.id + "." + x.gi + "." + x.ii;
+    h += '<a class="hit" href="#' + x.s.id + ':' + x.gi + '.' + x.ii + '" data-k="' + x.s.k + '"><small>' + esc(x.s.t) + ' › ' + esc(plain(x.g[0])) + '' + '</small><b>' + hl(x.it[0], ql) + '</b>' + (x.body ? '<span>' + snippet(x.body, ql) + '</span>' : '') + '</a>';
+  });
+  if (hits.length > 250) h += '<p class="empty">Showing the first 250. Refine your search to see more.</p>';
+  main.innerHTML = h + '</div>'; markNav();
+}
+
+/* routing */
+function setPrac(on){ var l = document.getElementById("pracLink"); if (l){ if (on) l.setAttribute("aria-current", "page"); else l.removeAttribute("aria-current"); } }
+function route(){
+  var hash = decodeURIComponent(location.hash.replace(/^#/, ""));
+  if (window.PRACTICE_VIEW && /^practice(\/|$)/.test(hash)){ current = null; markNav(); setPrac(true); document.body.classList.remove("navopen"); if (window.PRACTICE_VIEW) window.PRACTICE_VIEW(hash.split("/").slice(1)); return; }
+  setPrac(false);
+  if (!hash){ renderHome(); return; }
+  var parts = hash.split(":"), s = BY[parts[0]];
+  if (!s){ var grp = hash.split("--"); if (BY[grp[0]]){ renderSection(BY[grp[0]]); var g = document.getElementById(hash); if (g) g.scrollIntoView(); return; } renderHome(); return; }
+  renderSection(s, parts[1] ? "t-" + s.id + "-" + parts[1].replace(".", "-") : null);
+}
+window.addEventListener("hashchange", function(){ if (q.value){ q.value = ""; } route(); });
+
+/* events */
+main.addEventListener("click", function(e){
+  var c = e.target.closest(".fig .canvas"); if (c){ openFig(c.parentElement); return; }
+  var mb = e.target.closest("[data-mark]"); if (mb){ var k = "sec:" + mb.dataset.mark; if (done[k]) delete done[k]; else done[k] = 1; store("done", done); counts(); }
+});
+main.addEventListener("keydown", function(e){ var c = e.target.closest && e.target.closest(".fig .canvas"); if (c && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); openFig(c.parentElement); } });
+var tmr;
+q.addEventListener("input", function(){ clearTimeout(tmr); tmr = setTimeout(function(){ if (q.value.trim().length >= 2) renderSearch(q.value); else if (!q.value.trim()) route(); }, 140); });
+q.addEventListener("keydown", function(e){ if (e.key === "Escape"){ q.value = ""; q.blur(); route(); } });
+document.addEventListener("keydown", function(e){
+  var typing = /input|textarea|select/i.test((document.activeElement || {}).tagName || "");
+  if (e.key === "/" && !typing){ e.preventDefault(); q.focus(); q.select(); return; }
+  if (typing || e.metaKey || e.ctrlKey || e.altKey) return;
+  if ((e.key === "]" || e.key === "[") && current){ var i = SECS.indexOf(current) + (e.key === "]" ? 1 : -1); if (SECS[i]) location.hash = SECS[i].id; }
+  if (e.key === "Escape") document.body.classList.remove("navopen");
+});
+
+$("#themeBtn").addEventListener("click", function(){
+  var dark = prefs.theme ? prefs.theme === "dark" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  prefs.theme = dark ? "light" : "dark"; store("prefs", prefs); applyTheme();
+});
+function applyTheme(){ if (prefs.theme) document.documentElement.setAttribute("data-theme", prefs.theme); else document.documentElement.removeAttribute("data-theme"); }
+$("#menuBtn").addEventListener("click", function(){ document.body.classList.toggle("navopen"); });
+$("#scrim").addEventListener("click", function(){ document.body.classList.remove("navopen"); });
+
+window.GUIDE = {md: md, inl: inl, esc: esc, fmt: fmt, LESSON: LESSON, SECS: SECS, PARTS: PARTS, BY: BY, ROMAN: ROMAN, main: main, rail: rail, shell: shell, foot: foot};
+applyTheme(); renderNav(); route();
+})();
+
+
+</script>
+</body>
+</html>

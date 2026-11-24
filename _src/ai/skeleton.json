@@ -1,0 +1,658 @@
+[
+ {
+  "part": [
+   "Foundations",
+   "spark",
+   "What agents are, how LLMs behave, and how agents call tools."
+  ],
+  "id": "foundations",
+  "t": "Agentic AI foundations",
+  "d": "What an AI agent is, how large language models work from an agent builder's point of view, and the agent loop.",
+  "groups": [
+   {
+    "t": "Agents and LLMs",
+    "topics": [
+     {
+      "t": "What an AI agent is",
+      "sub": "definitions, agent vs chatbot vs workflow, the spectrum of autonomy, where agents work today"
+     },
+     {
+      "t": "LLM fundamentals for agent builders",
+      "sub": "tokens, context windows, next-token prediction, sampling, temperature, why models hallucinate"
+     },
+     {
+      "t": "Working with model APIs",
+      "sub": "messages and roles, system prompts, streaming, stop reasons, token counting, rate limits, choosing a model"
+     },
+     {
+      "t": "Prompting for agents",
+      "sub": "clear instructions, examples, XML tags and structure, prompting for tool use, prompt versioning"
+     }
+    ]
+   },
+   {
+    "t": "The agent loop",
+    "topics": [
+     {
+      "t": "The agent loop: observe, think, act",
+      "sub": "the core loop in code, stop conditions, max steps, state"
+     },
+     {
+      "t": "Structured outputs and JSON schemas",
+      "sub": "schema-constrained output, Pydantic models, validation and repair"
+     },
+     {
+      "t": "Reasoning models and extended thinking",
+      "sub": "thinking budgets, interleaved thinking, when reasoning helps and what it costs"
+     },
+     {
+      "t": "Workflows vs agents: when not to build an agent",
+      "sub": "deterministic workflows first, cost of autonomy, decision checklist"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Foundations",
+   "spark",
+   "What agents are, how LLMs behave, and how agents call tools."
+  ],
+  "id": "tools",
+  "t": "Tool use and function calling",
+  "d": "How models call tools, how to design tools agents can use well, and how to keep tool use safe.",
+  "groups": [
+   {
+    "t": "Function calling",
+    "topics": [
+     {
+      "t": "How function calling works",
+      "sub": "tool schemas, tool_use and tool_result blocks, the request-response cycle across providers"
+     },
+     {
+      "t": "Designing good tools",
+      "sub": "names, descriptions, parameter schemas, returning useful errors, fewer smarter tools vs many small ones"
+     },
+     {
+      "t": "Tool results, errors and retries",
+      "sub": "error handling the model can act on, retries, timeouts, partial results, large outputs"
+     },
+     {
+      "t": "Parallel and sequential tool calls",
+      "sub": "parallel calls, dependencies, ordering, fan-out limits"
+     }
+    ]
+   },
+   {
+    "t": "Powerful tools",
+    "topics": [
+     {
+      "t": "Code execution and sandboxes",
+      "sub": "code interpreters, sandboxing, containers, resource limits"
+     },
+     {
+      "t": "Computer use and browser agents",
+      "sub": "screenshot-and-act loops, browser automation, reliability limits"
+     },
+     {
+      "t": "Search and retrieval tools",
+      "sub": "web search, fetch, internal search, citations"
+     },
+     {
+      "t": "Tool security and permissions",
+      "sub": "least privilege, read vs write tools, approval gates, allowlists, audit"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Protocols and patterns",
+   "stream",
+   "The standards that connect agents to tools and to each other, and the design patterns agents are built from."
+  ],
+  "id": "mcp",
+  "t": "Model Context Protocol and agent interoperability",
+  "d": "MCP for connecting agents to tools and data, A2A for agents talking to agents, and the other emerging standards.",
+  "groups": [
+   {
+    "t": "Model Context Protocol",
+    "topics": [
+     {
+      "t": "MCP architecture: hosts, clients and servers",
+      "sub": "why MCP exists, JSON-RPC, lifecycle, capability negotiation"
+     },
+     {
+      "t": "MCP primitives: tools, resources, prompts, sampling and elicitation",
+      "sub": "what each primitive is for, roots, notifications"
+     },
+     {
+      "t": "MCP transports, authorization and security",
+      "sub": "stdio, Streamable HTTP, OAuth 2.1, token handling, tool poisoning and other risks"
+     },
+     {
+      "t": "Building an MCP server in Python",
+      "sub": "FastMCP, exposing a database safely, testing with the inspector"
+     },
+     {
+      "t": "MCP for data platforms",
+      "sub": "PostgreSQL and other database MCP servers, MCP Toolbox for Databases, read-only access, query guards"
+     }
+    ]
+   },
+   {
+    "t": "Agents talking to agents",
+    "topics": [
+     {
+      "t": "Agent2Agent protocol (A2A)",
+      "sub": "agent cards, tasks, messages and artifacts, A2A vs MCP"
+     },
+     {
+      "t": "Other standards: agent skills, AGENTS.md and OpenAPI tools",
+      "sub": "packaging capabilities and instructions, interoperability trends"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Protocols and patterns",
+   "stream",
+   "The standards that connect agents to tools and to each other, and the design patterns agents are built from."
+  ],
+  "id": "patterns",
+  "t": "Agent design patterns",
+  "d": "The reusable building blocks of agentic systems, from prompt chaining to ReAct, with code for each.",
+  "groups": [
+   {
+    "t": "Workflow patterns",
+    "topics": [
+     {
+      "t": "Prompt chaining",
+      "sub": "sequential steps with gates and checks"
+     },
+     {
+      "t": "Routing",
+      "sub": "classifying input and dispatching to specialised prompts or models"
+     },
+     {
+      "t": "Parallelization: sectioning and voting",
+      "sub": "concurrent subtasks, majority voting, aggregation"
+     },
+     {
+      "t": "Orchestrator-workers",
+      "sub": "dynamic task decomposition and delegation"
+     },
+     {
+      "t": "Evaluator-optimizer",
+      "sub": "generate, critique, refine loops"
+     }
+    ]
+   },
+   {
+    "t": "Agent patterns",
+    "topics": [
+     {
+      "t": "ReAct: reasoning and acting",
+      "sub": "the paper, the loop, traces, limits"
+     },
+     {
+      "t": "Plan-and-execute",
+      "sub": "separate planner and executor, replanning"
+     },
+     {
+      "t": "Reflection and self-correction",
+      "sub": "critique, verification against tools, when it helps"
+     },
+     {
+      "t": "Human-in-the-loop",
+      "sub": "approvals, interrupts, escalation, review queues"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Context and multi-agent systems",
+   "kafka",
+   "Giving agents the right information and memory, and coordinating many agents."
+  ],
+  "id": "memory",
+  "t": "Context engineering, memory and RAG",
+  "d": "How to fill the context window with the right information: retrieval, memory and context management.",
+  "groups": [
+   {
+    "t": "Context",
+    "topics": [
+     {
+      "t": "Context engineering",
+      "sub": "what goes in the context window, ordering, compression, context rot"
+     },
+     {
+      "t": "Context window management: compaction, summarisation and caching",
+      "sub": "long conversations, prompt caching, token budgets"
+     },
+     {
+      "t": "Short-term memory and conversation state",
+      "sub": "threads, checkpoints, state schemas"
+     }
+    ]
+   },
+   {
+    "t": "Memory",
+    "topics": [
+     {
+      "t": "Long-term memory: semantic, episodic and procedural",
+      "sub": "memory stores, writing and recalling memories, forgetting"
+     },
+     {
+      "t": "Memory systems in practice",
+      "sub": "memory tools, vector and key-value memory, Mem0 and framework memory"
+     }
+    ]
+   },
+   {
+    "t": "Retrieval",
+    "topics": [
+     {
+      "t": "RAG fundamentals for agents",
+      "sub": "retrieval pipeline, chunking, embeddings, ranking, grounding and citations"
+     },
+     {
+      "t": "Agentic RAG",
+      "sub": "the agent decides when and how to retrieve, query rewriting, multi-hop retrieval, self-check"
+     },
+     {
+      "t": "Hybrid search, reranking and evaluation of retrieval",
+      "sub": "BM25 plus vectors, rerankers, recall and precision for RAG"
+     },
+     {
+      "t": "GraphRAG and knowledge graphs for agents",
+      "sub": "entity graphs, community summaries, when graphs beat vectors"
+     },
+     {
+      "t": "Vector databases for agents: pgvector, Qdrant, Milvus and OpenSearch",
+      "sub": "self-hosted options, choosing one, managed cloud equivalents as notes"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Context and multi-agent systems",
+   "kafka",
+   "Giving agents the right information and memory, and coordinating many agents."
+  ],
+  "id": "multiagent",
+  "t": "Multi-agent systems",
+  "d": "When one agent is not enough: architectures, communication, and how multi-agent systems fail.",
+  "groups": [
+   {
+    "t": "Architectures",
+    "topics": [
+     {
+      "t": "Why and when to use multiple agents",
+      "sub": "specialisation, context isolation, parallelism, costs"
+     },
+     {
+      "t": "Supervisor and hierarchical architectures",
+      "sub": "manager agents, delegation, aggregation"
+     },
+     {
+      "t": "Handoffs and swarm architectures",
+      "sub": "passing control between agents, routing by capability"
+     },
+     {
+      "t": "Subagents and context isolation",
+      "sub": "spawning focused subagents, returning summaries, research agents"
+     }
+    ]
+   },
+   {
+    "t": "Coordination",
+    "topics": [
+     {
+      "t": "Shared state, blackboards and message passing",
+      "sub": "state graphs, shared memory, message buses"
+     },
+     {
+      "t": "Debate, voting and consensus",
+      "sub": "multi-agent debate, critics, aggregation of answers"
+     },
+     {
+      "t": "How multi-agent systems fail",
+      "sub": "coordination errors, loops, error compounding, cost blowups, a failure taxonomy"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Frameworks and platforms",
+   "prep",
+   "The frameworks and managed platforms used to build agents, compared hands-on."
+  ],
+  "id": "frameworks",
+  "t": "Agent frameworks",
+  "d": "LangGraph, Google ADK, the Claude and OpenAI agent SDKs, CrewAI and the rest: how each works and when to choose it.",
+  "groups": [
+   {
+    "t": "Choosing",
+    "topics": [
+     {
+      "t": "Choosing an agent framework",
+      "sub": "framework vs plain SDK, control vs convenience, decision guide"
+     }
+    ]
+   },
+   {
+    "t": "Graph and code-first frameworks",
+    "topics": [
+     {
+      "t": "LangGraph",
+      "sub": "state graphs, nodes and edges, checkpointers, interrupts, persistence"
+     },
+     {
+      "t": "LangChain core concepts for agents",
+      "sub": "chat models, tools, runnables, when you still need it"
+     },
+     {
+      "t": "Google Agent Development Kit (ADK)",
+      "sub": "agents, tools, workflow agents, sessions and memory, multi-agent, deployment"
+     },
+     {
+      "t": "Claude Agent SDK",
+      "sub": "the agent harness, tools, subagents, hooks, permissions, sessions"
+     },
+     {
+      "t": "OpenAI Agents SDK",
+      "sub": "agents, handoffs, guardrails, sessions, tracing"
+     }
+    ]
+   },
+   {
+    "t": "Other frameworks",
+    "topics": [
+     {
+      "t": "CrewAI",
+      "sub": "crews, agents, tasks, flows"
+     },
+     {
+      "t": "Microsoft Agent Framework (AutoGen and Semantic Kernel)",
+      "sub": "conversations, teams, workflows"
+     },
+     {
+      "t": "PydanticAI, DSPy and LlamaIndex",
+      "sub": "typed agents, programmatic prompt optimisation, data-centric agents"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Frameworks and platforms",
+   "prep",
+   "The frameworks and managed platforms used to build agents, compared hands-on."
+  ],
+  "id": "platforms",
+  "t": "Deploying and serving agents: on-prem and cloud",
+  "d": "Running models and agents on your own infrastructure with open-source tools, and the managed cloud option on Google Cloud.",
+  "groups": [
+   {
+    "t": "On-prem and open source",
+    "topics": [
+     {
+      "t": "Serving open-weight models on-prem: vLLM, Ollama and TGI",
+      "sub": "open-weight models, GPUs and quantisation, OpenAI-compatible endpoints, tool calling with local models"
+     },
+     {
+      "t": "LLM gateways and model routing: LiteLLM and alternatives",
+      "sub": "one API for many models, fallbacks, budgets, keys, logging"
+     },
+     {
+      "t": "Deploying agents with Docker and Kubernetes",
+      "sub": "containers, APIs with FastAPI, streaming, scaling, long-running work, Kubernetes jobs"
+     }
+    ]
+   },
+   {
+    "t": "Enterprise and cloud",
+    "topics": [
+     {
+      "t": "Agent identity, secrets and networking in the enterprise",
+      "sub": "service accounts, Vault and secret stores, network isolation, air-gapped setups"
+     },
+     {
+      "t": "Running agents on Google Cloud",
+      "sub": "Gemini Enterprise Agent Platform, its managed agent runtime, Cloud Run and GKE, as an optional managed path"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Agents for data engineering",
+   "kafka",
+   "Where agentic AI meets data engineering: data agents, and the data infrastructure agents depend on."
+  ],
+  "id": "dataagents",
+  "t": "Agents for data engineering",
+  "d": "Text-to-SQL and data agents, agents that operate pipelines, and the data engineering that agents depend on.",
+  "groups": [
+   {
+    "t": "Data agents",
+    "topics": [
+     {
+      "t": "Text-to-SQL agents",
+      "sub": "schema linking, few-shot examples, validation, self-correction, accuracy limits"
+     },
+     {
+      "t": "Semantic layers and metadata for agents",
+      "sub": "metrics definitions, data contracts, catalogs as agent context"
+     },
+     {
+      "t": "Data agents on open-source and cloud warehouses",
+      "sub": "agents over PostgreSQL, Trino and DuckDB; managed options such as BigQuery and Snowflake as notes"
+     },
+     {
+      "t": "Building an end-to-end data analyst agent",
+      "sub": "a worked project: question to SQL to chart to answer, with evaluation"
+     }
+    ]
+   },
+   {
+    "t": "Agents that run data platforms",
+    "topics": [
+     {
+      "t": "Agents for pipeline operations",
+      "sub": "incident triage, log analysis, Airflow and dbt assistants, auto-remediation limits"
+     },
+     {
+      "t": "Data quality, documentation and lineage agents",
+      "sub": "profiling, test generation, documentation generation, lineage questions"
+     }
+    ]
+   },
+   {
+    "t": "Data engineering for agents",
+    "topics": [
+     {
+      "t": "Unstructured data pipelines for agents",
+      "sub": "parsing PDFs and documents, chunking at scale, metadata"
+     },
+     {
+      "t": "Embedding pipelines and keeping knowledge fresh",
+      "sub": "batch and streaming embeddings, CDC to vector stores, re-embedding"
+     },
+     {
+      "t": "Governance and access control for agents on data",
+      "sub": "row and column security, PII, audit, data agent guardrails"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Quality, production and security",
+   "spark",
+   "Evaluating agents, observing them, securing them and running them economically in production."
+  ],
+  "id": "eval",
+  "t": "Evaluation and observability",
+  "d": "How to measure whether an agent works, and how to see what it is doing in production.",
+  "groups": [
+   {
+    "t": "Evaluation",
+    "topics": [
+     {
+      "t": "Why agent evaluation is hard",
+      "sub": "non-determinism, long trajectories, many valid answers"
+     },
+     {
+      "t": "Building evaluation datasets",
+      "sub": "golden sets, synthetic cases, production samples, versioning"
+     },
+     {
+      "t": "LLM-as-a-judge",
+      "sub": "rubrics, pairwise comparison, judge bias, calibration with humans"
+     },
+     {
+      "t": "Trajectory and tool-call evaluation",
+      "sub": "step-level metrics, tool selection accuracy, efficiency"
+     },
+     {
+      "t": "Agent benchmarks",
+      "sub": "SWE-bench, tau-bench, GAIA, WebArena, BIRD and Spider for text-to-SQL, what benchmarks miss"
+     }
+    ]
+   },
+   {
+    "t": "Observability",
+    "topics": [
+     {
+      "t": "Tracing agents with OpenTelemetry",
+      "sub": "spans for LLM and tool calls, GenAI semantic conventions, Jaeger and Grafana Tempo"
+     },
+     {
+      "t": "Observability platforms",
+      "sub": "Langfuse, Arize Phoenix and LangSmith (self-hosted vs SaaS), Prometheus and Grafana, what to monitor"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Quality, production and security",
+   "spark",
+   "Evaluating agents, observing them, securing them and running them economically in production."
+  ],
+  "id": "production",
+  "t": "Production engineering, security and cost",
+  "d": "Reliability, security, guardrails, cost and latency for agents in production.",
+  "groups": [
+   {
+    "t": "Reliability",
+    "topics": [
+     {
+      "t": "Reliability patterns for agents",
+      "sub": "timeouts, retries, idempotent tools, fallbacks, step limits"
+     },
+     {
+      "t": "Durable execution and long-running agents",
+      "sub": "checkpoints, resumability, Temporal and workflow engines"
+     },
+     {
+      "t": "Guardrails",
+      "sub": "input and output validation, policy checks, moderation, structured constraints"
+     }
+    ]
+   },
+   {
+    "t": "Security",
+    "topics": [
+     {
+      "t": "Prompt injection and agent security",
+      "sub": "direct and indirect injection, the lethal trifecta, mitigations"
+     },
+     {
+      "t": "Identity, authorisation and secrets for agents",
+      "sub": "acting on behalf of users, scoped credentials, OAuth delegation"
+     }
+    ]
+   },
+   {
+    "t": "Cost and experience",
+    "topics": [
+     {
+      "t": "Cost and latency optimisation",
+      "sub": "prompt caching, model routing, batching, smaller models, token budgets"
+     },
+     {
+      "t": "Agent UX: streaming, progress and trust",
+      "sub": "streaming steps, showing work, confirmations, handling failure"
+     },
+     {
+      "t": "Responsible AI and compliance for agents",
+      "sub": "safety, privacy, EU AI Act basics, documentation"
+     }
+    ]
+   }
+  ]
+ },
+ {
+  "part": [
+   "Interview preparation",
+   "prep",
+   "Getting ready for a data engineering + agentic AI interview."
+  ],
+  "id": "interview",
+  "t": "Agentic AI interview preparation",
+  "d": "How these interviews run, system design and coding rounds for agents, and a question bank with model answers.",
+  "groups": [
+   {
+    "t": "Rounds",
+    "topics": [
+     {
+      "t": "How agentic AI interviews are structured",
+      "sub": "rounds, what is assessed, how data engineers are evaluated"
+     },
+     {
+      "t": "Coding round: build an agent loop from scratch",
+      "sub": "a complete tool-calling agent in plain Python with a mock model"
+     },
+     {
+      "t": "System design: an enterprise data analyst agent",
+      "sub": "requirements, architecture on Google Cloud, evaluation, security"
+     },
+     {
+      "t": "System design: a multi-agent support or operations system",
+      "sub": "routing, handoffs, memory, guardrails, scale"
+     },
+     {
+      "t": "Presenting your data engineering + AI experience",
+      "sub": "stories, projects, how to talk about RAG and agents you built"
+     }
+    ]
+   },
+   {
+    "t": "Question bank",
+    "topics": [
+     {
+      "t": "Agentic AI question bank",
+      "sub": "50+ common questions with model answers, grouped by topic"
+     }
+    ]
+   }
+  ]
+ }
+]

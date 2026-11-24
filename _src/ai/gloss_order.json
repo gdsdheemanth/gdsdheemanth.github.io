@@ -1,0 +1,12 @@
+[["llm","Models and LLM basics","Tokens, context windows, sampling, model types and the vocabulary of language models."],
+ ["prompting","Prompting and model outputs","Prompts, instructions, examples, reasoning and structured output."],
+ ["tools","Tools and function calling","How models call tools, and the kinds of tools agents use."],
+ ["protocols","Protocols and interoperability","MCP, A2A and the other standards that connect agents, tools and data."],
+ ["patterns","Agent patterns and architectures","The design patterns and loop structures agents are built from."],
+ ["memory","Context, memory and retrieval","Context engineering, memory types, RAG, embeddings and vector search."],
+ ["multiagent","Multi-agent systems","Terms for systems of several cooperating agents."],
+ ["frameworks","Frameworks, SDKs and platforms","Agent frameworks, SDKs and managed platforms, including Google Cloud."],
+ ["data","Agents and data","Text-to-SQL, data agents, semantic layers and data pipelines for AI."],
+ ["eval","Evaluation and observability","Benchmarks, evals, judges, tracing and monitoring."],
+ ["safety","Safety, security and governance","Prompt injection, guardrails, permissions, alignment and regulation."],
+ ["ops","Production, cost and operations","Serving, latency, caching, cost, reliability and deployment."]]
